@@ -2,8 +2,7 @@ import ReqSignatures from "./ReqSignatures";
 import UploadDocs from "./UploadDocs";
 import ManageDoc from "./ManageDoc";
 import AuthApi from "../AuthApi";
-import React, {useContext, useEffect} from "react";
-import Cookies from "js-cookie";
+import React, {useContext} from "react";
 
 export default function Dashboard(props) {
   const Auth = useContext(AuthApi);

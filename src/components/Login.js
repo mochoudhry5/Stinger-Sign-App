@@ -11,16 +11,9 @@ function Login() {
     email: "",
     password: "",
   };
-  const userInitValues = {
-    email: null,
-    password: null,
-    first: null,
-    last: null,
-  };
   const Auth = useContext(AuthApi);
   const [formError, setFormError] = useState("");
   const [formValues, setFormValues] = useState(initialValues);
-  const [isSubmit, setIsSubmit] = useState(false);
   const { error, loading, data } = useQuery(ALL_USERS);
   const [isValidUser, setIsValidUser] = useState(false);
 
