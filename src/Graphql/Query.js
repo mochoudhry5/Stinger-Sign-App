@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const ALL_USERS = gql`
   {
-  list_UserInfoItems {
+  list_UserInfoItems {  
     _UserInfoItems {
       userFirstName
       userLastName
@@ -15,29 +15,30 @@ export const ALL_USERS = gql`
 `;
 
 export const USER_INFO = gql`
- {
-  list_UserInfoItems {
-    _UserInfoItems {
-      docsSent {
-        sentInfo {
-          recieverPDFName
-          timeSent
-          usersRecieved
-        }
+ query blocksQuery($id: ID!) {
+  get_UserInfo(id: $id) {
+    docsSent {
+      sentInfo {
+        isSigned
+        recieverPDFName
+        timeSent
+        usersRecieved
       }
-      docsToSign {
-        info {
-          fromWho
-          senderPDFName
-          sentToWho
-          timeOfSend
-        }
-      }
-      userFirstName
-      userLastName
-      _id
     }
+    docsToSign {
+      info {
+        fromWho
+        isSignedOrNot
+        senderPDFName
+        sentToWho
+        timeOfSend
+      }
+    }
+    userCompany
+    userEmail
+    userFirstName
+    userJobTitle
+    userLastName
   }
 }
-
 `

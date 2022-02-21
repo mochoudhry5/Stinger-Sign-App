@@ -18,7 +18,6 @@ function Login() {
     last: null,
   };
   const Auth = useContext(AuthApi);
-  const [loggedInUser, setLoggedInUser] = useState(userInitValues);
   const [formError, setFormError] = useState("");
   const [formValues, setFormValues] = useState(initialValues);
   const [isSubmit, setIsSubmit] = useState(false);
@@ -52,7 +51,9 @@ function Login() {
       ) {
         handleOnClick();
         setIsValidUser(true);
-        setLoggedInUser([item.userEmail, item.userPassword]);
+        Auth.setLoggedInUser(item._id)
+        console.log(item._id);
+        window.localStorage.setItem('state', item._id);
       }
       else {
         errors = "Email or password is incorrect"

@@ -17,6 +17,7 @@ import Cookies from "js-cookie";
 
 function App() {
   const [auth, setAuth] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState("");
 
   const readCookie = () => {
     const user = Cookies.get("user");
@@ -31,7 +32,7 @@ function App() {
 
   return (
     <div className="App">
-      <AuthApi.Provider value={{ auth, setAuth }}>
+      <AuthApi.Provider value={{ auth, setAuth, loggedInUser, setLoggedInUser}}>
         <Router>
           <Switch>
             <Routes />
@@ -46,12 +47,12 @@ const Routes = () => {
   const Auth = useContext(AuthApi);
   return (
     <div>
-      <ProtectedLogin path="/" exact auth={Auth.auth} component={Login} />
-      <ProtectedLogin path="/signup" auth={Auth.auth} component={Signup} />
-      <ProtectedRoute path="/nav" auth={Auth.auth} component={Navbar} />
-      <ProtectedRoute path="/nav/dashboard" auth={Auth.auth} component={Dashboard} />
-      <ProtectedRoute path="/nav/profile" auth={Auth.auth} component={ViewInfo} />
-      <ProtectedRoute path="/nav/viewer" exact auth={Auth.auth} component={DocManager} />
+      <ProtectedLogin path="/" exact auth={Auth.auth} loggedInUser={Auth.loggedInUser} component={Login} />
+      <ProtectedLogin path="/signup" auth={Auth.auth} loggedInUser={Auth.loggedInUser} component={Signup} />
+      <ProtectedRoute path="/nav" auth={Auth.auth} loggedInUser={Auth.loggedInUser} component={Navbar} />
+      <ProtectedRoute path="/nav/dashboard" auth={Auth.auth} loggedInUser={Auth.loggedInUser} component={Dashboard} />
+      <ProtectedRoute path="/nav/profile" auth={Auth.auth} loggedInUser={Auth.loggedInUser} component={ViewInfo} />
+      <ProtectedRoute path="/nav/viewer" exact auth={Auth.auth} loggedInUser={Auth.loggedInUser} component={DocManager} />
     </div>
   );
 };
@@ -60,7 +61,7 @@ const ProtectedRoute = ({ auth, component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={() => (auth ? <Component /> : <Redirect to="/" />)}
+      render={(props) => (auth ? <Component/> : <Redirect to="/" />)}
     />
   );
 };

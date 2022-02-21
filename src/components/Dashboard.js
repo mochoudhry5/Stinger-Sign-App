@@ -1,12 +1,20 @@
 import ReqSignatures from "./ReqSignatures";
 import UploadDocs from "./UploadDocs";
 import ManageDoc from "./ManageDoc";
+import AuthApi from "../AuthApi";
+import React, {useContext, useEffect} from "react";
+import Cookies from "js-cookie";
 
-export default function Dashboard() {
+export default function Dashboard(props) {
+  const Auth = useContext(AuthApi);
+  const loggedIn = window.localStorage.getItem('state');
+
   
   return (
     <div>
       <h1 className="titles" align="center"> The SIMPLE Dashboard</h1>
+      <h2> {loggedIn} </h2>
+      <h2> {Auth.auth} </h2>
       <hr></hr>
       <ReqSignatures />
       <br />

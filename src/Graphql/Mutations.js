@@ -6,8 +6,10 @@ export const ADD_USER = gql`
     add_UserInfo_async(input: {
       userEmail: $userEmail, userFirstName: $userFirstName, 
       userLastName: $userLastName, userPassword: $userPassword,
-      userCompany: $userCompany, userJobTitle: $userJobTitle}){
-      error
+      userCompany: $userCompany, userJobTitle: $userJobTitle}){ 
+      result {
+        _id
+      }
+    }
   }
-}
 `

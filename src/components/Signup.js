@@ -1,11 +1,8 @@
-import React, { useState, useContext, useEffect } from "react";
-import AuthApi from "../AuthApi";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, Redirect } from "react-router-dom";
 import { ALL_USERS } from "../Graphql/Query";
 import { ADD_USER } from "../Graphql/Mutations";
-// import { useMutation } from "@apollo/react-hooks";
 import { useQuery, useMutation } from "@apollo/client";
-import Cookies from "js-cookie";
 import "../signupform.css";
 
 function Signup() {
@@ -18,18 +15,11 @@ function Signup() {
     jobtitle: "",
   };
 
-  const userInitValues = {
-    email: null,
-    password: null,
-    first: null,
-    last: null,
-  };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const [add_UserInfo_async] = useMutation(ADD_USER);
   const { error, loading, data } = useQuery(ALL_USERS);
-  const [loggedInUser, setLoggedInUser] = useState(userInitValues);
-  const Auth = useContext(AuthApi);
+  const [isSubmit, setIsSubmit] = useState(false)
 
   useEffect(() => {
     if (Object.keys(formErrors).length === 0) {
@@ -61,18 +51,12 @@ function Signup() {
     e.preventDefault();
     setFormErrors(validateUser());
     if (formErrors.email === "Email is already in use") {
-      console.log(formErrors);
-
+      console.log("Email is already in use");
+    } else {
+      addUser();
+      setIsSubmit(true)
+      console.log("Added User")
     }
-    else {
-        addUser();
-        console.log("Added User");
-    }
-  };
-
-  const handleOnClick = () => {
-    Auth.setAuth(true);
-    Cookies.set("user", "loginTrue");
   };
 
   const addUser = () => {
@@ -86,13 +70,14 @@ function Signup() {
         userJobTitle: formValues.jobtitle,
       },
     });
-
-    handleOnClick();
   };
+
 
   return (
     <div className="signup-form">
       <form onSubmit={handleSubmit}>
+      {isSubmit ? (
+        <Redirect to="/" />) : null}
         <h1 className="login-welcometext"> Welcome to StingerSign </h1> <hr />
         <h2 className="login-logintext">Sign Up</h2>
         <div className="ui divider"></div>
@@ -178,7 +163,7 @@ function Signup() {
               //   onChange={handleChange}
             />
           </div>
-          <button className="log-in-button">Sign Up</button>
+          <button className="log-in-button">Create</button>
         </div>
         <span className="span-label"> Already have an account? </span>
         <Link to="/">
