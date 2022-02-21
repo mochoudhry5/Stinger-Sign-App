@@ -1,0 +1,38 @@
+* {
+    margin: 0;
+}
+
+.signup-form {
+    font-family: "DejaVu Sans Mono", monospace;
+  }
+
+.login-logintext{
+    padding-bottom: 20px;
+    padding-top: 15px;
+}
+
+.field {
+    padding: 5px;
+}
+
+.inputs{
+    display: flexbox;
+    background-color: rgb(214, 235, 191)
+
+}
+
+.log-in-button {
+    width: 100px;
+    margin-bottom: 20px; 
+    margin-top: 20px; 
+}
+
+.span-label{
+    font-size:14px;
+    font-weight: bold;
+}
+
+.err{
+    margin-top:10px;
+    color: rgb(255, 0, 0);
+}

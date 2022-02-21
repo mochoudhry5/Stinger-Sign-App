@@ -1,0 +1,192 @@
+import React, { useState, useContext, useEffect } from "react";
+import AuthApi from "../AuthApi";
+import { Link } from "react-router-dom";
+import { ALL_USERS } from "../Graphql/Query";
+import { ADD_USER } from "../Graphql/Mutations";
+// import { useMutation } from "@apollo/react-hooks";
+import { useQuery, useMutation } from "@apollo/client";
+import Cookies from "js-cookie";
+import "../signupform.css";
+
+function Signup() {
+  const initialValues = {
+    email: "",
+    password: "",
+    fname: "",
+    lname: "",
+    company: "",
+    jobtitle: "",
+  };
+
+  const userInitValues = {
+    email: null,
+    password: null,
+    first: null,
+    last: null,
+  };
+  const [formValues, setFormValues] = useState(initialValues);
+  const [formErrors, setFormErrors] = useState({});
+  const [add_UserInfo_async] = useMutation(ADD_USER);
+  const { error, loading, data } = useQuery(ALL_USERS);
+  const [loggedInUser, setLoggedInUser] = useState(userInitValues);
+  const Auth = useContext(AuthApi);
+
+  useEffect(() => {
+    if (Object.keys(formErrors).length === 0) {
+      console.log(formValues);
+    }
+  }, []);
+
+  if (loading) return <div> Loading... </div>;
+  if (error) return <div> ERROR </div>;
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
+    setFormErrors(validateUser());
+  };
+
+  const validateUser = () => {
+    const errors = {};
+    data.list_UserInfoItems._UserInfoItems.map((item) => {
+      if (item.userEmail === formValues.email) {
+        errors.email = "Email is already in use";
+        errors.password = "Password is already in use";
+      }
+    });
+    return errors;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setFormErrors(validateUser());
+    if (formErrors.email === "Email is already in use") {
+      console.log(formErrors);
+
+    }
+    else {
+        addUser();
+        console.log("Added User");
+    }
+  };
+
+  const handleOnClick = () => {
+    Auth.setAuth(true);
+    Cookies.set("user", "loginTrue");
+  };
+
+  const addUser = () => {
+    add_UserInfo_async({
+      variables: {
+        userEmail: formValues.email,
+        userFirstName: formValues.fname,
+        userLastName: formValues.lname,
+        userPassword: formValues.password,
+        userCompany: formValues.company,
+        userJobTitle: formValues.jobtitle,
+      },
+    });
+
+    handleOnClick();
+  };
+
+  return (
+    <div className="signup-form">
+      <form onSubmit={handleSubmit}>
+        <h1 className="login-welcometext"> Welcome to StingerSign </h1> <hr />
+        <h2 className="login-logintext">Sign Up</h2>
+        <div className="ui divider"></div>
+        <div className="all-inputs">
+          <div className="field">
+            <label className="label">First Name </label>
+            <input
+              className="input"
+              type="text"
+              name="fname"
+              placeholder="First Name"
+              value={formValues.fname}
+              onChange={handleChange}
+            />
+            <p> </p>
+          </div>
+          <div className="field">
+            <label className="label">Last Name </label>
+            <input
+              className="input"
+              type="text"
+              name="lname"
+              placeholder="Last Name"
+              value={formValues.lname}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="field">
+            <label className="label">Company </label>
+            <input
+              className="input"
+              type="text"
+              name="company"
+              placeholder="Company"
+              value={formValues.company}
+              onChange={handleChange}
+            />
+            <p> </p>
+          </div>
+          <div className="field">
+            <label className="label">Job Title </label>
+            <input
+              className="input"
+              type="text"
+              name="jobtitle"
+              placeholder="Job Title"
+              value={formValues.jobtitle}
+              onChange={handleChange}
+            />
+            <p> </p>
+          </div>
+          <div className="field">
+            <label className="label">Email </label>
+            <input
+              className="input"
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formValues.email}
+              onChange={handleChange}
+            />
+            <p className="err">{formErrors.email}</p>
+          </div>
+          <div className="field">
+            <label className="label">Password </label>
+            <input
+              className="input"
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={formValues.password}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="field">
+            <label className="label">Confirm Password </label>
+            <input
+              className="input"
+              type="password"
+              name="password"
+              placeholder="Confirm Password"
+              //   value={formValues.password}
+              //   onChange={handleChange}
+            />
+          </div>
+          <button className="log-in-button">Sign Up</button>
+        </div>
+        <span className="span-label"> Already have an account? </span>
+        <Link to="/">
+          <span className="span-label"> Click here </span>
+        </Link>
+      </form>
+    </div>
+  );
+}
+
+export default Signup;

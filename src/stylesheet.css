@@ -1,0 +1,56 @@
+* {
+    margin: 0;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    height: 65px;
+    background:  #adab30 1.18%;
+    color: white;
+    padding: 3px;
+}
+
+.nav--logo {
+    height: 90%;
+    width: 90px;
+    margin-right: 0;
+}
+
+.nav--logo-text{
+    color:rgb(0, 0, 0);
+    font-family: "Trattatello", fantasy;
+    font-size: 25px;
+    margin-right: 700px;
+
+}
+
+
+.nav--button{ 
+    display: flex;
+    border: none;
+    align-items: right;
+    background: #adab30;
+    color: white;
+    padding: 15px;
+    font-family: "DejaVu Sans Mono", monospace;
+    font-size: 18px;
+    transition-duration: 0.2s;
+    cursor: pointer;
+    margin-left:400px
+}
+
+  .nav--button:hover {
+    background-color: #adab30; /* Green */
+    color: #385a12
+  }
+
+  .titles {
+      font-family: "DejaVu Sans Mono", monospace;
+  }
+
+
+.form-control{
+    display: right;
+    margin-left:70px;
+}
