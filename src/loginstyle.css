@@ -1,0 +1,60 @@
+* {
+    margin:0; 
+  }
+  
+  .login {
+    text-align: center;
+    background-color: #202020;
+    height: 1000px;
+    color: rgb(209, 208, 173);
+    font-weight: bold;
+  }
+  
+  .App-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: rgb(255, 255, 255);
+  }
+
+  .link-login {
+    color: rgb(209, 208, 173);
+    text-decoration: under;
+    font-family: "Courier", monospace;
+    font-size: 15px;
+  }
+
+  .link-login1 {
+    color: rgb(209, 208, 173);
+    font-family: "Courier", monospace;
+    font-size: 15px;
+  }
+
+  .login--logo {
+
+    width: 450px;
+    margin-top: 40px;
+  }
+  
+  .login-logintext {
+      font-size:100px;
+      font-family: "Chalkduster", fantasy;
+      margin-bottom: 100px;
+      margin-top:0px;
+  }
+  
+
+  .log-in-button {
+      background-color: rgb(209, 208, 173);
+  }
+
+  .loading {
+    background-color: rgb(209, 208, 173);
+    
+  }
+
+

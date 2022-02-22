@@ -36,3 +36,28 @@
     margin-top:10px;
     color: rgb(255, 0, 0);
 }
+
+.signup-form {
+    background-color: #202020;
+    height:1000px;
+}
+
+.login-logintext {
+    font-size:100px;
+    font-family: "Chalkduster", fantasy;
+    margin-bottom: 75px;
+    margin-top:0px;
+    color: rgb(209, 208, 173);
+}
+
+.label {
+    color: rgb(209, 208, 173);
+}
+
+.link-login {
+    color: rgb(209, 208, 173);
+    text-decoration: underline;
+    text-decoration: bold;
+    font-family: "Courier", monospace;
+    font-size: 15px;
+  }

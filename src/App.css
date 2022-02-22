@@ -4,6 +4,9 @@
 
 .App {
   text-align: center;
+  background-color: #282c34;
+  height: 1000px;
+  color:rgb(209, 208, 173);
 }
 
 .App-header {
@@ -18,3 +21,21 @@
   color: rgb(255, 255, 255);
 }
 
+.upload-docs {
+  text-decoration: under;
+  color:rgb(209, 208, 173);
+}
+
+.logout {
+  background-color: #975555;
+  padding: 5px;
+  font-size: 15px;
+  font-weight: bold;
+
+}
+
+.pdftext {
+  color: black;
+  font-size: 15px;
+  font-weight: bold;
+}

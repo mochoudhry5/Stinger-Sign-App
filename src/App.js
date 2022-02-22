@@ -9,7 +9,7 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Navbar from "./components/Navbar";
 import Dashboard from "./components/Dashboard";
-import { ViewInfo } from "./components/ViewInfo";
+import { Profile } from "./components/Profile";
 import DocManager from "./components/DocManager";
 import React, { useState, useContext, useEffect } from "react";
 import AuthApi from "./AuthApi";
@@ -32,7 +32,9 @@ function App() {
 
   return (
     <div className="App">
-      <AuthApi.Provider value={{ auth, setAuth, loggedInUser, setLoggedInUser}}>
+      <AuthApi.Provider
+        value={{ auth, setAuth, loggedInUser, setLoggedInUser }}
+      >
         <Router>
           <Switch>
             <Routes />
@@ -47,12 +49,25 @@ const Routes = () => {
   const Auth = useContext(AuthApi);
   return (
     <div>
-      <ProtectedLogin path="/" exact auth={Auth.auth} loggedInUser={Auth.loggedInUser} component={Login} />
-      <ProtectedLogin path="/signup" auth={Auth.auth} loggedInUser={Auth.loggedInUser} component={Signup} />
-      <ProtectedRoute path="/nav" auth={Auth.auth} loggedInUser={Auth.loggedInUser} component={Navbar} />
-      <ProtectedRoute path="/nav/dashboard" auth={Auth.auth} loggedInUser={Auth.loggedInUser} component={Dashboard} />
-      <ProtectedRoute path="/nav/profile" auth={Auth.auth} loggedInUser={Auth.loggedInUser} component={ViewInfo} />
-      <ProtectedRoute path="/nav/viewer" exact auth={Auth.auth} loggedInUser={Auth.loggedInUser} component={DocManager} />
+      <ProtectedLogin path="/" exact auth={Auth.auth} component={Login} />
+      <ProtectedLogin path="/signup" auth={Auth.auth} component={Signup} />
+      <ProtectedRoute path="/nav" auth={Auth.auth} component={Navbar} />
+      <ProtectedRoute
+        path="/nav/dashboard"
+        auth={Auth.auth}
+        component={Dashboard}
+      />
+      <ProtectedRoute
+        path="/nav/profile"
+        auth={Auth.auth}
+        component={Profile}
+      />
+      <ProtectedRoute
+        path="/nav/viewer"
+        exact
+        auth={Auth.auth}
+        component={DocManager}
+      />
     </div>
   );
 };
@@ -61,7 +76,7 @@ const ProtectedRoute = ({ auth, component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={(props) => (auth ? <Component/> : <Redirect to="/" />)}
+      render={(props) => (auth ? <Component /> : <Redirect to="/" />)}
     />
   );
 };
@@ -70,7 +85,9 @@ const ProtectedLogin = ({ auth, component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={(props) => (!auth ? <Component {...props} /> : <Redirect to="/nav/dashboard" />)}
+      render={(props) =>
+        !auth ? <Component {...props} /> : <Redirect to="/nav/dashboard" />
+      }
     />
   );
 };

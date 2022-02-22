@@ -1,29 +1,31 @@
 import ReqSignatures from "./ReqSignatures";
 import UploadDocs from "./UploadDocs";
 import ManageDoc from "./ManageDoc";
-import AuthApi from "../AuthApi";
-import React, {useContext} from "react";
+import { USER_INFO } from "../Graphql/Query";
+import { useQuery } from "@apollo/client";
 
 export default function Dashboard(props) {
-  const Auth = useContext(AuthApi);
   const loggedIn = window.localStorage.getItem('state');
+  const { error, loading, data } = useQuery(USER_INFO, {
+    variables: {
+      id: loggedIn,
+    },
+  });
+
+  if (loading) return <div> Loading... </div>;
+  if (error) return <div> ERROR: {error.message} </div>;
 
   
   return (
     <div>
-      <h1 className="titles" align="center"> The SIMPLE Dashboard</h1>
-      <h2> {loggedIn} </h2>
-      <h2> {Auth.auth} </h2>
-      <hr></hr>
+      <h1 className="title" align="center"> {data.get_UserInfo.userFirstName}'s Dashboard</h1>
       <ReqSignatures />
       <br />
-      <hr></hr>
+
       <UploadDocs />
       <br />
-      <hr></hr>
       <ManageDoc />
       <br />
-      <hr></hr>
     </div>
   );
 }

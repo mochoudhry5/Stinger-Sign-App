@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { ALL_USERS } from "../Graphql/Query";
 import { ADD_USER } from "../Graphql/Mutations";
@@ -17,15 +17,9 @@ function Signup() {
 
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
-  const [add_UserInfo_async] = useMutation(ADD_USER);
   const { error, loading, data } = useQuery(ALL_USERS);
   const [isSubmit, setIsSubmit] = useState(false)
-
-  useEffect(() => {
-    if (Object.keys(formErrors).length === 0) {
-      console.log(formValues);
-    }
-  }, []);
+  const [add_UserInfo_async] = useMutation(ADD_USER)
 
   if (loading) return <div> Loading... </div>;
   if (error) return <div> ERROR </div>;
@@ -78,8 +72,7 @@ function Signup() {
       <form onSubmit={handleSubmit}>
       {isSubmit ? (
         <Redirect to="/" />) : null}
-        <h1 className="login-welcometext"> Welcome to StingerSign </h1> <hr />
-        <h2 className="login-logintext">Sign Up</h2>
+        <h2 className="login-logintext">Stinger Sign Up</h2>
         <div className="ui divider"></div>
         <div className="all-inputs">
           <div className="field">
@@ -165,9 +158,9 @@ function Signup() {
           </div>
           <button className="log-in-button">Create</button>
         </div>
-        <span className="span-label"> Already have an account? </span>
-        <Link to="/">
-          <span className="span-label"> Click here </span>
+        <span className="label"> Already have an account? </span>
+        <Link className="link-login" to="/">
+          <span className="span-label"> Log In</span>
         </Link>
       </form>
     </div>
