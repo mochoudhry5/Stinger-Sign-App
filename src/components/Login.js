@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import { ALL_USERS } from "../Graphql/Query";
 import { useQuery } from "@apollo/client";
 import { Link } from "react-router-dom";
-import "../loginstyle.css";
+import "../styles/loginstyle.css";
 import Hornet from "../images/logo.png";
 
 function Login() {

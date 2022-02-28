@@ -3,7 +3,7 @@ import { Link, Redirect } from "react-router-dom";
 import { ALL_USERS } from "../Graphql/Query";
 import { ADD_USER } from "../Graphql/Mutations";
 import { useQuery, useMutation } from "@apollo/client";
-import "../signupform.css";
+import "../styles/signupform.css";
 
 function Signup() {
   const initialValues = {

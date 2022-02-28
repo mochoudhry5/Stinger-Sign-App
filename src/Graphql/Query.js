@@ -42,3 +42,18 @@ export const USER_INFO = gql`
   }
 }
 `
+
+export const GET_SENT_INFO = gql`
+ query get_UserInfo($id: ID!) {
+  get_UserInfo(id: $id) {
+    docsSent {
+      sentInfo {
+        isSigned
+        recieverPDFName
+        timeSent
+        usersRecieved
+      }
+    }
+  }
+}
+`

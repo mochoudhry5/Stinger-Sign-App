@@ -1,0 +1,68 @@
+* {
+    margin:0;
+}
+
+.left--cont {
+    display: flex;
+    font-size: 30px;
+    margin-left: 170px;
+    font-family: "DejaVu Sans Mono", monospace;
+    font-weight: bold;
+    
+}
+
+.title-send {
+    font-weight: bold;
+    font-size: 30px;
+    margin-right: 730px;
+    margin-bottom: 40px;
+}
+
+.email-header {
+    display:flex;
+    font-size: 19px;
+    margin-top: 10px;
+    margin-left: 250px;
+    font-weight: normal;
+}
+
+.email-header-send {
+    display:flex;
+    font-size: 19px;
+    margin-top: 10px;
+    margin-left: 325px;
+    font-weight: normal;
+}
+
+.button-adduser {
+    background-color:rgb(209, 208, 173);
+    margin-right: 730px;
+    margin-top:10px;
+  }
+
+
+  .printemails {
+    font-size: 20px;
+    margin-top: 10px;
+    font-weight: normal;
+    margin-right: 730px;
+    margin-bottom: 10px;
+      
+  }
+
+  .delete-button {
+      cursor: pointer;
+  }
+
+  .progress {
+      margin-right: 730px;
+  }
+
+  .savedoc {
+    font-size: 14px;
+    margin-top: 10px;
+    font-weight: normal;
+    margin-right: 730px;
+    margin-bottom: 10px;
+    color:rgb(236, 11, 11)
+  }

@@ -1,14 +1,16 @@
 import React, { useContext } from "react";
 import { USER_INFO } from "../Graphql/Query";
-import { useQuery } from "@apollo/client";
+import { DELETE } from "../Graphql/Mutations";
+import { useQuery, useMutation } from "@apollo/client";
 import { Link } from "react-router-dom";
 import AuthApi from "../AuthApi";
 import Cookies from "js-cookie";
-import "../stylesheet.css"
+import "../styles/stylesheet.css"
 
 export const Profile = () => {
   const Auth = useContext(AuthApi);
   const loggedIn = window.localStorage.getItem("state");
+  const [remove_UserInfo_async] = useMutation(DELETE);
   const { error, loading, data } = useQuery(USER_INFO, {
     variables: {
       id: loggedIn,
@@ -24,6 +26,23 @@ export const Profile = () => {
     window.localStorage.clear();
   };
 
+
+  const handleOnDelete = () => {
+    let answer = window.confirm("Are you sure you want to delete your account?")
+    console.log(answer);
+    if(answer) {
+    Auth.setAuth(false);
+    remove_UserInfo_async({
+      variables: {
+        id: loggedIn,
+      }
+    })
+    Cookies.remove("user", "loginTrue");
+    window.localStorage.clear();
+    }
+    
+  };
+
   return (
     <>
       <Link to="/">
@@ -32,57 +51,38 @@ export const Profile = () => {
         </button>
       </Link>
       <div className="container-user">
-      <p>
-        <strong>First Name:</strong> {data.get_UserInfo.userFirstName}{" "}
+      <hr/>
+      <p className="userinfo">
+        <strong>First Name:</strong>  <p className="userinfo-out">{data.get_UserInfo.userFirstName}</p>
       </p>
-      <p>
-        <strong>Last Name:</strong> {data.get_UserInfo.userLastName}{" "}
+      <hr/>
+      <p className="userinfo">
+        <strong>Last Name:</strong>  <p className="userinfo-out">{data.get_UserInfo.userLastName}</p>
       </p>
-      <p>
-        <strong>Email:</strong> {data.get_UserInfo.userEmail}{" "}
+      <hr/>
+      <p className="userinfo">
+        <strong>Email:</strong>  <p className="userinfo-out">{data.get_UserInfo.userEmail}</p>
       </p>
+      <hr/>
       {data.get_UserInfo.userCompany ? (
-      <p>
-        <strong>Company:</strong> {data.get_UserInfo.userCompany}{" "}
+      <p className="userinfo">
+        <strong>Company:</strong> <p className="userinfo-out">{data.get_UserInfo.userCompany}</p>
       </p>
+  
       ) : null}
+      <hr/>
       {data.get_UserInfo.userJobTitle ? (
-      <p>
-        <strong>Job Title:</strong> {data.get_UserInfo.userJobTitle}{" "}
+      <p className="userinfo">
+        <strong>Job Title:</strong>  <p className="userinfo-out">{data.get_UserInfo.userJobTitle}</p>
       </p>
       ) : null}
+      <hr/>
+      <Link to="/">
+        <button onClick={handleOnDelete} className="delete">
+          Delete Account
+        </button>
+      </Link>
       </div>
-
-      {data.get_UserInfo.docsSent ? (
-      data.get_UserInfo.docsSent.sentInfo.map((item) => {
-        return (
-          <div>
-            <span>
-              <strong>Documents that I sent: <br/></strong>
-              [When: {item.timeSent}]<br /> 
-              [Name of document: {item.recieverPDFName}] <br/>
-            </span>
-              <span>[To who:{item.usersRecieved.map((i) => " " + i)}] <br/> </span>
-          </div>
-        );
-      })
-      ) : ( <strong>Documents that I sent: NONE (Don't be shy!)<br/></strong>)}
-
-       {data.get_UserInfo.docsToSign ? (
-      data.get_UserInfo.docsToSign.info.map((item) => {
-        return (
-          <div>
-            <span>
-              <strong>Documents sent to me: <br/></strong>
-              [When: {item.timeOfSend}]<br /> 
-              [From: {item.fromWho}]<br /> 
-              [Name of document: {item.senderPDFName}] <br/>
-
-            </span>
-              <span>[Sent to who:{item.sentToWho.map((i) => " " + i)}] <br/> </span>
-          </div>
-        );
-      })): ( <strong>Documents sent to me: NONE (Make some friends)<br/></strong>)}
     </>
   );
 };

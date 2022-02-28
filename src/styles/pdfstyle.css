@@ -1,0 +1,18 @@
+form{
+    margin: 0px 0px;
+  }
+  
+  .webviewer{
+    background-color: #e4e4e4;
+    height: 750px;
+    width: 50%;
+    margin-bottom: 10px;
+    margin-left: 720px;
+    position: absolute;
+    top: 71px;
+  }
+  
+  span{
+    margin-top: 3px;
+  }
+

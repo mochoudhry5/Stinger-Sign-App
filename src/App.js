@@ -1,4 +1,4 @@
-import "./App.css";
+import "./styles/App.css";
 import {
   BrowserRouter as Router,
   Route,
@@ -10,7 +10,8 @@ import Signup from "./components/Signup";
 import Navbar from "./components/Navbar";
 import Dashboard from "./components/Dashboard";
 import { Profile } from "./components/Profile";
-import DocManager from "./components/DocManager";
+import SendingPDF from "./components/SendingPDF";
+import SendToBucketAndUser from "./components/SendToBucketAndUser";
 import React, { useState, useContext, useEffect } from "react";
 import AuthApi from "./AuthApi";
 import Cookies from "js-cookie";
@@ -66,8 +67,9 @@ const Routes = () => {
         path="/nav/viewer"
         exact
         auth={Auth.auth}
-        component={DocManager}
+        component={SendingPDF}
       />
+      <ProtectedRoute path="/nav/viewer/sent" auth={Auth.auth} component={SendToBucketAndUser} />
     </div>
   );
 };

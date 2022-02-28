@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-
+  
 export const ADD_USER = gql`
   mutation add_UserInfo_async(
     $userEmail: String!
@@ -45,3 +45,40 @@ export const ADD_FILE = gql`
     }
   }
 `;
+
+export const UPDATE_SENDER_INFO = gql`
+  mutation update_UserInfo_async(
+    $id: ID!
+    $recieverPDFName: String
+    $usersRecieved: [String]
+    $timeSent: String
+  ) {
+    update_UserInfo_async(
+      id: $id
+      input: {
+        docsSent: {
+          sentInfo: [{  
+            recieverPDFName: $recieverPDFName
+            usersRecieved: $usersRecieved
+            timeSent: $timeSent
+          }]
+        }
+      }
+    ) {
+      result {
+        _id
+      }
+    }
+  }
+`;
+
+export const DELETE = gql`
+ mutation remove_UserInfo_async($id: ID!) {
+  remove_UserInfo_async(id: $id) {
+    result {
+      _id
+    }
+  }
+}
+`;
+

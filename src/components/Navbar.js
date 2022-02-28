@@ -1,7 +1,7 @@
 import React from "react";
 import Hornet from "../images/logo.png";
 import { Link } from "react-router-dom";
-import "../stylesheet.css"
+import "../styles/stylesheet.css"
 
 const Navbar = () => {
 

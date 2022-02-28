@@ -1,0 +1,128 @@
+* {
+    margin: 0;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    height: 65px;
+    background: rgb(209, 208, 173);
+    color: white;
+    padding: 3px;
+}
+
+.nav--logo {
+    height: 90%;
+    width: 90px;
+    margin-right: 0;
+}
+
+.nav--logo-text{
+    color:rgb(0, 0, 0);
+    font-family: "Trattatello", fantasy;
+    font-size: 25px;
+    margin-right: 700px;
+
+}
+
+
+.nav--button{ 
+    display: flex;
+    border: none;
+    align-items: right;
+    background: #adab30;
+    color: rgb(0, 0, 0);
+    padding: 15px;
+    font-family: "DejaVu Sans Mono", monospace;
+    font-size: 18px;
+    transition-duration: 0.2s;
+    cursor: pointer;
+    margin-left:400px;
+    background: rgb(209, 208, 173);
+}
+
+  .nav--button:hover {
+    color: #fcfff8
+  }
+
+  .titles {
+      font-family: "DejaVu Sans Mono", monospace;
+      margin:10px;
+      font-size: 25px
+
+  }
+
+  .title{
+    font-family: "DejaVu Sans Mono", monospace;
+    margin-bottom: 100px;
+    
+    font-size: 50px;
+  }
+
+
+.form-control{
+    display: right;
+    margin-left:70px;
+}
+
+form{
+    margin: 15px 0px;
+  }
+  
+  .viewer{
+    background-color: #aaaaa7;
+    justify-content: center;
+    margin:0px;
+    height: 700px;
+    width: 50%;
+    margin-left: 720px;
+  }
+  
+  span{
+    margin-top: 3px;
+  }
+
+  .field-doc{
+      margin-left: 700px;
+      margin-top: 10px;
+      margin-bottom: 0px;
+  }
+
+  .send-doc {
+    background-color:rgb(209, 208, 173);
+  }
+
+  .send-doc:hover {
+    background-color:#42f03c
+}
+
+.container-user {
+  margin: 70px;
+
+}
+
+.profile {
+  margin-top: 60px;
+}
+
+.userinfo {
+  margin: 20px;
+}
+
+strong {
+  font-size: 25px;
+  color: rgb(255, 230, 0)
+}
+
+.userinfo-out {
+  margin: auto;
+  font-size: 25px;
+  color: rgb(248, 247, 237)
+}
+
+hr{
+  width:40%;
+  margin-left: 380px;
+  border: 5px solid rgb(240, 213, 140);
+  
+}
