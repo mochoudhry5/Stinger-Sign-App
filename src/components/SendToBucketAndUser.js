@@ -6,12 +6,12 @@ import { GET_SENT_INFO } from "../Graphql/Query";
 import { useQuery } from "@apollo/client";
 import "../styles/sendingpdf.css";
 
-const S3_BUCKET = "signatures-stingersign";
+const S3_BUCKET = "ENTER_BUCKET_NAME";
 const REGION = "us-west-2";
 
 AWS.config.update({
-  accessKeyId: "AKIARNFWHKW3MMDOPK45",
-  secretAccessKey: "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",
+  accessKeyId: "ACCESS_KEY",
+  secretAccessKey: "SECRET_ACCESS_KEY",
 });
 
 const myBucket = new AWS.S3({
