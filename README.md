@@ -4,10 +4,9 @@ Docusign imitation using ReactJS (frontend), NodeJS (Backend), and Vendia (Graph
 
 SDKs/Packages Used: PDFTron SDK (for PDF viewing and editing/e-signatures), aws-sdk (sending files to S3 bucket), and apollo-client (Graphql queries)
 
-###Pre-requisites: :hourglass:
-- Have NodeJS installed (LINK: https://nodejs.org/en/download/) <br />
-- Have npm installed (Copy/paste the following command in the terminal: npm install -g npm <br />
-- 
+### Pre-requisites: :hourglass:
+  - Have NodeJS installed (LINK: https://nodejs.org/en/download/) <br />
+  - Have npm installed (Copy/paste the following command in the terminal: npm install -g npm <br /> 
 
 ### Running Application on your own device: :rocket:
   Step 1 - Clone the repo <br />
