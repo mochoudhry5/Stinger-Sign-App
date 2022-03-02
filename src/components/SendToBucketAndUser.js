@@ -70,9 +70,8 @@ export default function SendToBucketAndUser(props) {
         className="button-adduser"
         onClick={() => putInMyDocsSent(props.file)}
       >
-        {" "}
-        send{" "}
-      </button>{" "}
+        send
+      </button>
       <br />
     </div>
   );

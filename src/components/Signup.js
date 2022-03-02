@@ -15,12 +15,14 @@ function Signup() {
     company: "",
     jobtitle: "",
     gen: "",
+    req:"", 
   };
 
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const { error, loading, data } = useQuery(ALL_USERS);
   const [isSubmit, setIsSubmit] = useState(false);
+  const [err, setErr] = useState(false)
   const [add_UserInfo_async] = useMutation(ADD_USER);
 
   if (loading) return <div> Loading... </div>;
@@ -30,6 +32,7 @@ function Signup() {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
     setFormErrors(validateUser());
+    setErr(false)
   };
 
   const validateUser = () => {
@@ -39,6 +42,14 @@ function Signup() {
         errors.email = "Email is already in use";
         errors.gen = "Error";
       }
+      if (!formValues.fname || !formValues.lname || !formValues.password || !formValues.email || !formValues.conPassword ) {
+        errors.req = "Can not have required (*) fields blank";
+        errors.gen = "Error";
+      }
+      if(formValues.password !== formValues.conPassword){
+        errors.conPassword = "Passwords do not match"
+        errors.gen = "Error";
+      }
     });
     return errors;
   };
@@ -46,10 +57,18 @@ function Signup() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormErrors(validateUser());
-    if (formErrors.email === "Email is already in use") {
+    if (formErrors.email === "Email is already in use" 
+    || !formValues.fname 
+    || !formValues.lname 
+    || !formValues.email 
+    || !formValues.password
+    || !formValues.conPassword
+    || formValues.password !== formValues.conPassword) {
       console.log("ERROR(S)");
+      setErr(true)
     } else {
       addUser();
+      setErr(false)
       setIsSubmit(true);
       console.log("Added User");
     }
@@ -108,7 +127,6 @@ function Signup() {
               value={formValues.company}
               onChange={handleChange}
             />
-            <p> </p>
           </div>
           <div className="field">
             <label className="label-jobtitle">Job Title </label>
@@ -120,7 +138,6 @@ function Signup() {
               value={formValues.jobtitle}
               onChange={handleChange}
             />
-            <p> </p>
           </div>
           <div className="field">
             <label className="label-email">Email* </label>
@@ -149,23 +166,24 @@ function Signup() {
             <input
               className="input"
               type="password"
-              // name="conPassword"
+              name="conPassword"
               placeholder="Confirm Password"
-              // value={formValues.conPassword}
-              // onChange={handleChange}
+              value={formValues.conPassword}
+              onChange={handleChange}
             />
           </div>
 
-          {formErrors.gen === "Error" ? (
-            <div>
-              <hr />
-              <p className="err">{formErrors.email}</p>
-              <p className="err">{formErrors.fname}</p>
-              <p className="err">{formErrors.lname}</p>
-              <p className="err">{formErrors.password}</p>
-              <p className="err">{formErrors.conPassword}</p>
-              <hr />
-            </div>
+          {err ? (
+            formErrors.gen === "Error" ? (
+              <div>
+                <hr />
+                <p className="err">{formErrors.email}</p>
+                <p className="err">{formErrors.req}</p>
+                <p className="err">{formErrors.conPassword}</p>
+                <hr />
+              </div>
+              
+            ) : null
           ) : null}
 
           <button className="log-in-button">Create</button>

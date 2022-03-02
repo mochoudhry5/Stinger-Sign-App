@@ -1,5 +1,5 @@
 import AuthApi from "../AuthApi";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { ALL_USERS } from "../Graphql/Query";
 import { useQuery } from "@apollo/client";
@@ -16,6 +16,11 @@ function Login() {
   const [formError, setFormError] = useState("");
   const [formValues, setFormValues] = useState(initialValues);
   const { error, loading, data, refetch } = useQuery(ALL_USERS);
+
+  useEffect(() => {
+    refetch()
+    console.log("Refetched Data")
+  })
 
   if (loading) return <div className="loading"> Loading... </div>;
   if (error) return <div> ERROR </div>;
@@ -49,7 +54,9 @@ function Login() {
         errors = "Email or password is incorrect";
         setFormError(errors);
       }
+      
     });
+    
   };
 
   return (
