@@ -10,7 +10,7 @@ SDKs/Packages Used: PDFTron SDK (for PDF viewing and editing/e-signatures), aws-
 
 ### :rocket: Running Application on your own device:
   Step 1 - Clone the repo <br />
-  Step 2 - Open folder using VSCode <br />
+  Step 2 - Open root folder (StingerSign-179) using VSCode <br />
   Step 3 - Head to the following file: Apollo-Setup/ApolloSetup.js <br />
   Step 4 - In the file replace 'uri' and 'X-API-KEY' values with information from Vendia <br />
   Step 5 - Now in the terminal head to the root directory (StingerSign-179)  <br />
