@@ -6,7 +6,7 @@ SDKs/Packages Used: PDFTron SDK (for PDF viewing and editing/e-signatures), aws-
 
 ### :hourglass: Pre-requisites: 
   - Have NodeJS installed (LINK: https://nodejs.org/en/download/) <br />
-  - Have npm installed (Copy/paste the following command in the terminal: npm install -g npm) <br /> 
+  - Have npm installed (Copy/paste the following command in the terminal: npm install -g npm) (If on MAC, may need to do: sudo npm install -g npm <br /> 
 
 ### :rocket: Running Application on your own device:
   Step 1 - Clone the repo <br />
