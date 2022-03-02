@@ -50,6 +50,10 @@ function Signup() {
         errors.conPassword = "Passwords do not match"
         errors.gen = "Error";
       }
+      if(formValues.password.length < 5){
+        errors.password = "Password must be at least 6 characters long"
+        errors.gen = "Error";
+      }
     });
     return errors;
   };
@@ -63,7 +67,8 @@ function Signup() {
     || !formValues.email 
     || !formValues.password
     || !formValues.conPassword
-    || formValues.password !== formValues.conPassword) {
+    || formValues.password !== formValues.conPassword
+    || formValues.password.length < 5) {
       console.log("ERROR(S)");
       setErr(true)
     } else {
@@ -179,6 +184,7 @@ function Signup() {
                 <hr />
                 <p className="err">{formErrors.email}</p>
                 <p className="err">{formErrors.req}</p>
+                <p className="err">{formErrors.password}</p>
                 <p className="err">{formErrors.conPassword}</p>
                 <hr />
               </div>
