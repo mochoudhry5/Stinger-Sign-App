@@ -5,7 +5,7 @@ Docusign imitation using ReactJS (frontend), NodeJS (Backend), and Vendia (Graph
 SDKs/Packages Used: PDFTron SDK (for PDF viewing and editing/e-signatures), aws-sdk (sending files to S3 bucket), and apollo-client (Graphql queries)
 
 ### Running Application on your own device: :rocket:
-  Step 1 - Clone the repo 
+  Step 1 - Clone the repo --
   Step 2 - Open folder using VSCode 
   Step 3 - Head to the following file: Apollo-Setup/ApolloSetup.js
   Step 4 - In the file replace 'uri' and 'X-API-KEY' values with information from Vendia
