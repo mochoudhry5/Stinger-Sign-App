@@ -51,32 +51,32 @@ export const Profile = () => {
         </button>
       </Link>
       <div className="container-user">
-      <hr/>
+      <hr className="hrline"/>
       <p className="userinfo">
         <strong>First Name:</strong>  <p className="userinfo-out">{data.get_UserInfo.userFirstName}</p>
       </p>
-      <hr/>
+      <hr className="hrline"/>
       <p className="userinfo">
         <strong>Last Name:</strong>  <p className="userinfo-out">{data.get_UserInfo.userLastName}</p>
       </p>
-      <hr/>
+      <hr className="hrline"/>
       <p className="userinfo">
         <strong>Email:</strong>  <p className="userinfo-out">{data.get_UserInfo.userEmail}</p>
       </p>
-      <hr/>
+      <hr className="hrline"/>
       {data.get_UserInfo.userCompany ? (
       <p className="userinfo">
         <strong>Company:</strong> <p className="userinfo-out">{data.get_UserInfo.userCompany}</p>
       </p>
   
       ) : null}
-      <hr/>
+      <hr className="hrline"/>
       {data.get_UserInfo.userJobTitle ? (
       <p className="userinfo">
         <strong>Job Title:</strong>  <p className="userinfo-out">{data.get_UserInfo.userJobTitle}</p>
       </p>
       ) : null}
-      <hr/>
+      <hr className="hrline"/>
       <Link to="/">
         <button onClick={handleOnDelete} className="delete">
           Delete Account

@@ -9,17 +9,19 @@ function Signup() {
   const initialValues = {
     email: "",
     password: "",
+    conPassword: "",
     fname: "",
     lname: "",
     company: "",
     jobtitle: "",
+    gen: "",
   };
 
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const { error, loading, data } = useQuery(ALL_USERS);
-  const [isSubmit, setIsSubmit] = useState(false)
-  const [add_UserInfo_async] = useMutation(ADD_USER)
+  const [isSubmit, setIsSubmit] = useState(false);
+  const [add_UserInfo_async] = useMutation(ADD_USER);
 
   if (loading) return <div> Loading... </div>;
   if (error) return <div> ERROR </div>;
@@ -35,7 +37,7 @@ function Signup() {
     data.list_UserInfoItems._UserInfoItems.map((item) => {
       if (item.userEmail === formValues.email) {
         errors.email = "Email is already in use";
-        errors.password = "Password is already in use";
+        errors.gen = "Error";
       }
     });
     return errors;
@@ -45,11 +47,11 @@ function Signup() {
     e.preventDefault();
     setFormErrors(validateUser());
     if (formErrors.email === "Email is already in use") {
-      console.log("Email is already in use");
+      console.log("ERROR(S)");
     } else {
       addUser();
-      setIsSubmit(true)
-      console.log("Added User")
+      setIsSubmit(true);
+      console.log("Added User");
     }
   };
 
@@ -66,17 +68,15 @@ function Signup() {
     });
   };
 
-
   return (
     <div className="signup-form">
       <form onSubmit={handleSubmit}>
-      {isSubmit ? (
-        <Redirect to="/" />) : null}
+        {isSubmit ? <Redirect to="/" /> : null}
         <h2 className="login-logintext">Stinger Sign Up</h2>
         <div className="ui divider"></div>
         <div className="all-inputs">
           <div className="field">
-            <label className="label">First Name </label>
+            <label className="label-fname">First Name* </label>
             <input
               className="input"
               type="text"
@@ -88,7 +88,7 @@ function Signup() {
             <p> </p>
           </div>
           <div className="field">
-            <label className="label">Last Name </label>
+            <label className="label-lname">Last Name* </label>
             <input
               className="input"
               type="text"
@@ -99,7 +99,7 @@ function Signup() {
             />
           </div>
           <div className="field">
-            <label className="label">Company </label>
+            <label className="label-company">Company </label>
             <input
               className="input"
               type="text"
@@ -111,7 +111,7 @@ function Signup() {
             <p> </p>
           </div>
           <div className="field">
-            <label className="label">Job Title </label>
+            <label className="label-jobtitle">Job Title </label>
             <input
               className="input"
               type="text"
@@ -123,7 +123,7 @@ function Signup() {
             <p> </p>
           </div>
           <div className="field">
-            <label className="label">Email </label>
+            <label className="label-email">Email* </label>
             <input
               className="input"
               type="email"
@@ -132,10 +132,9 @@ function Signup() {
               value={formValues.email}
               onChange={handleChange}
             />
-            <p className="err">{formErrors.email}</p>
           </div>
           <div className="field">
-            <label className="label">Password </label>
+            <label className="label-password">Password* </label>
             <input
               className="input"
               type="password"
@@ -146,16 +145,29 @@ function Signup() {
             />
           </div>
           <div className="field">
-            <label className="label">Confirm Password </label>
+            <label className="label-passcon">Confirm Password* </label>
             <input
               className="input"
               type="password"
-              name="password"
+              // name="conPassword"
               placeholder="Confirm Password"
-              //   value={formValues.password}
-              //   onChange={handleChange}
+              // value={formValues.conPassword}
+              // onChange={handleChange}
             />
           </div>
+
+          {formErrors.gen === "Error" ? (
+            <div>
+              <hr />
+              <p className="err">{formErrors.email}</p>
+              <p className="err">{formErrors.fname}</p>
+              <p className="err">{formErrors.lname}</p>
+              <p className="err">{formErrors.password}</p>
+              <p className="err">{formErrors.conPassword}</p>
+              <hr />
+            </div>
+          ) : null}
+
           <button className="log-in-button">Create</button>
         </div>
         <span className="label"> Already have an account? </span>

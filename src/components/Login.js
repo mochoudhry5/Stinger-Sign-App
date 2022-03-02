@@ -59,7 +59,7 @@ function Login() {
         <div className="ui divider"></div>
         <div className="">
           <div className="field">
-            <label>Email </label>
+            <label className="email">Email </label>
             <input
               type="text"
               name="email"
@@ -70,7 +70,7 @@ function Login() {
             <p> </p>
           </div>
           <div className="field">
-            <label>Password </label>
+            <label className="password">Password </label>
             <input
               type="password"
               name="password"

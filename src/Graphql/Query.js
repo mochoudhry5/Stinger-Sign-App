@@ -19,7 +19,6 @@ export const USER_INFO = gql`
   get_UserInfo(id: $id) {
     docsSent {
       sentInfo {
-        isSigned
         recieverPDFName
         timeSent
         usersRecieved

@@ -23,11 +23,6 @@ export default function SendToBucketAndUser(props) {
   const [progress, setProgress] = useState(0);
   const loggedIn = window.localStorage.getItem("state");
   const [update_UserInfo_async] = useMutation(UPDATE_SENDER_INFO);
-  const { error, loading, data } = useQuery(GET_SENT_INFO, {
-    variables: {
-      id: loggedIn,
-    },
-  });
 
   const uploadFile = (file) => {
     const params = {

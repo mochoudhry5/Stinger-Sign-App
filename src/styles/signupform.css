@@ -61,3 +61,31 @@
     font-family: "Courier", monospace;
     font-size: 15px;
   }
+
+.label-fname {
+    margin-right: 56px;
+}
+
+.label-lname {
+    margin-right: 65px;
+}
+.label-company {
+    margin-right: 97px;
+
+}
+
+.label-jobtitle {
+    margin-right: 77px;
+}
+
+.label-email {
+    margin-right: 105px;
+}
+
+.label-password {
+    margin-right: 76px;
+}
+
+.label-passcon {
+
+}
