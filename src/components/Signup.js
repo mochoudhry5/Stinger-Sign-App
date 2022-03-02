@@ -15,14 +15,14 @@ function Signup() {
     company: "",
     jobtitle: "",
     gen: "",
-    req:"", 
+    req: "",
   };
 
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const { error, loading, data } = useQuery(ALL_USERS);
   const [isSubmit, setIsSubmit] = useState(false);
-  const [err, setErr] = useState(false)
+  const [err, setErr] = useState(false);
   const [add_UserInfo_async] = useMutation(ADD_USER);
 
   if (loading) return <div> Loading... </div>;
@@ -32,7 +32,7 @@ function Signup() {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
     setFormErrors(validateUser());
-    setErr(false)
+    setErr(false);
   };
 
   const validateUser = () => {
@@ -42,17 +42,29 @@ function Signup() {
         errors.email = "Email is already in use";
         errors.gen = "Error";
       }
-      if (!formValues.fname || !formValues.lname || !formValues.password || !formValues.email || !formValues.conPassword ) {
+      if (
+        !formValues.fname ||
+        !formValues.lname ||
+        !formValues.password ||
+        !formValues.email ||
+        !formValues.conPassword
+      ) {
         errors.req = "Can not have required (*) fields blank";
         errors.gen = "Error";
       }
-      if(formValues.password !== formValues.conPassword){
-        errors.conPassword = "Passwords do not match"
-        errors.gen = "Error";
+
+      if (formValues.password.length < 5) {
+        if (errors.req !== "Can not have required (*) fields blank") {
+          errors.password = "Password must be at least 6 characters long";
+          errors.gen = "Error";
+        }
       }
-      if(formValues.password.length < 5){
-        errors.password = "Password must be at least 6 characters long"
+
+      if (formValues.password !== formValues.conPassword && errors.password !== "Password must be at least 6 characters long" ) {
+        if (errors.req !== "Can not have required (*) fields blank") {
+        errors.conPassword = "Passwords do not match";
         errors.gen = "Error";
+        }
       }
     });
     return errors;
@@ -61,19 +73,22 @@ function Signup() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormErrors(validateUser());
-    if (formErrors.email === "Email is already in use" 
-    || !formValues.fname 
-    || !formValues.lname 
-    || !formValues.email 
-    || !formValues.password
-    || !formValues.conPassword
-    || formValues.password !== formValues.conPassword
-    || formValues.password.length < 5) {
+    if (
+      formErrors.email === "Email is already in use" ||
+      !formValues.fname ||
+      !formValues.lname ||
+      !formValues.email ||
+      !formValues.password ||
+      !formValues.conPassword ||
+      (formValues.password !== formValues.conPassword && 
+      formValues.password !== "Password must be at least 6 characters long") ||
+      formValues.password.length < 5
+    ) {
       console.log("ERROR(S)");
-      setErr(true)
+      setErr(true);
     } else {
       addUser();
-      setErr(false)
+      setErr(false);
       setIsSubmit(true);
       console.log("Added User");
     }
@@ -188,7 +203,6 @@ function Signup() {
                 <p className="err">{formErrors.conPassword}</p>
                 <hr />
               </div>
-              
             ) : null
           ) : null}
 
