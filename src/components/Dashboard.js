@@ -15,6 +15,12 @@ export default function Dashboard(props) {
   if (loading) return <div> Loading... </div>;
   if (error) return <div> ERROR: {error.message} </div>;
 
+  const Footer = () => (
+    <div className="footer">
+      <p>©2022 StingerSign, LLC. No Rights Reserved.</p>
+    </div>
+  );
+
   return (
     <div>
       <h1 className="title" align="center">
@@ -27,6 +33,7 @@ export default function Dashboard(props) {
       <br />
       <UploadDocs />
       <br />
+      {Footer()}
     </div>
   );
 }

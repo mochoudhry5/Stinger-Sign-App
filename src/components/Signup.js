@@ -25,7 +25,7 @@ function Signup() {
   const [err, setErr] = useState(false);
   const [add_UserInfo_async] = useMutation(ADD_USER);
 
-  if (loading) return <div> Loading... </div>;
+  if (loading) return <div> Loading...</div>;
   if (error) return <div> ERROR </div>;
 
   const handleChange = (e) => {
@@ -53,7 +53,7 @@ function Signup() {
         errors.gen = "Error";
       }
 
-      if (formValues.password.length < 5) {
+      if (formValues.password.length <= 5) {
         if (errors.req !== "Can not have required (*) fields blank") {
           errors.password = "Password must be at least 6 characters long";
           errors.gen = "Error";
@@ -82,7 +82,7 @@ function Signup() {
       !formValues.conPassword ||
       (formValues.password !== formValues.conPassword && 
       formValues.password !== "Password must be at least 6 characters long") ||
-      formValues.password.length < 5
+      formValues.password.length <= 5
     ) {
       console.log("ERROR(S)");
       setErr(true);
@@ -97,7 +97,7 @@ function Signup() {
   const addUser = () => {
     add_UserInfo_async({
       variables: {
-        userEmail: formValues.email,
+        userEmail: formValues.email.toLowerCase(),
         userFirstName: formValues.fname,
         userLastName: formValues.lname,
         userPassword: formValues.password,

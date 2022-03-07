@@ -15,7 +15,8 @@
     font-weight: bold;
     font-size: 30px;
     margin-right: 730px;
-    margin-bottom: 40px;
+    margin-bottom: 100px;
+    font-family: "DejaVu Sans Mono", monospace;
 }
 
 .email-header {
@@ -30,8 +31,8 @@
     display:flex;
     font-size: 19px;
     margin-top: 10px;
-    margin-left: 325px;
-    font-weight: normal;
+    margin-left: 313px;
+    font-family: "DejaVu Sans Mono", monospace;
 }
 
 .button-adduser {
@@ -64,5 +65,5 @@
     font-weight: normal;
     margin-right: 730px;
     margin-bottom: 10px;
-    color:rgb(236, 11, 11)
+    color: white
   }

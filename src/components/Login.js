@@ -22,8 +22,8 @@ function Login() {
     console.log("Refetched Data")
   })
 
-  if (loading) return <div> Loading... </div>;
-  if (error) return <div> ERROR </div>;
+    if (error) return <div> ERROR </div>;
+
 
   const handleOnClick = () => {
     Auth.setAuth(true);
@@ -31,6 +31,7 @@ function Login() {
   };
 
   const handleChange = (e) => {
+    setFormError("");
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
   };
@@ -44,7 +45,7 @@ function Login() {
     let errors = "";
     data.list_UserInfoItems._UserInfoItems.map((item) => {
       if (
-        item.userEmail === formValues.email &&
+        item.userEmail === formValues.email.toLowerCase() &&
         item.userPassword === formValues.password
       ) {
         handleOnClick();
@@ -52,6 +53,7 @@ function Login() {
         window.localStorage.setItem("state", item._id);
       } else {
         errors = "Email or password is incorrect";
+  
         setFormError(errors);
       }
       
@@ -87,9 +89,13 @@ function Login() {
             />
             <p className="err"> {formError} </p>
           </div>
-          <button onClick={() => refetch()} className="log-in-button">
+          {!loading ? (
+          <button onClick={() => refetch} className="log-in-button">
             Log In
           </button>
+          ) : (
+          <p> Loading...{refetch} </p>
+          )}
         </div>
         <span className="link-login1"> Don't have an Account? </span>
         <Link className="link-login" to="/signup">

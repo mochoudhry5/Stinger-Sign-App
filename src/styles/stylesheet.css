@@ -111,7 +111,7 @@ form{
 
 strong {
   font-size: 25px;
-  color: rgb(255, 230, 0)
+  color: rgb(209, 208, 173);
 }
 
 .userinfo-out {
@@ -123,6 +123,55 @@ strong {
 .hrline {
   width:40%;
   margin-left: 380px;
-  border: 5px solid rgb(240, 213, 140);
+  border: 5px solid #025e07;
   
+}
+
+.profile-det {
+  background-color: rgb(182, 182, 182);
+  font-weight: normal;
+  color: black;
+  font-size: 20px;
+  width: 300px;
+ 
+}
+
+.header-prof {
+  font-family:  "DejaVu Sans Mono", monospace;
+  font-weight: bold;
+  font-size: 50px;
+}
+
+
+.first-prof {
+margin-right: 50px;
+
+}
+
+.last-prof {
+margin-right:55px;
+
+}
+
+.email-prof {
+  margin-right: 104px;
+}
+
+.company-prof {
+  margin-right: 65px;
+}
+
+.job-prof {
+  margin-right: 75px;
+}
+
+.footer{
+  margin-top: 1rem;
+  padding: 1rem;
+  color: rgba(245, 199, 71, 0.867);
+  font-size: 12px;
+  position: absolute;
+  bottom: 0;
+  left:-615px;
+  width: 100%;
 }

@@ -27,16 +27,19 @@
 }
 
 .logout {
-  background-color: #975555;
+  background-color: rgb(209, 208, 173);
+  border-radius: 10px;
+  width: 100px;
+  margin-top: 20px;
+  color:rgb(0, 0, 0);
   padding: 5px;
   font-size: 15px;
-  font-weight: bold;
 
 }
 
 .delete {
-  margin-top: 65px;
-  background-color: #eb1414;
+  margin-top: 10px;
+  background-color: #975c5c;
   padding: 5px;
   font-size: 15px;
   font-weight: bold;

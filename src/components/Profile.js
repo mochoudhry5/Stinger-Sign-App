@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { USER_INFO } from "../Graphql/Query";
 import { DELETE } from "../Graphql/Mutations";
 import { useQuery, useMutation } from "@apollo/client";
@@ -8,7 +8,13 @@ import Cookies from "js-cookie";
 import "../styles/stylesheet.css"
 
 export const Profile = () => {
+  const initialValues = {
+    email: "",
+    company: "",
+    jobtitle: "",
+  };
   const Auth = useContext(AuthApi);
+  const [formValues, setFormValues] = useState(initialValues);
   const loggedIn = window.localStorage.getItem("state");
   const [remove_UserInfo_async] = useMutation(DELETE);
   const { error, loading, data } = useQuery(USER_INFO, {
@@ -24,6 +30,11 @@ export const Profile = () => {
     Auth.setAuth(false);
     Cookies.remove("user", "loginTrue");
     window.localStorage.clear();
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
   };
 
 
@@ -45,41 +56,49 @@ export const Profile = () => {
 
   return (
     <>
-      <Link to="/">
-        <button onClick={handleOnClick} className="logout">
-          Log out
-        </button>
-      </Link>
+    <h3 className="header-prof"> {data.get_UserInfo.userFirstName}'s Profile </h3>
       <div className="container-user">
       <hr className="hrline"/>
       <p className="userinfo">
-        <strong>First Name:</strong>  <p className="userinfo-out">{data.get_UserInfo.userFirstName}</p>
+        <strong className="first-prof">First Name:</strong> 
+        <input className = "profile-det" type='text' required = {true} readOnly = {true} value={data.get_UserInfo.userFirstName} />
       </p>
       <hr className="hrline"/>
       <p className="userinfo">
-        <strong>Last Name:</strong>  <p className="userinfo-out">{data.get_UserInfo.userLastName}</p>
+        <strong className="last-prof">Last Name:</strong> 
+         <input className = "profile-det" type='text' required = {true} readOnly = {true} value={data.get_UserInfo.userLastName} />
       </p>
       <hr className="hrline"/>
       <p className="userinfo">
-        <strong>Email:</strong>  <p className="userinfo-out">{data.get_UserInfo.userEmail}</p>
+        <strong className="email-prof">Email:</strong> 
+         <input className = "profile-det" name="email" type='text' value={data.get_UserInfo.userEmail} />
       </p>
       <hr className="hrline"/>
       {data.get_UserInfo.userCompany ? (
       <p className="userinfo">
-        <strong>Company:</strong> <p className="userinfo-out">{data.get_UserInfo.userCompany}</p>
+        <strong className="company-prof">Company:</strong> 
+        <input className = "profile-det" name="company" type='text' required = {true} readOnly = {true} value={data.get_UserInfo.userCompany} />
       </p>
   
       ) : null}
       <hr className="hrline"/>
       {data.get_UserInfo.userJobTitle ? (
       <p className="userinfo">
-        <strong>Job Title:</strong>  <p className="userinfo-out">{data.get_UserInfo.userJobTitle}</p>
+        <strong className="job-prof">Job Title:</strong>  
+        <input className = "profile-det" type='text' name="jobtitle" required = {true} readOnly = {true} value={data.get_UserInfo.userJobTitle} />
       </p>
       ) : null}
       <hr className="hrline"/>
       <Link to="/">
+        <button onClick={handleOnClick} className="logout">
+          Log out
+        </button>
+        <br/>
+        <br/>
+      </Link>
+      <Link to="/">
         <button onClick={handleOnDelete} className="delete">
-          Delete Account
+          Delete My Account
         </button>
       </Link>
       </div>

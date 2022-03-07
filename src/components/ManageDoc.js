@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useQuery } from "@apollo/client";
-import { USER_INFO } from "../Graphql/Query";
+import React from "react";
 
 export default function ManageDoc() {
   

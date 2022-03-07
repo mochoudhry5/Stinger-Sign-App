@@ -2,16 +2,15 @@ import React, { useState } from "react";
 import AWS from "aws-sdk";
 import { useMutation } from "@apollo/client";
 import { UPDATE_SENDER_INFO } from "../Graphql/Mutations";
-import { GET_SENT_INFO } from "../Graphql/Query";
-import { useQuery } from "@apollo/client";
+import { ADD_FILE_TO_VENDIA, ADD_TO_USER_TOSIGN } from "../Graphql/Mutations";
 import "../styles/sendingpdf.css";
 
-const S3_BUCKET = "ENTER_BUCKET_NAME";
-const REGION = "us-west-2";
+const S3_BUCKET = process.env.REACT_APP_S3_BUCKET_NAME;
+const REGION = process.env.REACT_APP_S3_BUCKET_REGION_NAME;
 
 AWS.config.update({
-  accessKeyId: "ACCESS_KEY",
-  secretAccessKey: "SECRET_ACCESS_KEY",
+  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY,
+  secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
 });
 
 const myBucket = new AWS.S3({
@@ -23,6 +22,8 @@ export default function SendToBucketAndUser(props) {
   const [progress, setProgress] = useState(0);
   const loggedIn = window.localStorage.getItem("state");
   const [update_UserInfo_async] = useMutation(UPDATE_SENDER_INFO);
+  const [addVendia_File_async] = useMutation(ADD_FILE_TO_VENDIA);
+  const [updateToSign] = useMutation(ADD_TO_USER_TOSIGN)
 
   const uploadFile = (file) => {
     const params = {
@@ -39,7 +40,23 @@ export default function SendToBucketAndUser(props) {
       })
       .send((err) => {
         if (err) console.log(err);
+        else sendToVendia(file);
       });
+
+  };
+
+  const sendToVendia = (file) => {
+    addVendia_File_async({
+      variables: {
+        sourceBucket: S3_BUCKET,
+        sourceKey: file.name,
+        sourceRegion: REGION,
+        destinationKey: file.name
+      },
+    });
+
+    putInMyDocsSent(file);
+    putInUserDocToSign(file)
   };
 
   const putInMyDocsSent = (file) => {
@@ -55,6 +72,21 @@ export default function SendToBucketAndUser(props) {
     });
   };
 
+  const putInUserDocToSign = (file) => {
+    const d = new Date();
+    const date = d.toString();
+    updateToSign({
+      variables: {
+        id: props.ids[0],
+        fromWho: loggedIn,
+        isSignedOrNot: false,
+        senderPDFName: file.name,
+        sentToWho: props.ids.slice(1),
+        timeOfSend: date
+      }
+    })
+  }
+
   return (
     <div>
       {progress !== 0 && progress !== 100 ? (
@@ -65,14 +97,6 @@ export default function SendToBucketAndUser(props) {
         {" "}
         Send to User(s){" "}
       </button>{" "}
-      <br />
-      <button
-        className="button-adduser"
-        onClick={() => putInMyDocsSent(props.file)}
-      >
-        send
-      </button>
-      <br />
     </div>
   );
 }

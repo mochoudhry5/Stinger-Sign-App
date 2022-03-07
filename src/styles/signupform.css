@@ -37,6 +37,13 @@
     color: rgb(255, 0, 0);
 }
 
+.err-notfound {
+    margin-top:10px;
+    margin-right: 730px;
+    color: rgb(255, 0, 0);
+}
+
+
 .signup-form {
     background-color: #202020;
     height:1000px;
