@@ -13,7 +13,8 @@ SDKs/Packages Used: PDFTron SDK (for PDF viewing and editing/e-signatures), aws-
   Step 1 - Clone the repo <br />
   Step 2 - Open root folder (StingerSign-179) using VSCode <br />
   Step 3 - Create a file named " .env " in the root directory (StingerSign-179) <br />
-  Step 4 - Go to Discord and copy/paste the message where it says sensitive information <br />
+  Step 4 - Go to Discord and copy the message where it says "Code goes into .env file"  <br />
+  Step 5 - Paste the information into the .env file
   Step 5 - Now in the terminal head to the root directory (StingerSign-179)  <br />
   Step 6 - Run the following command: npm install  <br />
   Step 7 - Run the following command: npm start <br />
