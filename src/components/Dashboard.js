@@ -1,4 +1,5 @@
 import ReqSignatures from "./ReqSignatures";
+import React, { useEffect } from "react";
 import UploadDocs from "./UploadDocs";
 import ManageDoc from "./ManageDoc";
 import { USER_INFO } from "../Graphql/Query";
@@ -11,6 +12,12 @@ export default function Dashboard(props) {
       id: loggedIn,
     },
   });
+
+  useEffect(() => {
+    localStorage.removeItem("emails");
+    localStorage.removeItem("ids")
+    
+  }, [])
 
   if (loading) return <div> Loading... </div>;
   if (error) return <div> ERROR: {error.message} </div>;

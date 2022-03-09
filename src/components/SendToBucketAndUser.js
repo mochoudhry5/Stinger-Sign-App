@@ -23,7 +23,7 @@ export default function SendToBucketAndUser(props) {
   const loggedIn = window.localStorage.getItem("state");
   const [update_UserInfo_async] = useMutation(UPDATE_SENDER_INFO);
   const [addVendia_File_async] = useMutation(ADD_FILE_TO_VENDIA);
-  const [updateToSign] = useMutation(ADD_TO_USER_TOSIGN)
+  const [updateToSign] = useMutation(ADD_TO_USER_TOSIGN);
 
   const uploadFile = (file) => {
     const params = {
@@ -42,7 +42,6 @@ export default function SendToBucketAndUser(props) {
         if (err) console.log(err);
         else sendToVendia(file);
       });
-
   };
 
   const sendToVendia = (file) => {
@@ -51,12 +50,12 @@ export default function SendToBucketAndUser(props) {
         sourceBucket: S3_BUCKET,
         sourceKey: file.name,
         sourceRegion: REGION,
-        destinationKey: file.name
+        destinationKey: file.name,
       },
     });
 
     putInMyDocsSent(file);
-    putInUserDocToSign(file)
+    putInUserDocToSign(file);
   };
 
   const putInMyDocsSent = (file) => {
@@ -82,21 +81,23 @@ export default function SendToBucketAndUser(props) {
         isSignedOrNot: false,
         senderPDFName: file.name,
         sentToWho: props.ids.slice(1),
-        timeOfSend: date
-      }
-    })
-  }
+        timeOfSend: date,
+      },
+    });
+  };
 
   return (
     <div>
+      <button
+        className="button-senduser"
+        onClick={() => uploadFile(props.file)}
+      >
+        Send to User(s)
+      </button>
       {progress !== 0 && progress !== 100 ? (
         <div className="progress">Sending...({progress}%)</div>
       ) : null}
       {progress === 100 ? <div className="progress">Sent!</div> : null}
-      <button className="button-adduser" onClick={() => uploadFile(props.file)}>
-        {" "}
-        Send to User(s){" "}
-      </button>{" "}
     </div>
   );
 }

@@ -41,6 +41,26 @@
     margin-top:10px;
   }
 
+.button-senduser {
+    background-color:rgb(218, 196, 0);
+    margin-right: 730px;
+    margin-top:100px;
+    margin-bottom:10px;
+    border-radius: 5px;
+    font-weight: bold;
+    border: 2px solid rgb(46, 199, 0)
+  }
+
+  .button-senduser:active {
+    background-color:rgb(46, 199, 0);
+    margin-right: 730px;
+    margin-top:100px;
+    margin-bottom:10px;
+    border-radius: 5px;
+    font-weight: bold;
+    border: 3px solid rgb(218, 196, 0);
+  }
+
 
   .printemails {
     font-size: 20px;
@@ -53,10 +73,14 @@
 
   .delete-button {
       cursor: pointer;
+      margin-left: 6px;
+      color: red;
+      font-size:12px;
   }
 
   .progress {
       margin-right: 730px;
+      color: rgb(34, 206, 34)
   }
 
   .savedoc {

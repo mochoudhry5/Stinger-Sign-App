@@ -19,10 +19,10 @@ function Login() {
 
   useEffect(() => {
     refetch()
-    console.log("Refetched Data")
+    console.log("Refetched Data -> Log in")
   })
 
-    if (error) return <div> ERROR </div>;
+    if (error) return <div> ERROR {error.message} </div>;
 
 
   const handleOnClick = () => {
@@ -90,11 +90,11 @@ function Login() {
             <p className="err"> {formError} </p>
           </div>
           {!loading ? (
-          <button onClick={() => refetch} className="log-in-button">
+          <button className="log-in-button">
             Log In
           </button>
           ) : (
-          <p> Loading...{refetch} </p>
+          <p> Loading... </p>
           )}
         </div>
         <span className="link-login1"> Don't have an Account? </span>

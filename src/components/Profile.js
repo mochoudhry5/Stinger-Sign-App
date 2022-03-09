@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { USER_INFO } from "../Graphql/Query";
 import { DELETE } from "../Graphql/Mutations";
 import { useQuery, useMutation } from "@apollo/client";
@@ -8,13 +8,7 @@ import Cookies from "js-cookie";
 import "../styles/stylesheet.css"
 
 export const Profile = () => {
-  const initialValues = {
-    email: "",
-    company: "",
-    jobtitle: "",
-  };
   const Auth = useContext(AuthApi);
-  const [formValues, setFormValues] = useState(initialValues);
   const loggedIn = window.localStorage.getItem("state");
   const [remove_UserInfo_async] = useMutation(DELETE);
   const { error, loading, data } = useQuery(USER_INFO, {
@@ -31,12 +25,6 @@ export const Profile = () => {
     Cookies.remove("user", "loginTrue");
     window.localStorage.clear();
   };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
-  };
-
 
   const handleOnDelete = () => {
     let answer = window.confirm("Are you sure you want to delete your account?")

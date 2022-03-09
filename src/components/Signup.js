@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { ALL_USERS } from "../Graphql/Query";
 import { ADD_USER } from "../Graphql/Mutations";
@@ -20,12 +20,16 @@ function Signup() {
 
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
-  const { error, loading, data } = useQuery(ALL_USERS);
+  const { error, loading, data, refetch } = useQuery(ALL_USERS);
   const [isSubmit, setIsSubmit] = useState(false);
   const [err, setErr] = useState(false);
   const [add_UserInfo_async] = useMutation(ADD_USER);
 
-  if (loading) return <div> Loading...</div>;
+  useEffect(() => {
+    refetch();
+    console.log("Refetched Data -> Sign up")
+  })
+
   if (error) return <div> ERROR </div>;
 
   const handleChange = (e) => {
@@ -205,8 +209,9 @@ function Signup() {
               </div>
             ) : null
           ) : null}
-
+        {!loading ? (
           <button className="log-in-button">Create</button>
+          ) : (<div> Loading...</div>)}
         </div>
         <span className="label"> Already have an account? </span>
         <Link className="link-login" to="/">

@@ -150,7 +150,7 @@ export default function SendingPDF(props) {
             <div>
               <span> {i} </span>
               <span className="delete-button" email={i} onClick={handleRemove}>
-                ❌
+              ❌
               </span>
               <br />
             </div>
