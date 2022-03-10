@@ -211,7 +211,7 @@ function Signup() {
           ) : null}
         {!loading ? (
           <button className="log-in-button">Create</button>
-          ) : (<div> Loading...</div>)}
+          ) : ( <button disabled className="log-in-button">Loading...</button>)}
         </div>
         <span className="label"> Already have an account? </span>
         <Link className="link-login" to="/">

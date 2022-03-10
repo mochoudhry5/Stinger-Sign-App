@@ -94,7 +94,9 @@ function Login() {
             Log In
           </button>
           ) : (
-          <p> Loading... </p>
+            <button disabled className="log-in-button">
+            Loading...
+          </button>
           )}
         </div>
         <span className="link-login1"> Don't have an Account? </span>
