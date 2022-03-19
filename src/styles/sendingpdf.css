@@ -80,7 +80,9 @@
 
   .progress {
       margin-right: 730px;
-      color: rgb(34, 206, 34)
+      margin-top: 100px;
+      color: rgb(34, 206, 34);
+      font-size: 25px;
   }
 
   .savedoc {
@@ -90,4 +92,8 @@
     margin-right: 730px;
     margin-bottom: 10px;
     color: white
+  }
+
+  .counter {
+    color: rgb(255, 219, 15)
   }

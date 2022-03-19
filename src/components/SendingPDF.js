@@ -5,6 +5,7 @@ import "../styles/sendingpdf.css";
 import SendToBucketAndUser from "./SendToBucketAndUser";
 import { ALL_USERS } from "../Graphql/Query";
 import { useQuery } from "@apollo/client";
+import { GET_SENT_INFO, GET_SENT_INFO_DOCS_TO_SIGN } from "../Graphql/Query";
 
 const initialValues = {
   email: "",
@@ -13,11 +14,31 @@ const initialValues = {
 export default function SendingPDF(props) {
   const [userEmail, setUserEmail] = useState([]);
   const [formValue, setFormValue] = useState(initialValues);
+  const loggedIn = window.localStorage.getItem("state");
+  const [prev, setPrev] = useState([]);
+  const [prevToSign, setPrevToSign] = useState([]);
   const [error, setError] = useState();
   const { data } = useQuery(ALL_USERS);
   const [id, setId] = useState([]);
   const viewer = useRef(null);
   const [f, setFile] = useState({});
+  let counter = 1;
+  const { error: e, loading: l, data: d } = useQuery(GET_SENT_INFO, {
+    variables: {
+      id: loggedIn,
+    },
+  });
+  const { error: error1, loading: loading1, data: data1 } = useQuery(GET_SENT_INFO_DOCS_TO_SIGN, {
+    variables: {
+      id: loggedIn,
+    },
+  });
+
+  if(l)(<div>Loading...</div>)
+  if(e)(<div>Error</div>)
+
+  if(loading1)(<div>Loading...</div>)
+  if(error1)(<div>Error</div>)
 
   useEffect(() => {
     if (localStorage.getItem("emails")) {
@@ -40,7 +61,7 @@ export default function SendingPDF(props) {
       instance.UI.setHeaderItems((header) => {
         header.push({
           type: "actionButton",
-          text: "Send",
+          img: 'https://www.seekpng.com/png/detail/395-3956812_save-file-button-save-button-logo-png.png',
           onClick: async () => {
             const filename = getRandomString(10);
             const doc = documentViewer.getDocument();
@@ -61,7 +82,9 @@ export default function SendingPDF(props) {
   const handleChange = (e) => {
     setError("")
     const { name, value } = e.target;
-    setFormValue({ ...formValue, [name]: value });
+    setFormValue({ ...formValue, [name]: value.trim() });
+    setPrevFiles()
+    setPrevToSignFiles();
   };
 
   const checker = (value) => {
@@ -75,6 +98,32 @@ export default function SendingPDF(props) {
     if (temp) {
       return temp;
     }
+  };
+
+  const setPrevFiles = () => {
+    let tempArray = []; 
+    d.get_UserInfo.documentsSent.documentsSentInfo.map((document) => {
+        let tempObject = {};
+        tempObject.pdfName = document.pdfName;
+        tempObject.usersSentTo = document.usersSentTo;
+        tempObject.timeSent = document.timeSent;
+        tempArray.push(tempObject)
+      });
+      setPrev(tempArray)
+  };
+
+  const setPrevToSignFiles = () => {
+    let tempArray = [];
+    data1.get_UserInfo.documentsToSign.documentsToSignInfo.map((document) => {
+        let tempObject = {};
+        tempObject.pdfName = document.pdfName;
+        tempObject.nextToSend = document.nextToSend;
+        tempObject.timeOfSend = document.timeOfSend;
+        tempObject.isSigned = document.isSigned;
+        tempObject.fromWho = document.fromWho;
+        tempArray.push(tempObject)
+      });
+      setPrevToSign(tempArray)
   };
 
   const handleSubmit = (e) => {
@@ -148,6 +197,7 @@ export default function SendingPDF(props) {
         {userEmail.map((i) => {
           return (
             <div>
+              <span className="counter"> {counter++}. </span>
               <span> {i} </span>
               <span className="delete-button" email={i} onClick={handleRemove}>
               ❌
@@ -160,7 +210,7 @@ export default function SendingPDF(props) {
 
       <div className="webviewer" ref={viewer}></div>
       {id.length > 0 && f.name !== undefined ? (
-        <SendToBucketAndUser file={f} ids={id} />
+        <SendToBucketAndUser file={f} ids={id} prevFiles = {prev} prevToSign = {prevToSign} />
       ) : (
         <div className="savedoc"> (Click Save on Document and Add Users) </div>
       )}

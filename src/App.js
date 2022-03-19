@@ -11,7 +11,9 @@ import Navbar from "./components/Navbar";
 import Dashboard from "./components/Dashboard";
 import { Profile } from "./components/Profile";
 import SendingPDF from "./components/SendingPDF";
+import AllDocsToSign from "./components/AllDocsToSign";
 import SendToBucketAndUser from "./components/SendToBucketAndUser";
+import TimeToSign from "./components/TimeToSign";
 import React, { useState, useContext, useEffect } from "react";
 import AuthApi from "./AuthApi";
 import Cookies from "js-cookie";
@@ -70,6 +72,8 @@ const Routes = () => {
         component={SendingPDF}
       />
       <ProtectedRoute path="/nav/viewer/sent" auth={Auth.auth} component={SendToBucketAndUser} />
+      <ProtectedRoute path="/nav/signdocuments" auth={Auth.auth} exact component={AllDocsToSign} />
+      <ProtectedRoute path="/nav/signdocuments/signaturetime" auth={Auth.auth} component={TimeToSign} />
     </div>
   );
 };

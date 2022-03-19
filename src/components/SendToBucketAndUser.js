@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AWS from "aws-sdk";
-import { useMutation } from "@apollo/client";
-import { UPDATE_SENDER_INFO } from "../Graphql/Mutations";
-import { ADD_FILE_TO_VENDIA, ADD_TO_USER_TOSIGN } from "../Graphql/Mutations";
+import { useMutation, useQuery } from "@apollo/client";
+import { Redirect } from "react-router-dom";
 import "../styles/sendingpdf.css";
+import {
+  ADD_FILE_TO_VENDIA,
+  UPDATE_SENDER_INFO_ToSign,
+  UPDATE_SENDER_INFO_,
+} from "../Graphql/Mutations";
 
 const S3_BUCKET = process.env.REACT_APP_S3_BUCKET_NAME;
 const REGION = process.env.REACT_APP_S3_BUCKET_REGION_NAME;
@@ -19,11 +23,15 @@ const myBucket = new AWS.S3({
 });
 
 export default function SendToBucketAndUser(props) {
+  const [timeoutOccured, set] = useState(false);
   const [progress, setProgress] = useState(0);
   const loggedIn = window.localStorage.getItem("state");
-  const [update_UserInfo_async] = useMutation(UPDATE_SENDER_INFO);
   const [addVendia_File_async] = useMutation(ADD_FILE_TO_VENDIA);
-  const [updateToSign] = useMutation(ADD_TO_USER_TOSIGN);
+  const [updateToSign, { data, loading }] = useMutation(
+    UPDATE_SENDER_INFO_ToSign
+  );
+  const [update, { data: data2, loading: loading2 }] =
+    useMutation(UPDATE_SENDER_INFO_);
 
   const uploadFile = (file) => {
     const params = {
@@ -61,43 +69,69 @@ export default function SendToBucketAndUser(props) {
   const putInMyDocsSent = (file) => {
     const d = new Date();
     const date = d.toString();
-    update_UserInfo_async({
+    const newFile = {
+      pdfName: file.name,
+      usersSentTo: props.ids,
+      timeSent: date,
+    };
+    props.prevFiles.push(newFile);
+    update({
       variables: {
         id: loggedIn,
-        recieverPDFName: file.name,
-        usersRecieved: props.userEmail,
-        timeSent: date,
+        documentsSentInfo: props.prevFiles,
       },
     });
+    if (loading2) return <div> Loading...</div>;
   };
 
   const putInUserDocToSign = (file) => {
     const d = new Date();
     const date = d.toString();
+    const newFile = {
+      fromWho: loggedIn,
+      pdfName: file.name,
+      isSigned: false,
+      nextToSend: props.ids.slice(1),
+      timeOfSend: date,
+    };
+    props.prevToSign.push(newFile);
     updateToSign({
       variables: {
         id: props.ids[0],
-        fromWho: loggedIn,
-        isSignedOrNot: false,
-        senderPDFName: file.name,
-        sentToWho: props.ids.slice(1),
-        timeOfSend: date,
+        documentsToSignInfo: props.prevToSign,
       },
     });
+    if (loading) return <div>Loading...</div>;
   };
+
+
+  const callTimeout = () => {
+    timer();
+  }
+
+  
+  const timer = setTimeout(() => {
+    set(true);
+  }, 5000);
 
   return (
     <div>
-      <button
-        className="button-senduser"
-        onClick={() => uploadFile(props.file)}
-      >
-        Send to User(s)
-      </button>
-      {progress !== 0 && progress !== 100 ? (
-        <div className="progress">Sending...({progress}%)</div>
+      {progress === 0 ? (
+        <button
+          className="button-senduser"
+          onClick={() => {
+            uploadFile(props.file);
+          }}
+        >
+          Send to User(s)
+        </button>
       ) : null}
-      {progress === 100 ? <div className="progress">Sent!</div> : null}
+      {progress === 100 ? (
+        <div>
+          {callTimeout}
+          {timeoutOccured ? <Redirect to="/" /> : (<div className="progress">Sent! Redirecting to the Dashboard...</div>)}
+        </div>
+      ) : null}
     </div>
   );
 }

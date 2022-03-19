@@ -1,16 +1,15 @@
 import React, { useContext } from "react";
 import { USER_INFO } from "../Graphql/Query";
-import { DELETE } from "../Graphql/Mutations";
-import { useQuery, useMutation } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { Link } from "react-router-dom";
 import AuthApi from "../AuthApi";
 import Cookies from "js-cookie";
+import DeleteAccount from "./DeleteAccount";
 import "../styles/stylesheet.css"
 
 export const Profile = () => {
   const Auth = useContext(AuthApi);
   const loggedIn = window.localStorage.getItem("state");
-  const [remove_UserInfo_async] = useMutation(DELETE);
   const { error, loading, data } = useQuery(USER_INFO, {
     variables: {
       id: loggedIn,
@@ -24,22 +23,6 @@ export const Profile = () => {
     Auth.setAuth(false);
     Cookies.remove("user", "loginTrue");
     window.localStorage.clear();
-  };
-
-  const handleOnDelete = () => {
-    let answer = window.confirm("Are you sure you want to delete your account?")
-    console.log(answer);
-    if(answer) {
-    Auth.setAuth(false);
-    remove_UserInfo_async({
-      variables: {
-        id: loggedIn,
-      }
-    })
-    Cookies.remove("user", "loginTrue");
-    window.localStorage.clear();
-    }
-    
   };
 
   return (
@@ -84,11 +67,7 @@ export const Profile = () => {
         <br/>
         <br/>
       </Link>
-      <Link to="/">
-        <button onClick={handleOnDelete} className="delete">
-          Delete My Account
-        </button>
-      </Link>
+      <DeleteAccount  />
       </div>
     </>
   );

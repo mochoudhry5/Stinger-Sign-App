@@ -4,14 +4,21 @@
 
 .App {
   text-align: center;
-  background-color: #282c34;
-  height: 1000px;
+  background-color: #262b35;
   color:rgb(209, 208, 173);
+  height:825px;
+}
+
+.Sig-Req-Page {
+  text-align: center;
+  background-color: #262b35;
+  color:rgb(209, 208, 173);
+  height:auto;
+
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  background-color: #262b35;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -48,5 +55,39 @@
 .pdftext {
   color: black;
   font-size: 15px;
+  font-weight: bold;
+}
+
+.red-sigreq {
+  color: rgb(255, 230, 0);
+}
+
+.noDocsToSign {
+  margin-top: 300px;
+  color: rgb(235, 192, 0);
+  font-size: 30px;
+  font-family: "DejaVu Sans Mono", monospace;
+}
+
+.toSignDocs {
+  color: rgb(255, 255, 255);
+  font-size: 25px;
+  font-family: "DejaVu Sans Mono", monospace;
+  position: absolute;
+}
+
+.sig-req {
+  margin-bottom: 70px;
+  font-family:  "DejaVu Sans Mono", monospace;
+}
+
+.headdoc {
+  color: rgb(250, 209, 74);
+}
+
+.buttontosign {
+  margin-left: 10px;
+  background-color: rgb(240, 227, 114);
+  width: 70px;
   font-weight: bold;
 }
