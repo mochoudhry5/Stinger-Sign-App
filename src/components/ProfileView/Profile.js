@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
-import { USER_INFO } from "../Graphql/Query";
+import { USER_INFO } from "../../Graphql/Query";
 import { useQuery } from "@apollo/client";
 import { Link } from "react-router-dom";
-import AuthApi from "../AuthApi";
+import AuthApi from "../../AuthApi";
 import Cookies from "js-cookie";
 import DeleteAccount from "./DeleteAccount";
-import "../styles/stylesheet.css"
+import "../../styles/stylesheet.css"
 
 export const Profile = () => {
   const Auth = useContext(AuthApi);

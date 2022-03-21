@@ -84,3 +84,22 @@ export const USER_INFO_BASIC = gql`
     }
   }
 `;
+
+export const LIST_ALL_FILES = gql`
+query blocksQuery {
+  listVendia_FileItems {
+    Vendia_FileItems {
+      _id
+      destinationKey
+    }
+  }
+}
+`;
+
+export const GETFILE = gql`
+query blocksQuery($id: ID!) {
+  getVendia_File(id: $id) {
+    temporaryUrl
+  }
+}
+`;

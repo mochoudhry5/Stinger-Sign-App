@@ -1,7 +1,7 @@
-import ReqSignatures from "./ReqSignatures";
+import ReqSignatures from "./SignaturesRequired/ReqSignatures";
 import React, { useEffect } from "react";
-import UploadDocs from "./UploadDocs";
-import ManageDoc from "./ManageDoc";
+import UploadDocs from "./UploadDocument/UploadDocs";
+import ManageDoc from "./ManageDocument/ManageDoc";
 import { USER_INFO } from "../Graphql/Query";
 import { useQuery } from "@apollo/client";
 

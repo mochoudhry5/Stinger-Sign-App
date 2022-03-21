@@ -26,54 +26,6 @@ export const ADD_USER = gql`
   }
 `;
 
-export const ADD_FILE = gql`
-  mutation addVendia_File_async(
-    $sourceBucket: String!
-    $sourceKey: String!
-    $sourceRegion: String!
-    $destinationKey: String!
-  ) {
-    addVendia_File_async(
-      input: {
-        sourceBucket: $sourceBucket
-        sourceKey: $sourceKey
-        sourceRegion: $sourceRegion
-        destinationKey: $destinationKey
-      }
-    ) {
-      error
-    }
-  }
-`;
-
-export const UPDATE_SENDER_INFO = gql`
-  mutation update_UserInfo_async(
-    $id: ID!
-    $pdfName: String
-    $usersSentTo: [String]
-    $timeSent: String
-  ) {
-    update_UserInfo_async(
-      id: $id
-      input: {
-        documentsSent: {
-          documentsSentInfo: [
-            {
-              pdfName: $pdfName
-              usersSentTo: $usersSentTo
-              timeSent: $timeSent
-            }
-          ]
-        }
-      }
-    ) {
-      result {
-        _id
-      }
-    }
-  }
-`;
-
 export const DELETE = gql`
   mutation remove_UserInfo_async($id: ID!) {
     remove_UserInfo_async(id: $id) {
@@ -106,35 +58,6 @@ export const ADD_FILE_TO_VENDIA = gql`
   }
 `;
 
-export const ADD_TO_USER_TOSIGN = gql`
-  mutation update_UserInfo_async(
-    $id: ID!
-    $fromWho: String
-    $isSigned: Boolean
-    $pdfName: String
-    $nextToSend: [String]
-    $timeOfSend: String
-  ) {
-    update_UserInfo_async(
-      id: $id
-      input: {
-        documentsToSign: {
-          documentsToSignInfo: {
-            fromWho: $fromWho
-            isSigned: $isSigned
-            pdfName: $pdfName
-            nextToSend: $nextToSend
-            timeOfSend: $timeOfSend
-          }
-        }
-      }
-    ) {
-      result {
-        _id
-      }
-    }
-  }
-`;
 
 export const UPDATE_SENDER_INFO_ = gql`
   mutation update_UserInfo_async(

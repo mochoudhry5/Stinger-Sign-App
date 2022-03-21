@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { useMutation } from "@apollo/client";
-import { DELETE } from "../Graphql/Mutations";
-import AuthApi from "../AuthApi";
+import { DELETE } from "../../Graphql/Mutations";
+import AuthApi from "../../AuthApi";
 import Cookies from "js-cookie";
 
 export default function DeleteAccount() {

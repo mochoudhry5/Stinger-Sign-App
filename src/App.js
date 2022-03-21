@@ -9,11 +9,12 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Navbar from "./components/Navbar";
 import Dashboard from "./components/Dashboard";
-import { Profile } from "./components/Profile";
-import SendingPDF from "./components/SendingPDF";
-import AllDocsToSign from "./components/AllDocsToSign";
-import SendToBucketAndUser from "./components/SendToBucketAndUser";
-import TimeToSign from "./components/TimeToSign";
+import { Profile } from "./components/ProfileView/Profile";
+import SendingPDF from "./components/UploadDocument/SendingPDF";
+import AllDocsToSign from "./components//SignaturesRequired/AllDocsToSign";
+import ViewDocument from "./components//SignaturesRequired/ViewDocument";
+import SendToBucketAndUser from "./components/UploadDocument/SendToBucketAndUser";
+import TimeToSign from "./components//SignaturesRequired/TimeToSign";
 import React, { useState, useContext, useEffect } from "react";
 import AuthApi from "./AuthApi";
 import Cookies from "js-cookie";
@@ -74,6 +75,7 @@ const Routes = () => {
       <ProtectedRoute path="/nav/viewer/sent" auth={Auth.auth} component={SendToBucketAndUser} />
       <ProtectedRoute path="/nav/signdocuments" auth={Auth.auth} exact component={AllDocsToSign} />
       <ProtectedRoute path="/nav/signdocuments/signaturetime" auth={Auth.auth} component={TimeToSign} />
+      <ProtectedRoute path="/nav/signdocuments/viewdocument" auth={Auth.auth} component={ViewDocument} />
     </div>
   );
 };

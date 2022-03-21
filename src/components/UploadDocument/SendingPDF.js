@@ -1,11 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
 import WebViewer from "@pdftron/webviewer";
-import "../styles/pdfstyle.css";
-import "../styles/sendingpdf.css";
+import "../../styles/pdfstyle.css";
+import "../../styles/sendingpdf.css";
 import SendToBucketAndUser from "./SendToBucketAndUser";
-import { ALL_USERS } from "../Graphql/Query";
+import { ALL_USERS } from "../../Graphql/Query";
 import { useQuery } from "@apollo/client";
-import { GET_SENT_INFO, GET_SENT_INFO_DOCS_TO_SIGN } from "../Graphql/Query";
+import { GET_SENT_INFO, GET_SENT_INFO_DOCS_TO_SIGN } from "../../Graphql/Query";
 
 const initialValues = {
   email: "",

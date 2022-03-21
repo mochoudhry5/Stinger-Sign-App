@@ -91,3 +91,11 @@
   width: 70px;
   font-weight: bold;
 }
+
+.container {
+  background-color: rgb(151, 144, 144);
+  height:700px;
+  width: 800px;
+  margin-left:340px;
+
+}

@@ -51,6 +51,11 @@
       font-size: 25px
 
   }
+  .titles-nomargin {
+    font-family: "DejaVu Sans Mono", monospace;
+    font-size: 25px
+
+}
 
   .title{
     font-family: "DejaVu Sans Mono", monospace;

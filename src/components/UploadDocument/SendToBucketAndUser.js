@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import AWS from "aws-sdk";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { Redirect } from "react-router-dom";
-import "../styles/sendingpdf.css";
+import "../../styles/sendingpdf.css";
 import {
   ADD_FILE_TO_VENDIA,
   UPDATE_SENDER_INFO_ToSign,
   UPDATE_SENDER_INFO_,
-} from "../Graphql/Mutations";
+} from "../../Graphql/Mutations";
 
 const S3_BUCKET = process.env.REACT_APP_S3_BUCKET_NAME;
 const REGION = process.env.REACT_APP_S3_BUCKET_REGION_NAME;
@@ -27,10 +27,10 @@ export default function SendToBucketAndUser(props) {
   const [progress, setProgress] = useState(0);
   const loggedIn = window.localStorage.getItem("state");
   const [addVendia_File_async] = useMutation(ADD_FILE_TO_VENDIA);
-  const [updateToSign, { data, loading }] = useMutation(
+  const [updateToSign, { loading }] = useMutation(
     UPDATE_SENDER_INFO_ToSign
   );
-  const [update, { data: data2, loading: loading2 }] =
+  const [update, {loading: loading2 }] =
     useMutation(UPDATE_SENDER_INFO_);
 
   const uploadFile = (file) => {
@@ -112,7 +112,7 @@ export default function SendToBucketAndUser(props) {
   
   const timer = setTimeout(() => {
     set(true);
-  }, 5000);
+  }, 6000);
 
   return (
     <div>
