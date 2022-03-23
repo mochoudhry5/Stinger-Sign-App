@@ -12,12 +12,14 @@ import Dashboard from "./components/Dashboard";
 import { Profile } from "./components/ProfileView/Profile";
 import SendingPDF from "./components/UploadDocument/SendingPDF";
 import AllDocsToSign from "./components//SignaturesRequired/AllDocsToSign";
+import RejectDocument from "./components//SignaturesRequired/RejectDocument";
 import ViewDocument from "./components//SignaturesRequired/ViewDocument";
 import SendToBucketAndUser from "./components/UploadDocument/SendToBucketAndUser";
 import TimeToSign from "./components//SignaturesRequired/TimeToSign";
 import React, { useState, useContext, useEffect } from "react";
 import AuthApi from "./AuthApi";
 import Cookies from "js-cookie";
+import ShowAllDocsSent from "./components/ManageDocument/ShowAllDocsSent"
 
 function App() {
   const [auth, setAuth] = useState(false);
@@ -76,6 +78,8 @@ const Routes = () => {
       <ProtectedRoute path="/nav/signdocuments" auth={Auth.auth} exact component={AllDocsToSign} />
       <ProtectedRoute path="/nav/signdocuments/signaturetime" auth={Auth.auth} component={TimeToSign} />
       <ProtectedRoute path="/nav/signdocuments/viewdocument" auth={Auth.auth} component={ViewDocument} />
+      <ProtectedRoute path="/nav/managedocs" auth={Auth.auth} component={ShowAllDocsSent} />
+      <ProtectedRoute path="/nav/signdocuments/rejectdocument" auth={Auth.auth} component={RejectDocument} />
     </div>
   );
 };

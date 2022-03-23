@@ -50,6 +50,8 @@ export const GET_SENT_INFO = gql`
           pdfName
           timeSent
           usersSentTo
+          reasonForSigning
+          isRejected
         }
       }
     }
@@ -67,6 +69,7 @@ export const GET_SENT_INFO_DOCS_TO_SIGN = gql`
           pdfName
           nextToSend
           timeOfSend
+          reasonForSigning
         }
       }
     }
@@ -102,4 +105,30 @@ query blocksQuery($id: ID!) {
     temporaryUrl
   }
 }
+`;
+
+export const DOCS_SENT_OR_SIGNED = gql`
+  query blocksQuery($id: ID!) {
+    get_UserInfo(id: $id) {
+      documentsSent {
+        documentsSentInfo {
+          pdfName
+          timeSent
+          usersSentTo
+          reasonForSigning
+          isRejected
+        }
+      }
+      documentsToSign {
+        documentsToSignInfo {
+          fromWho
+          isSigned
+          pdfName
+          nextToSend
+          timeOfSend
+          reasonForSigning
+        }
+      }
+    }
+  }
 `;

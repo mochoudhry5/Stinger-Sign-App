@@ -58,7 +58,6 @@ export const ADD_FILE_TO_VENDIA = gql`
   }
 `;
 
-
 export const UPDATE_SENDER_INFO_ = gql`
   mutation update_UserInfo_async(
     $id: ID!
@@ -66,7 +65,7 @@ export const UPDATE_SENDER_INFO_ = gql`
   ) {
     update_UserInfo_async(
       id: $id
-      input: { documentsSent: { documentsSentInfo: $documentsSentInfo }}
+      input: { documentsSent: { documentsSentInfo: $documentsSentInfo } }
     ) {
       result {
         _id
@@ -75,16 +74,26 @@ export const UPDATE_SENDER_INFO_ = gql`
   }
 `;
 
-export const UPDATE_SENDER_INFO_ToSign = gql`
+export const UPDATE_SENDER_INFO_TOSIGN = gql`
   mutation update_UserInfo_async(
     $id: ID!
     $documentsToSignInfo: [Self_UserInfo_documentsToSign_documentsToSignInfo_documentsToSignInfoItem_UpdateInput_]
   ) {
     update_UserInfo_async(
       id: $id
-      input: { documentsToSign: { documentsToSignInfo: $documentsToSignInfo }}
+      input: { documentsToSign: { documentsToSignInfo: $documentsToSignInfo } }
     ) {
       result {
+        _id
+      }
+    }
+  }
+`;
+
+export const DELETE_FILE_VENDIA = gql`
+  mutation removeVendia_File($id: ID!, $syncMode: Vendia_SyncMode!) {
+    removeVendia_File(id: $id, syncMode: $syncMode) {
+      transaction {
         _id
       }
     }

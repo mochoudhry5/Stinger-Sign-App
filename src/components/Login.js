@@ -1,5 +1,5 @@
 import AuthApi from "../AuthApi";
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import Cookies from "js-cookie";
 import { ALL_USERS } from "../Graphql/Query";
 import { useQuery } from "@apollo/client";
@@ -17,13 +17,7 @@ function Login() {
   const [formValues, setFormValues] = useState(initialValues);
   const { error, loading, data, refetch } = useQuery(ALL_USERS);
 
-  useEffect(() => {
-    refetch()
-    console.log("Refetched Data -> Log in")
-  })
-
-    if (error) return <div> ERROR {error.message} </div>;
-
+  if (error) return <div> ERROR {error.message} </div>;
 
   const handleOnClick = () => {
     Auth.setAuth(true);
@@ -37,6 +31,7 @@ function Login() {
   };
 
   const handleSubmit = (e) => {
+    refetch();
     e.preventDefault();
     validateUser();
   };
@@ -53,18 +48,15 @@ function Login() {
         window.localStorage.setItem("state", item._id);
       } else {
         errors = "Email or password is incorrect";
-  
         setFormError(errors);
       }
-      
     });
-    
   };
 
   return (
     <div className="login">
       <form onSubmit={handleSubmit}>
-      <h1 className="login-logintext">Stinger Sign</h1>
+        <h1 className="login-logintext">Stinger Sign</h1>
         <div className="ui divider"></div>
         <div className="">
           <div className="field">
@@ -90,20 +82,18 @@ function Login() {
             <p className="err"> {formError} </p>
           </div>
           {!loading ? (
-          <button className="log-in-button">
-            Log In
-          </button>
+            <button className="log-in-button">Log In</button>
           ) : (
             <button disabled className="log-in-button">
-            Loading...
-          </button>
+              Loading...
+            </button>
           )}
         </div>
         <span className="link-login1"> Don't have an Account? </span>
         <Link className="link-login" to="/signup">
-          <span> Sign Up </span>
+          <span onClick={refetch}> Sign Up </span>
         </Link>
-        <br/>
+        <br />
         <img className="login--logo" src={Hornet} alt="StingerSign Logo" />
       </form>
     </div>

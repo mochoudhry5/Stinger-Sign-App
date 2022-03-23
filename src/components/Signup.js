@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { ALL_USERS } from "../Graphql/Query";
 import { ADD_USER } from "../Graphql/Mutations";
@@ -23,14 +23,11 @@ function Signup() {
   const { error, loading, data, refetch } = useQuery(ALL_USERS);
   const [isSubmit, setIsSubmit] = useState(false);
   const [err, setErr] = useState(false);
-  const [add_UserInfo_async] = useMutation(ADD_USER);
+  const [add_UserInfo_async, {loading: l}] = useMutation(ADD_USER);
 
-  useEffect(() => {
-    refetch();
-    console.log("Refetched Data -> Sign up")
-  })
 
   if (error) return <div> ERROR </div>;
+  if (l) return <div>Loading...</div>;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,6 +37,7 @@ function Signup() {
   };
 
   const validateUser = () => {
+    refetch();
     const errors = {};
     data.list_UserInfoItems._UserInfoItems.map((item) => {
       if (item.userEmail === formValues.email) {
@@ -75,7 +73,7 @@ function Signup() {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    refetch();
     setFormErrors(validateUser());
     if (
       formErrors.email === "Email is already in use" ||
@@ -90,6 +88,7 @@ function Signup() {
     ) {
       console.log("ERROR(S)");
       setErr(true);
+      e.preventDefault();
     } else {
       addUser();
       setErr(false);
@@ -215,7 +214,7 @@ function Signup() {
         </div>
         <span className="label"> Already have an account? </span>
         <Link className="link-login" to="/">
-          <span className="span-label"> Log In</span>
+          <span className="span-label" onClick={refetch}> Log In</span>
         </Link>
       </form>
     </div>

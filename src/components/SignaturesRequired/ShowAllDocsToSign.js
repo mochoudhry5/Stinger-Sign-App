@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { useLazyQuery, useQuery } from "@apollo/client";
-import { USER_INFO_BASIC, GETFILE } from "../../Graphql/Query";
+import React from "react";
+import { useQuery } from "@apollo/client";
+import { USER_INFO_BASIC } from "../../Graphql/Query";
 import { Link } from "react-router-dom";
 
 export default function ShowAllDocsToSign(props) {
@@ -17,13 +17,13 @@ export default function ShowAllDocsToSign(props) {
     <div>
       {data ? (
         <p className="toSignDocs">
-          &nbsp; Document Name:{" "}
-          <span className="headdoc">{props.pdfName} </span>
-          From Who:{" "}
-          <span className="headdoc"> {data.get_UserInfo.userEmail} </span>
-          <Link className="upload-docs" to="/nav/signdocuments/signaturetime">
-            <button className="buttontosign"> Sign </button>
-          </Link>
+          &nbsp; Sender:
+          <span className="headdoc"> {data.get_UserInfo.userFirstName} {data.get_UserInfo.userLastName} ({data.get_UserInfo.userEmail}) </span>
+          <br/>Sent When:
+          <span className="headdoc"> {props.time} </span>
+          <br/> Reason:
+          <span className="headdoc"> {props.reason} </span>
+          <br/>
           <Link
             className="upload-docs"
             to={{
@@ -31,11 +31,25 @@ export default function ShowAllDocsToSign(props) {
               state: { pdfName: props.pdfName, fileData: "HELO" },
             }}
           >
-            <button className="buttontosign" > View </button>
+            <button className="buttontoview" > View </button>
           </Link>
-          <button className="buttontosign"> Reject </button>
+
+          <Link className="upload-docs" to="/nav/signdocuments/signaturetime">
+            <button className="buttontosign"> Sign </button>
+          </Link>
+
+          <Link
+            className="upload-docs"
+            to={{
+              pathname: "/nav/signdocuments/rejectdocument",
+              state: { pdfName: props.pdfName, senderID: props.senderID, fileID: props.fileId},
+            }}
+          >
+          <button className="buttontoreject"> Reject </button>
+          </Link>
         </p>
       ) : null}
+      <hr className="hr-sigreq"/>
       <br />
       <br />
       <br />

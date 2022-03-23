@@ -5,7 +5,7 @@ import { Redirect } from "react-router-dom";
 import "../../styles/sendingpdf.css";
 import {
   ADD_FILE_TO_VENDIA,
-  UPDATE_SENDER_INFO_ToSign,
+  UPDATE_SENDER_INFO_TOSIGN,
   UPDATE_SENDER_INFO_,
 } from "../../Graphql/Mutations";
 
@@ -23,17 +23,21 @@ const myBucket = new AWS.S3({
 });
 
 export default function SendToBucketAndUser(props) {
-  const [timeoutOccured, set] = useState(false);
   const [progress, setProgress] = useState(0);
   const loggedIn = window.localStorage.getItem("state");
-  const [addVendia_File_async] = useMutation(ADD_FILE_TO_VENDIA);
+  const [addVendia_File_async, {loading: loading1}] = useMutation(ADD_FILE_TO_VENDIA);
   const [updateToSign, { loading }] = useMutation(
-    UPDATE_SENDER_INFO_ToSign
+    UPDATE_SENDER_INFO_TOSIGN
   );
   const [update, {loading: loading2 }] =
     useMutation(UPDATE_SENDER_INFO_);
 
+  if(loading) (<div> Loading...</div>)
+  if(loading1) (<div> Loading...</div>)
+  if(loading2) (<div> Loading...</div>)
+
   const uploadFile = (file) => {
+    console.log("Ran uploadFile in SendToBucketAndUser.js")
     const params = {
       ACL: "public-read",
       Body: file,
@@ -73,6 +77,8 @@ export default function SendToBucketAndUser(props) {
       pdfName: file.name,
       usersSentTo: props.ids,
       timeSent: date,
+      reasonForSigning: props.reason, 
+      isRejected: false
     };
     props.prevFiles.push(newFile);
     update({
@@ -81,7 +87,6 @@ export default function SendToBucketAndUser(props) {
         documentsSentInfo: props.prevFiles,
       },
     });
-    if (loading2) return <div> Loading...</div>;
   };
 
   const putInUserDocToSign = (file) => {
@@ -93,6 +98,7 @@ export default function SendToBucketAndUser(props) {
       isSigned: false,
       nextToSend: props.ids.slice(1),
       timeOfSend: date,
+      reasonForSigning: props.reason,
     };
     props.prevToSign.push(newFile);
     updateToSign({
@@ -101,18 +107,8 @@ export default function SendToBucketAndUser(props) {
         documentsToSignInfo: props.prevToSign,
       },
     });
-    if (loading) return <div>Loading...</div>;
   };
 
-
-  const callTimeout = () => {
-    timer();
-  }
-
-  
-  const timer = setTimeout(() => {
-    set(true);
-  }, 6000);
 
   return (
     <div>
@@ -128,8 +124,7 @@ export default function SendToBucketAndUser(props) {
       ) : null}
       {progress === 100 ? (
         <div>
-          {callTimeout}
-          {timeoutOccured ? <Redirect to="/" /> : (<div className="progress">Sent! Redirecting to the Dashboard...</div>)}
+          <Redirect to="/" /> 
         </div>
       ) : null}
     </div>

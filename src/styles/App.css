@@ -73,7 +73,7 @@
   color: rgb(255, 255, 255);
   font-size: 25px;
   font-family: "DejaVu Sans Mono", monospace;
-  position: absolute;
+
 }
 
 .sig-req {
@@ -87,7 +87,7 @@
 
 .buttontosign {
   margin-left: 10px;
-  background-color: rgb(240, 227, 114);
+  background-color: rgb(102, 165, 121);
   width: 70px;
   font-weight: bold;
 }
@@ -98,4 +98,100 @@
   width: 800px;
   margin-left:340px;
 
+}
+
+.hr-sigreq {
+  margin-top:15px;
+  border: 3px solid rgb(209, 208, 173);
+}
+
+.nodocstosign {
+  margin-top: 110px;
+  color: rgb(235, 192, 0);
+  font-size: 20px;
+  font-family: "DejaVu Sans Mono", monospace;
+}
+.nodocssent {
+  margin-top: 70px;
+  margin-bottom: 50px;
+  color: rgb(235, 192, 0);
+  font-size: 20px;
+  font-family: "DejaVu Sans Mono", monospace;
+}
+
+.titles-temp {
+  font-family: "DejaVu Sans Mono", monospace;
+  margin:10px;
+  font-size: 30px
+
+}
+
+.titles-manage {
+  font-family: "DejaVu Sans Mono", monospace;
+  margin:10px;
+  font-size: 45px
+
+}
+
+.hr-manage {
+  margin-top:5px;
+  border: 3px solid #ffe13a;
+}
+
+.buttontoview {
+  margin-left: 10px;
+  background-color: rgb(243, 241, 220);
+  width: 70px;
+  font-weight: bold;
+}
+.buttontoreject {
+  margin-left: 10px;
+  background-color: rgb(168, 71, 71);
+  width: 70px;
+  font-weight: bold;
+}
+
+.backclick {
+  margin-right: 140px;
+  font-size: 20px;
+  font-family: "DejaVu Sans Mono", monospace;
+  color: rgb(231, 199, 95);
+}
+
+
+.title-sends {
+  font-weight: bold;
+  font-size: 30px;
+  margin-right: 970px;
+  margin-bottom: 100px;
+  font-family: "DejaVu Sans Mono", monospace;
+}
+
+.rejectbody {
+  margin-top: 100px;
+  font-family: "DejaVu Sans Mono", monospace;
+  font-size: 25px;
+}
+
+.btnyes {
+  margin-top:30px;
+  margin-right: 10px;
+  font-size: 20px;
+  width:60px;
+  background-color: rgb(139, 204, 122);
+  font-weight: bold;
+  
+}
+
+.btnno {
+  margin-top:30px;
+  width:60px;
+  font-size: 20px;
+  background-color: rgb(212, 106, 102);
+  font-weight: bold;
+  
+}
+
+.rejected {
+  color: red; 
 }

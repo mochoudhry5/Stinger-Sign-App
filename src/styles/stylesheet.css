@@ -180,3 +180,11 @@ margin-right:55px;
   left:-615px;
   width: 100%;
 }
+
+.reject-title {
+  font-family: "DejaVu Sans Mono", monospace;
+  margin-top:200px;
+  font-size: 28px;
+  color: red;
+
+}

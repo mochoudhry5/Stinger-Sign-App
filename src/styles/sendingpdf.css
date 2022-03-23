@@ -35,10 +35,33 @@
     font-family: "DejaVu Sans Mono", monospace;
 }
 
+.filename-header-send {
+  display:flex;
+  font-size: 19px;
+  margin-top: 10px;
+  margin-left: 315px;
+  font-family: "DejaVu Sans Mono", monospace;
+}
+
+.filename-header {
+  display:flex;
+  font-size: 19px;
+  margin-top: 10px;
+  margin-left: 250px;
+  font-weight: normal;
+}
+
 .button-adduser {
     background-color:rgb(209, 208, 173);
     margin-right: 730px;
     margin-top:10px;
+  }
+
+  .button-setfilename {
+    background-color:rgb(209, 208, 173);
+    margin-right: 730px;
+    margin-top:10px;
+    margin-bottom:50px;
   }
 
 .button-senduser {

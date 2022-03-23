@@ -1,9 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function ManageDoc() {
-  
   return (
-
-    <div className="titles">Manage Documents</div>
-  )
+    <div>
+      <Link className="upload-docs" to="/nav/managedocs">
+        <div className="titles">Document History</div>
+      </Link>
+    </div>
+  );
 }

@@ -5,15 +5,24 @@ import "../../styles/sendingpdf.css";
 import SendToBucketAndUser from "./SendToBucketAndUser";
 import { ALL_USERS } from "../../Graphql/Query";
 import { useQuery } from "@apollo/client";
-import { GET_SENT_INFO, GET_SENT_INFO_DOCS_TO_SIGN } from "../../Graphql/Query";
+import {
+  GET_SENT_INFO,
+  GET_SENT_INFO_DOCS_TO_SIGN,
+} from "../../Graphql/Query";
 
 const initialValues = {
   email: "",
 };
 
+const initValuesForFile = {
+  nameOfFile: "",
+};
+
 export default function SendingPDF(props) {
   const [userEmail, setUserEmail] = useState([]);
   const [formValue, setFormValue] = useState(initialValues);
+  const [fileName, setFileName] = useState([initValuesForFile]);
+  const [isFilenameSubmit, setIsFilenameSubmit] = useState(false);
   const loggedIn = window.localStorage.getItem("state");
   const [prev, setPrev] = useState([]);
   const [prevToSign, setPrevToSign] = useState([]);
@@ -23,28 +32,36 @@ export default function SendingPDF(props) {
   const viewer = useRef(null);
   const [f, setFile] = useState({});
   let counter = 1;
-  const { error: e, loading: l, data: d } = useQuery(GET_SENT_INFO, {
+  const {
+    error: e,
+    loading: l,
+    data: d,
+  } = useQuery(GET_SENT_INFO, {
     variables: {
       id: loggedIn,
     },
   });
-  const { error: error1, loading: loading1, data: data1 } = useQuery(GET_SENT_INFO_DOCS_TO_SIGN, {
+  const {
+    error: error1,
+    loading: loading1,
+    data: data1,
+  } = useQuery(GET_SENT_INFO_DOCS_TO_SIGN, {
     variables: {
       id: loggedIn,
     },
   });
 
-  if(l)(<div>Loading...</div>)
-  if(e)(<div>Error</div>)
+  if (l) <div>Loading...</div>;
+  if (e) <div>Error</div>;
 
-  if(loading1)(<div>Loading...</div>)
-  if(error1)(<div>Error</div>)
+  if (loading1) <div>Loading...</div>;
+  if (error1) <div>Error</div>;
 
   useEffect(() => {
     if (localStorage.getItem("emails")) {
       setUserEmail(JSON.parse(localStorage.getItem("emails")));
     }
-  }, []);
+  },[]);
 
   useEffect(() => {
     WebViewer(
@@ -56,12 +73,19 @@ export default function SendingPDF(props) {
     ).then((instance) => {
       const { documentViewer, annotationManager } = instance.Core;
       const { Feature } = instance.UI;
+      instance.UI.disableElements(['toolbarGroup-Shapes']);
+      instance.UI.disableElements(['toolbarGroup-Edit']);
+      instance.UI.disableElements(['toolbarGroup-Insert']);
+      instance.UI.disableElements(['toolbarGroup-Annotate']);
       instance.UI.enableFeatures([Feature.FilePicker]);
+      instance.UI.disableFeatures([Feature.TextSelection]);
+      instance.UI.disableTools([ 'AnnotationCreateSticky', 'AnnotationCreateFreeText' ]);
       instance.UI.setTheme("dark");
+      instance.UI.setToolbarGroup(instance.UI.ToolbarGroup.FORMS);
       instance.UI.setHeaderItems((header) => {
         header.push({
           type: "actionButton",
-          img: 'https://www.seekpng.com/png/detail/395-3956812_save-file-button-save-button-logo-png.png',
+          img: "https://www.seekpng.com/png/detail/395-3956812_save-file-button-save-button-logo-png.png",
           onClick: async () => {
             const filename = getRandomString(10);
             const doc = documentViewer.getDocument();
@@ -79,12 +103,37 @@ export default function SendingPDF(props) {
     });
   }, []);
 
-  const handleChange = (e) => {
-    setError("")
-    const { name, value } = e.target;
-    setFormValue({ ...formValue, [name]: value.trim() });
-    setPrevFiles()
-    setPrevToSignFiles();
+  const setPrevFiles = () => {
+    let tempArray = [];
+    if(d.get_UserInfo.documentsSent){
+    d.get_UserInfo.documentsSent.documentsSentInfo.map((document) => {
+      let tempObject = {};
+      tempObject.pdfName = document.pdfName;
+      tempObject.usersSentTo = document.usersSentTo;
+      tempObject.timeSent = document.timeSent;
+      tempObject.reasonForSigning = document.reasonForSigning;
+      tempObject.isRejected = document.isRejected;
+      tempArray.push(tempObject);
+    });
+  }
+    setPrev(tempArray);
+  };
+
+  const setPrevToSignFiles = () => {
+    let tempArray = [];
+    if(data1.get_UserInfo.documentsToSign){
+    data1.get_UserInfo.documentsToSign.documentsToSignInfo.map((document) => {
+      let tempObject = {};
+      tempObject.pdfName = document.pdfName;
+      tempObject.nextToSend = document.nextToSend;
+      tempObject.timeOfSend = document.timeOfSend;
+      tempObject.isSigned = document.isSigned;
+      tempObject.fromWho = document.fromWho;
+      tempObject.reasonForSigning = document.reasonForSigning;
+      tempArray.push(tempObject);
+    });
+  }
+    setPrevToSign(tempArray);
   };
 
   const checker = (value) => {
@@ -100,30 +149,23 @@ export default function SendingPDF(props) {
     }
   };
 
-  const setPrevFiles = () => {
-    let tempArray = []; 
-    d.get_UserInfo.documentsSent.documentsSentInfo.map((document) => {
-        let tempObject = {};
-        tempObject.pdfName = document.pdfName;
-        tempObject.usersSentTo = document.usersSentTo;
-        tempObject.timeSent = document.timeSent;
-        tempArray.push(tempObject)
-      });
-      setPrev(tempArray)
+  const handleChange = (e) => {
+    setError("");
+    const { name, value } = e.target;
+    setFormValue({ ...formValue, [name]: value.trim() });
   };
 
-  const setPrevToSignFiles = () => {
-    let tempArray = [];
-    data1.get_UserInfo.documentsToSign.documentsToSignInfo.map((document) => {
-        let tempObject = {};
-        tempObject.pdfName = document.pdfName;
-        tempObject.nextToSend = document.nextToSend;
-        tempObject.timeOfSend = document.timeOfSend;
-        tempObject.isSigned = document.isSigned;
-        tempObject.fromWho = document.fromWho;
-        tempArray.push(tempObject)
-      });
-      setPrevToSign(tempArray)
+  const handleChangeForFilename = (e) => {
+    setError("");
+    const { name, value } = e.target;
+    setFileName({ ...fileName, [name]: value.substring(0, 15) });
+  };
+
+  const handleSubmitForFileName = (e) => {
+    e.preventDefault();
+    setIsFilenameSubmit(true);
+    setPrevFiles();
+    setPrevToSignFiles();
   };
 
   const handleSubmit = (e) => {
@@ -145,21 +187,8 @@ export default function SendingPDF(props) {
         setError("User not found!");
       }
     }
-    setFormValue(initialValues);
+    setFormValue({ ...formValue, email: "" });
   };
-
-  function getRandomString(length) {
-    var randomChars =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    var result = "sentDocs_";
-    for (var i = 0; i < length; i++) {
-      result += randomChars.charAt(
-        Math.floor(Math.random() * randomChars.length)
-      );
-    }
-    result += ".pdf";
-    return result;
-  }
 
   const handleRemove = (e) => {
     let temp = userEmail;
@@ -176,21 +205,82 @@ export default function SendingPDF(props) {
     localStorage.setItem("ids", JSON.stringify(filteredItems2));
   };
 
+  function getRandomString(length) {
+    var randomChars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    var result = "sentDocs_";
+    for (var i = 0; i < length; i++) {
+      result += randomChars.charAt(
+        Math.floor(Math.random() * randomChars.length)
+      );
+    }
+    result += ".pdf";
+    return result;
+  }
+
   return (
     <div>
       <div className="title-send">Upload and Send</div>
+
+      <form onSubmit={handleSubmitForFileName}>
+        <label className="filename-header-send">Subject:</label>
+        {!isFilenameSubmit ? (
+          <>
+            <input
+              className="filename-header"
+              type="text"
+              name="nameOfFile"
+              placeholder="Max. of 15 characters"
+              value={fileName.nameOfFile}
+              onChange={handleChangeForFilename}
+            />
+            <p className="err-notfound"> {error} </p>
+            <button className="button-setfilename"> Submit</button>
+          </>
+        ) : (
+          <>
+            <input
+              className="filename-header"
+              disabled
+              placeholder={fileName.nameOfFile}
+            />
+            <button disabled className="button-setfilename">
+              {" "}
+              Submit
+            </button>
+          </>
+        )}
+      </form>
+
       <form onSubmit={handleSubmit}>
         <label className="email-header-send">Send to:</label>
-        <input
-          className="email-header"
-          type="text"
-          name="email"
-          placeholder="Email"
-          value={formValue.email}
-          onChange={handleChange}
-        />
-        <p className="err-notfound"> {error} </p>
-        <button className="button-adduser">Add user</button>
+        {isFilenameSubmit ? (
+          <>
+            <input
+              className="email-header"
+              type="text"
+              name="email"
+              placeholder="Email"
+              value={formValue.email}
+              onChange={handleChange}
+            />
+            <p className="err-notfound"> {error} </p>
+            <button className="button-setfilename"> Add user</button>
+          </>
+        ) : (
+          <>
+            <input
+              className="email-header"
+              type="text"
+              disabled
+              placeholder="Email"
+            />
+            <button disabled className="button-setfilename">
+              {" "}
+              Set File First
+            </button>
+          </>
+        )}
       </form>
 
       <div className="printemails">
@@ -200,7 +290,7 @@ export default function SendingPDF(props) {
               <span className="counter"> {counter++}. </span>
               <span> {i} </span>
               <span className="delete-button" email={i} onClick={handleRemove}>
-              ❌
+                ❌
               </span>
               <br />
             </div>
@@ -210,7 +300,13 @@ export default function SendingPDF(props) {
 
       <div className="webviewer" ref={viewer}></div>
       {id.length > 0 && f.name !== undefined ? (
-        <SendToBucketAndUser file={f} ids={id} prevFiles = {prev} prevToSign = {prevToSign} />
+        <SendToBucketAndUser
+          file={f}
+          ids={id}
+          prevFiles={prev}
+          prevToSign={prevToSign}
+          reason={fileName.nameOfFile}
+        />
       ) : (
         <div className="savedoc"> (Click Save on Document and Add Users) </div>
       )}
