@@ -25,13 +25,17 @@ const myBucket = new AWS.S3({
 export default function SendToBucketAndUser(props) {
   const [progress, setProgress] = useState(0);
   const loggedIn = window.localStorage.getItem("state");
-  const [addVendia_File_async, { loading: loading1 }] = useMutation(ADD_FILE_TO_VENDIA);
-  const [updateToSign, { loading }] = useMutation(UPDATE_SENDER_INFO_TOSIGN);
-  const [update, { loading: loading2 }] = useMutation(UPDATE_SENDER_INFO_);
+  const [addVendia_File_async, { loading: loading1 }] =
+    useMutation(ADD_FILE_TO_VENDIA);
+  const [updateToSign, { loading, data }] = useMutation(
+    UPDATE_SENDER_INFO_TOSIGN
+  );
+  const [update, { loading: loading2, data: data1 }] =
+    useMutation(UPDATE_SENDER_INFO_);
 
-  if (loading)  (<div> Loading...</div>);
-  if (loading1)  (<div> Loading...</div>);
-  if (loading2)  (<div> Loading...</div>);
+  if (loading) <div> Loading...</div>;
+  if (loading1) <div> Loading...</div>;
+  if (loading2) <div> Loading...</div>;
 
   const uploadFile = (file) => {
     console.log("Ran uploadFile in SendToBucketAndUser.js");
@@ -76,7 +80,7 @@ export default function SendToBucketAndUser(props) {
       timeSent: date,
       reasonForSigning: props.reason,
       isRejected: false,
-      isCompleted: false
+      isCompleted: false,
     };
     props.prevFiles.push(newFile);
     update({
@@ -121,9 +125,9 @@ export default function SendToBucketAndUser(props) {
           </button>
         </>
       ) : null}
-      {progress === 100 && !loading ? (
+      {progress === 100 && data && data1 && !loading && !loading2 ? (
         <div>
-          <Redirect to="/" />
+            <Redirect to="/" />
         </div>
       ) : null}
     </div>

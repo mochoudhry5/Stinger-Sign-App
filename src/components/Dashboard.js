@@ -1,11 +1,12 @@
-import ReqSignatures from "./SignaturesRequired/ReqSignatures";
+import RequiredSignaturesHeader from "./SignaturesRequired/RequiredSignaturesHeader";
 import React, { useEffect } from "react";
-import UploadDocs from "./UploadDocument/UploadDocs";
-import ManageDoc from "./ManageDocument/ManageDoc";
+import UploadDocumentHeader from "./UploadDocument/UploadDocumentHeader";
+import DocumentHistoryHeader from "./DocumentHistory/DocumentHistoryHeader";
 import { USER_INFO } from "../Graphql/Query";
 import { useQuery } from "@apollo/client";
 
-export default function Dashboard(props) {
+
+export default function Dashboard() {
   const loggedIn = window.localStorage.getItem("state");
   const { error, loading, data } = useQuery(USER_INFO, {
     variables: {
@@ -13,11 +14,12 @@ export default function Dashboard(props) {
     },
   });
 
+
   useEffect(() => {
     localStorage.removeItem("emails");
     localStorage.removeItem("ids")
-  }, [])
 
+  }, [])
 
   if (loading) return <div> Loading... </div>;
   if (error) return <div> ERROR: {error.message} </div>;
@@ -34,12 +36,11 @@ export default function Dashboard(props) {
       <h1 className="title" align="center">
         {data.get_UserInfo.userFirstName}'s Dashboard
       </h1>
-      <ReqSignatures />
+      <RequiredSignaturesHeader />
       <br />
-      <ManageDoc />
-
+      <DocumentHistoryHeader />
       <br />
-      <UploadDocs />
+      <UploadDocumentHeader />
       <br />
       {Footer()}
     </div>

@@ -15,7 +15,7 @@ const initValuesForFile = {
   nameOfFile: "",
 };
 
-export default function SendingPDF(props) {
+export default function SettingUpPDF(props) {
   const [userEmail, setUserEmail] = useState([]);
   const [formValue, setFormValue] = useState(initialValues);
   const [fileName, setFileName] = useState([initValuesForFile]);

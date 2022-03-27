@@ -4,10 +4,10 @@ import {
   GET_SENT_INFO_DOCS_TO_SIGN,
   LIST_ALL_FILES,
 } from "../../Graphql/Query";
-import ShowAllDocsToSign from "./ShowAllDocsToSign";
+import ShowAllDocumentsToSign from "./ShowAllDocumentsToSign";
 import { useLocation } from "react-router-dom";
 
-export default function AllDocsToSign() {
+export default function FindAllDocumentsToSign() {
   const [noSignDocs, setNoSignDocs] = useState(false);
   const loggedIn = window.localStorage.getItem("state");
   const location = useLocation();
@@ -57,7 +57,7 @@ export default function AllDocsToSign() {
           (document) => {
             if (!document.isSigned)
               return (
-                <ShowAllDocsToSign
+                <ShowAllDocumentsToSign
                   senderID={document.fromWho}
                   pdfName={document.pdfName}
                   reason={document.reasonForSigning}

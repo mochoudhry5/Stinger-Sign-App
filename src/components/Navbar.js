@@ -16,7 +16,7 @@ const navStyle = {
       <img className="nav--logo" src={Hornet} alt="StingerSign Logo" />
 
       <Link style={navStyle} to="/nav/dashboard">
-        <h3 className="nav--logo-text">Stinger Sign</h3>
+        <h3 className="nav--logo-text" onClick={() => window.location.reload(false)}>Stinger Sign</h3>
       </Link>
 
       <Link style={navStyle} to="/nav/profile">

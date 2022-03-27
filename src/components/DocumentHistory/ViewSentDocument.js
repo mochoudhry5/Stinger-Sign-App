@@ -10,7 +10,7 @@ AWS.config.update({
 });
 
 
-export default function Viewer(props) {
+export default function ViewSentDocument(props) {
     const [blobData, setBlobData] = useState()
 
     useEffect(() => {

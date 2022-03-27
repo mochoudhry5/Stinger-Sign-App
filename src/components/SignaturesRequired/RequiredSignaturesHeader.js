@@ -1,38 +1,39 @@
 import React, { useEffect, useState } from "react";
-import { useQuery } from "@apollo/client";
+import { useQuery, useLazyQuery } from "@apollo/client";
 import {
   GET_SENT_INFO_DOCS_TO_SIGN,
   LIST_ALL_FILES,
 } from "../../Graphql/Query";
 import { Link } from "react-router-dom";
 
-function ReqSignatures(props) {
+function RequiredSignaturesHeader(props) {
   const [count, setCount] = useState(0);
+  
   const loggedIn = window.localStorage.getItem("state");
   const { data: data2 } = useQuery(LIST_ALL_FILES);
-  const { data, loading } = useQuery(GET_SENT_INFO_DOCS_TO_SIGN, {
-    variables: {
-      id: loggedIn,
-    },
-  });
-
+  const [getDocumentsToSign, { data, loading }] = useLazyQuery(GET_SENT_INFO_DOCS_TO_SIGN);
 
   useEffect(() => {
+    let temp = 0; 
     console.log("USE EFFECT -> ReqSignatures");
-
+    getDocumentsToSign({
+      variables: {
+        id:loggedIn
+      }
+    })
     if (data) {
       if (data.get_UserInfo.documentsToSign) {
         data.get_UserInfo.documentsToSign.documentsToSignInfo.map(
           (document) => {
             if (!document.isSigned) {
-              setCount((count) => count + 1);
+              temp = temp + 1; 
+              setCount(temp)
             }
-            return null;
           }
-        );
+        )
       }
     }
-  }, [data]);
+  }, [data, loggedIn, getDocumentsToSign]);
 
   return (
     <Link
@@ -49,4 +50,4 @@ function ReqSignatures(props) {
     </Link>
   );
 }
-export default ReqSignatures;
+export default RequiredSignaturesHeader;

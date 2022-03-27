@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { DOCS_SENT_OR_SIGNED } from "../../Graphql/Query";
 import { useQuery } from "@apollo/client";
-import Viewer from "./Viewer"
+import ViewSentDocument from "./ViewSentDocument"
 
-function ShowAllDocsSent() {
+function AllDocumentsSentOrSigned() {
   const [toSign, setToSign] = useState(false);
   const loggedIn = window.localStorage.getItem("state");
   const { loading, data } = useQuery(DOCS_SENT_OR_SIGNED, {
@@ -31,7 +31,7 @@ function ShowAllDocsSent() {
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div>
+    <div className="Sig-Req-Page">
       {console.log(data)}
       <h2 className="titles-manage">Document History</h2>
       <br />
@@ -61,7 +61,7 @@ function ShowAllDocsSent() {
                     {document.isRejected ? (
                       <span className="rejected"> REJECTED </span>
                     ) : null}
-                    <Viewer pdfName={document.pdfName} />
+                    <ViewSentDocument pdfName={document.pdfName} />
                     <br />
                     <br />
                   </>
@@ -114,9 +114,10 @@ function ShowAllDocsSent() {
         ) : (
           <p className="nodocstosign"> No Signed Documents</p>
         )}
+        <br/>
       </div>
     </div>
   );
 }
 
-export default ShowAllDocsSent;
+export default AllDocumentsSentOrSigned;
