@@ -155,14 +155,15 @@
   margin-right: 140px;
   font-size: 20px;
   font-family: "DejaVu Sans Mono", monospace;
-  color: rgb(231, 199, 95);
+  color: rgb(0, 0, 0);
+  background-color: rgb(231, 199, 95);
 }
 
 
 .title-sends {
   font-weight: bold;
   font-size: 30px;
-  margin-right: 970px;
+  margin-right: 950px;
   margin-bottom: 100px;
   font-family: "DejaVu Sans Mono", monospace;
 }
@@ -194,4 +195,49 @@
 
 .rejected {
   color: red; 
+}
+
+.completed {
+  color: green;
+}
+
+.instructions {
+  font-weight: bold;
+  font-size: 25px;
+  margin-right: 750px;
+  margin-bottom: 70px;
+  margin-top: 95px;
+  font-family: "DejaVu Sans Mono", monospace;
+}
+
+.steps {
+  justify-content: left;
+  font-size: 20px;
+  margin-right: 750px;
+  margin-top: 120px;
+  margin-bottom: 50px;
+  font-family: "DejaVu Sans Mono", monospace;
+}
+
+.stepsnum {
+  font-weight: bold;
+  justify-content: left;
+  color: rgb(228, 192, 92);
+  font-size: 25px;
+  font-family: "DejaVu Sans Mono", monospace;
+}
+
+.title-view {
+  font-family: "DejaVu Sans Mono", monospace;
+  margin:10px;
+  margin-right: 590px;
+  font-size: 25px
+}
+
+.backclick2 {
+  font-size: 20px;
+  margin-right: 510px;
+  font-family: "DejaVu Sans Mono", monospace;
+  color: rgb(0, 0, 0);
+  background-color: rgb(231, 199, 95);
 }

@@ -16,14 +16,15 @@ export default function Dashboard(props) {
   useEffect(() => {
     localStorage.removeItem("emails");
     localStorage.removeItem("ids")
-    
   }, [])
+
 
   if (loading) return <div> Loading... </div>;
   if (error) return <div> ERROR: {error.message} </div>;
 
   const Footer = () => (
     <div className="footer">
+      {console.log("Ran Footer Code")}
       <p>©2022 StingerSign, LLC. No Rights Reserved.</p>
     </div>
   );

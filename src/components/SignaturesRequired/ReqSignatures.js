@@ -6,18 +6,20 @@ import {
 } from "../../Graphql/Query";
 import { Link } from "react-router-dom";
 
-function ReqSignatures() {
+function ReqSignatures(props) {
   const [count, setCount] = useState(0);
   const loggedIn = window.localStorage.getItem("state");
-  const { data: data2, loading: loading2 } = useQuery(LIST_ALL_FILES);
-  const { data, loading, refetch } = useQuery(GET_SENT_INFO_DOCS_TO_SIGN, {
+  const { data: data2 } = useQuery(LIST_ALL_FILES);
+  const { data, loading } = useQuery(GET_SENT_INFO_DOCS_TO_SIGN, {
     variables: {
       id: loggedIn,
     },
   });
 
+
   useEffect(() => {
     console.log("USE EFFECT -> ReqSignatures");
+
     if (data) {
       if (data.get_UserInfo.documentsToSign) {
         data.get_UserInfo.documentsToSign.documentsToSignInfo.map(
@@ -25,15 +27,12 @@ function ReqSignatures() {
             if (!document.isSigned) {
               setCount((count) => count + 1);
             }
+            return null;
           }
         );
       }
     }
   }, [data]);
-
-  if (loading) return <div> Loading...</div>;
-
-  if (loading2) return <div> Loading...</div>;
 
   return (
     <Link
@@ -44,7 +43,8 @@ function ReqSignatures() {
       }}
     >
       <div className="titles">
-        Signatures Required - <span className="red-sigreq"> {count} </span>
+        <span> Signatures Required - </span>
+        {!loading ? <span className="red-sigreq"> {count} </span> : null}
       </div>
     </Link>
   );

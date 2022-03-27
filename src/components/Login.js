@@ -13,6 +13,7 @@ function Login() {
     password: "",
   };
   const Auth = useContext(AuthApi);
+  const [toRefetchData, setToRefetchData] = useState(0);
   const [formError, setFormError] = useState("");
   const [formValues, setFormValues] = useState(initialValues);
   const { error, loading, data, refetch } = useQuery(ALL_USERS);
@@ -25,13 +26,18 @@ function Login() {
   };
 
   const handleChange = (e) => {
+    if(toRefetchData < 1) {
+      refetch()
+      console.log("Refetched")
+      setToRefetchData((toRefetchData) => toRefetchData + 1)
+
+    }
     setFormError("");
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
   };
 
   const handleSubmit = (e) => {
-    refetch();
     e.preventDefault();
     validateUser();
   };

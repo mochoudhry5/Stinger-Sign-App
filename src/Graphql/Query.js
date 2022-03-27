@@ -52,6 +52,7 @@ export const GET_SENT_INFO = gql`
           usersSentTo
           reasonForSigning
           isRejected
+          isCompleted
         }
       }
     }
@@ -117,6 +118,7 @@ export const DOCS_SENT_OR_SIGNED = gql`
           usersSentTo
           reasonForSigning
           isRejected
+          isCompleted
         }
       }
       documentsToSign {

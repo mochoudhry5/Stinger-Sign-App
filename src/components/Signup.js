@@ -26,8 +26,8 @@ function Signup() {
   const [add_UserInfo_async, {loading: l}] = useMutation(ADD_USER);
 
 
-  if (error) return <div> ERROR </div>;
   if (l) return <div>Loading...</div>;
+  if (error) return <div> ERROR </div>;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -86,14 +86,12 @@ function Signup() {
       formValues.password !== "Password must be at least 6 characters long") ||
       formValues.password.length <= 5
     ) {
-      console.log("ERROR(S)");
       setErr(true);
       e.preventDefault();
     } else {
       addUser();
       setErr(false);
       setIsSubmit(true);
-      console.log("Added User");
     }
   };
 
@@ -113,7 +111,7 @@ function Signup() {
   return (
     <div className="signup-form">
       <form onSubmit={handleSubmit}>
-        {isSubmit ? <Redirect to="/" /> : null}
+        {isSubmit ? (<Redirect to="/" />)  : null}
         <h2 className="login-logintext">Stinger Sign Up</h2>
         <div className="ui divider"></div>
         <div className="all-inputs">
@@ -214,7 +212,7 @@ function Signup() {
         </div>
         <span className="label"> Already have an account? </span>
         <Link className="link-login" to="/">
-          <span className="span-label" onClick={refetch}> Log In</span>
+          <span className="span-label"> Log In</span>
         </Link>
       </form>
     </div>

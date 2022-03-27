@@ -5,10 +5,7 @@ import "../../styles/sendingpdf.css";
 import SendToBucketAndUser from "./SendToBucketAndUser";
 import { ALL_USERS } from "../../Graphql/Query";
 import { useQuery } from "@apollo/client";
-import {
-  GET_SENT_INFO,
-  GET_SENT_INFO_DOCS_TO_SIGN,
-} from "../../Graphql/Query";
+import { GET_SENT_INFO, GET_SENT_INFO_DOCS_TO_SIGN } from "../../Graphql/Query";
 
 const initialValues = {
   email: "",
@@ -32,36 +29,29 @@ export default function SendingPDF(props) {
   const viewer = useRef(null);
   const [f, setFile] = useState({});
   let counter = 1;
-  const {
-    error: e,
-    loading: l,
-    data: d,
-  } = useQuery(GET_SENT_INFO, {
+  const { loading: l, data: d } = useQuery(GET_SENT_INFO, {
     variables: {
       id: loggedIn,
     },
   });
-  const {
-    error: error1,
-    loading: loading1,
-    data: data1,
-  } = useQuery(GET_SENT_INFO_DOCS_TO_SIGN, {
-    variables: {
-      id: loggedIn,
-    },
-  });
+  const { loading: loading1, data: data1 } = useQuery(
+    GET_SENT_INFO_DOCS_TO_SIGN,
+    {
+      variables: {
+        id: loggedIn,
+      },
+    }
+  );
 
-  if (l) <div>Loading...</div>;
-  if (e) <div>Error</div>;
+  if (l) (<div>Loading...</div>);
 
-  if (loading1) <div>Loading...</div>;
-  if (error1) <div>Error</div>;
+  if (loading1) (<div>Loading...</div>);
 
   useEffect(() => {
     if (localStorage.getItem("emails")) {
       setUserEmail(JSON.parse(localStorage.getItem("emails")));
     }
-  },[]);
+  }, []);
 
   useEffect(() => {
     WebViewer(
@@ -73,15 +63,18 @@ export default function SendingPDF(props) {
     ).then((instance) => {
       const { documentViewer, annotationManager } = instance.Core;
       const { Feature } = instance.UI;
-      instance.UI.disableElements(['toolbarGroup-Shapes']);
-      instance.UI.disableElements(['toolbarGroup-Edit']);
-      instance.UI.disableElements(['toolbarGroup-Insert']);
-      instance.UI.disableElements(['toolbarGroup-Annotate']);
-      instance.UI.enableFeatures([Feature.FilePicker]);
       instance.UI.disableFeatures([Feature.TextSelection]);
-      instance.UI.disableTools([ 'AnnotationCreateSticky', 'AnnotationCreateFreeText' ]);
+      instance.UI.disableTools([
+        "AnnotationCreateSticky",
+        "AnnotationCreateFreeText",
+      ]);
       instance.UI.setTheme("dark");
-      instance.UI.setToolbarGroup(instance.UI.ToolbarGroup.FORMS);
+      instance.UI.disableElements(["toolbarGroup-Shapes"]);
+      instance.UI.disableElements(["toolbarGroup-Edit"]);
+      instance.UI.disableElements(["toolbarGroup-Insert"]);
+      instance.UI.disableElements(["toolbarGroup-Annotate"]);
+      instance.UI.setToolbarGroup(instance.UI.ToolbarGroup.VIEW);
+      instance.UI.enableFeatures([Feature.FilePicker]);
       instance.UI.setHeaderItems((header) => {
         header.push({
           type: "actionButton",
@@ -105,34 +98,34 @@ export default function SendingPDF(props) {
 
   const setPrevFiles = () => {
     let tempArray = [];
-    if(d.get_UserInfo.documentsSent){
-    d.get_UserInfo.documentsSent.documentsSentInfo.map((document) => {
-      let tempObject = {};
-      tempObject.pdfName = document.pdfName;
-      tempObject.usersSentTo = document.usersSentTo;
-      tempObject.timeSent = document.timeSent;
-      tempObject.reasonForSigning = document.reasonForSigning;
-      tempObject.isRejected = document.isRejected;
-      tempArray.push(tempObject);
-    });
-  }
+    if (d.get_UserInfo.documentsSent) {
+      d.get_UserInfo.documentsSent.documentsSentInfo.map((document) => {
+        let tempObject = {};
+        tempObject.pdfName = document.pdfName;
+        tempObject.usersSentTo = document.usersSentTo;
+        tempObject.timeSent = document.timeSent;
+        tempObject.reasonForSigning = document.reasonForSigning;
+        tempObject.isRejected = document.isRejected;
+        tempArray.push(tempObject);
+      });
+    }
     setPrev(tempArray);
   };
 
   const setPrevToSignFiles = () => {
     let tempArray = [];
-    if(data1.get_UserInfo.documentsToSign){
-    data1.get_UserInfo.documentsToSign.documentsToSignInfo.map((document) => {
-      let tempObject = {};
-      tempObject.pdfName = document.pdfName;
-      tempObject.nextToSend = document.nextToSend;
-      tempObject.timeOfSend = document.timeOfSend;
-      tempObject.isSigned = document.isSigned;
-      tempObject.fromWho = document.fromWho;
-      tempObject.reasonForSigning = document.reasonForSigning;
-      tempArray.push(tempObject);
-    });
-  }
+    if (data1.get_UserInfo.documentsToSign) {
+      data1.get_UserInfo.documentsToSign.documentsToSignInfo.map((document) => {
+        let tempObject = {};
+        tempObject.pdfName = document.pdfName;
+        tempObject.nextToSend = document.nextToSend;
+        tempObject.timeOfSend = document.timeOfSend;
+        tempObject.isSigned = document.isSigned;
+        tempObject.fromWho = document.fromWho;
+        tempObject.reasonForSigning = document.reasonForSigning;
+        tempArray.push(tempObject);
+      });
+    }
     setPrevToSign(tempArray);
   };
 
