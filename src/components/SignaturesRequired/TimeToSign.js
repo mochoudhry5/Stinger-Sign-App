@@ -3,26 +3,19 @@ import WebViewer from "@pdftron/webviewer";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import SendingAfterSign from "./SendingAfterSign";
-import { GET_SENT_INFO, GET_SENT_INFO_DOCS_TO_SIGN } from "../../Graphql/Query";
+import { GET_SENT_INFO_DOCS_TO_SIGN } from "../../Graphql/Query";
 import { useQuery } from "@apollo/client";
 
 export default function TimeToSign(props) {
   const [file, setFile] = useState({});
   const [fromWho, setFromWho] = useState("");
   const [nextUsers, setNextUsers] = useState();
-  const [reason, setReason] = useState("")
   const location = useLocation();
   const blobData = location.state.blobData;
   const pdfName = location.state.pdfName;
   const viewer = useRef(null);
-  const [prev, setPrev] = useState([]);
   const [prevToSign, setPrevToSign] = useState([]);
   const loggedIn = window.localStorage.getItem("state");
-  const { loading: l, data: d } = useQuery(GET_SENT_INFO, {
-    variables: {
-      id: loggedIn,
-    },
-  });
   const { loading: loading1, data: data1 } = useQuery(
     GET_SENT_INFO_DOCS_TO_SIGN,
     {
@@ -32,35 +25,12 @@ export default function TimeToSign(props) {
     }
   );
 
-  if (l) <div>Loading...</div>;
-
-  if (loading1) <div>Loading...</div>;
+  if (loading1) (<div>Loading...</div>);
 
   useEffect(() => {
     console.log("USE EFFECT -> TimeTOSIGN");
     console.log(pdfName)
-    let tempArray = [];
-    if (d) {
-      if (d.get_UserInfo.documentsSent) {
-        d.get_UserInfo.documentsSent.documentsSentInfo.map((document) => {
-          let tempObject = {};
-          if(pdfName === document.pdfName) {
-            let tempReason = document.reason; 
-            setReason(tempReason);
-          }
-          tempObject.pdfName = document.pdfName;
-          tempObject.usersSentTo = document.usersSentTo;
-          tempObject.timeSent = document.timeSent;
-          tempObject.reasonForSigning = document.reasonForSigning;
-          tempObject.isRejected = document.isRejected;
-          tempObject.isCompleted = document.isCompleted;
-          tempArray.push(tempObject);
-        });
-      }
-    }
-    setPrev(tempArray);
-
-    tempArray = [];
+    let tempArray = []
     if (data1) {
       if (data1.get_UserInfo.documentsToSign) {
         data1.get_UserInfo.documentsToSign.documentsToSignInfo.map(
@@ -85,10 +55,9 @@ export default function TimeToSign(props) {
           }
         );
       }
+      setPrevToSign(tempArray);
     }
-    setPrevToSign(tempArray);
-
-  }, [d, data1, pdfName]);
+  }, [data1, pdfName]);
 
   console.log(fromWho)
 
@@ -149,7 +118,7 @@ export default function TimeToSign(props) {
         <p className="stepsnum">Step 5:</p> Hit Save And Send The Document{" "}
         <br /> <br />
       </div>
-      <SendingAfterSign file={file} prevFiles={prev} prevToSign={prevToSign} fromWho={fromWho} nextUsers={nextUsers} reason={reason} />
+      <SendingAfterSign file={file} pdfName={pdfName} prevToSign={prevToSign} fromWho={fromWho} nextUsers={nextUsers} />
       <div className="webviewer" ref={viewer}></div>
     </div>
   );

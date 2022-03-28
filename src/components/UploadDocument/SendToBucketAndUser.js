@@ -27,10 +27,10 @@ export default function SendToBucketAndUser(props) {
   const loggedIn = window.localStorage.getItem("state");
   const [addVendia_File_async, { loading: loading1 }] =
     useMutation(ADD_FILE_TO_VENDIA);
-  const [updateToSign, { loading, data }] = useMutation(
+  const [updateToSign, { loading }] = useMutation(
     UPDATE_SENDER_INFO_TOSIGN
   );
-  const [update, { loading: loading2, data: data1 }] =
+  const [update, { loading: loading2 }] =
     useMutation(UPDATE_SENDER_INFO_);
 
   if (loading) <div> Loading...</div>;
@@ -125,7 +125,7 @@ export default function SendToBucketAndUser(props) {
           </button>
         </>
       ) : null}
-      {progress === 100 && data && data1 && !loading && !loading2 ? (
+      {progress === 100 ? (
         <div>
             <Redirect to="/" />
         </div>

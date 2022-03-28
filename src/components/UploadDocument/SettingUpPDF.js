@@ -106,6 +106,7 @@ export default function SettingUpPDF(props) {
         tempObject.timeSent = document.timeSent;
         tempObject.reasonForSigning = document.reasonForSigning;
         tempObject.isRejected = document.isRejected;
+        tempObject.isCompleted = document.isCompleted;
         tempArray.push(tempObject);
       });
     }

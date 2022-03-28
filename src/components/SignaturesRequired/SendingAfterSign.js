@@ -32,11 +32,13 @@ export default function SendingAfterSign(props) {
   const [updateToSign] = useMutation(UPDATE_SENDER_INFO_TOSIGN);
   const [getNextUserInfo, { data: data1 }] = useLazyQuery(GET_SENT_INFO_DOCS_TO_SIGN);
 
-  const { data } = useQuery(DOCS_SENT_OR_SIGNED, {
+  const { data, loading } = useQuery(DOCS_SENT_OR_SIGNED, {
     variables: {
       id: props.fromWho,
     },
   });
+
+  if (loading) (<div>Loading...</div>);
 
   const uploadFile = (file) => {
     console.log("Ran uploadFile in SendToBucketAndUser.js");
@@ -69,7 +71,7 @@ export default function SendingAfterSign(props) {
     });
     putInUserDocToSign(file);
     if (props.nextUsers.length > 0) {
-      getDataForNextUser(file);
+      getDataForNextUser(file)
     } else {
       changeOrginalInfo(file);
     }
@@ -86,12 +88,12 @@ export default function SendingAfterSign(props) {
 
 
   const getDataForNextUser = (file) => {
-    console.log(props.nextUsers[0])
     getNextUserInfo({
       variables: {
         id: props.nextUsers[0]
       }
     })
+    getReasonForDocument(file);
     putInNextUserToSign(file)
   }
 
@@ -119,6 +121,7 @@ export default function SendingAfterSign(props) {
 
   const putInNextUserToSign = (file) => {
     const tempArray = setNextUserDocToSign(file)
+    const reason = getReasonForDocument(file)
     const d = new Date();
     const date = d.toString();
     const newFile = {
@@ -127,7 +130,7 @@ export default function SendingAfterSign(props) {
       isSigned: false,
       nextToSend: props.nextUsers.slice(1), // Need to grab nextToSend data
       timeOfSend: date,
-      reasonForSigning: props.reason,
+      reasonForSigning: reason,
     };
     tempArray.push(newFile);
     updateToSign({
@@ -141,7 +144,7 @@ export default function SendingAfterSign(props) {
   const noMoreSignatures = (file) => {
     let tempArray = [];
     if (data) {
-      if (data.get_UserInfo.documentsToSign) {
+      if (data.get_UserInfo.documentsSent) {
         data.get_UserInfo.documentsSent.documentsSentInfo.map((document) => {
           let tempObject = {};
           if (file.name === document.pdfName) {
@@ -169,6 +172,23 @@ export default function SendingAfterSign(props) {
         documentsSentInfo: tempArray,
       },
     });
+  };
+
+  const getReasonForDocument = (file) => {
+    console.log(data)
+    let temp = "N"
+    if (data) {
+      if (data.get_UserInfo.documentsSent) {
+        data.get_UserInfo.documentsSent.documentsSentInfo.map(
+          (document) => {
+            if(document.pdfName === props.pdfName) {
+              temp = document.reasonForSigning; 
+            }
+          }
+        );
+      } 
+    }
+    return temp;
   };
 
 
