@@ -107,10 +107,8 @@ export default function RejectDocument() {
       <h2 className="titles"> Reject Document </h2>
       {!rejectDocument ? (
         <>
-          <p className="rejectbody">
-            {" "}
-            You will be rejecting this document.
-            <br /> Are you sure?{" "}
+          <p className="rejectbody"> You will be rejecting this document.
+            <br /> Are you sure?
           </p>
           <span>
             <button className="btnyes" onClick={handleOnClick}>

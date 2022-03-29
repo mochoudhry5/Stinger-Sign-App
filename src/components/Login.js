@@ -6,6 +6,7 @@ import { useQuery } from "@apollo/client";
 import { Link } from "react-router-dom";
 import "../styles/loginstyle.css";
 import Hornet from "../images/logo.png";
+import axios from "axios";
 
 function Login() {
   const initialValues = {
@@ -26,11 +27,10 @@ function Login() {
   };
 
   const handleChange = (e) => {
-    if(toRefetchData < 1) {
-      refetch()
-      console.log("Refetched")
-      setToRefetchData((toRefetchData) => toRefetchData + 1)
-
+    if (toRefetchData < 1) {
+      refetch();
+      console.log("Refetched");
+      setToRefetchData((toRefetchData) => toRefetchData + 1);
     }
     setFormError("");
     const { name, value } = e.target;
@@ -42,21 +42,48 @@ function Login() {
     validateUser();
   };
 
-  const validateUser = () => {
+  const validateUser = async () => {
     let errors = "";
-    data.list_UserInfoItems._UserInfoItems.map((item) => {
-      if (
-        item.userEmail === formValues.email.toLowerCase() &&
-        item.userPassword === formValues.password
-      ) {
-        handleOnClick();
-        Auth.setLoggedInUser(item._id);
-        window.localStorage.setItem("state", item._id);
-      } else {
+    data.list_UserInfoItems._UserInfoItems.map(async (item) => {
+      if (item.userEmail === formValues.email.toLowerCase()) {
+        const correctPassword = await checkPasswordWithHashedPassword(
+          item.userPassword
+        );
+        if (correctPassword) {
+          handleOnClick();
+          Auth.setLoggedInUser(item._id);
+          window.localStorage.setItem("state", item._id);
+        }
+       else {
         errors = "Email or password is incorrect";
         setFormError(errors);
       }
+    }
     });
+  };
+
+  const checkPasswordWithHashedPassword = async (vendiaStoredPassword) => {
+    let temp = false;
+    const options = {
+      method: "GET",
+      url: "http://localhost:8000/comparePassword",
+      params: {
+        plainPassword: formValues.password,
+        hashedPassword: vendiaStoredPassword,
+      },
+    };
+
+    await axios
+      .request(options)
+      .then((response) => {
+        console.log(response.data);
+        temp = response.data;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    return temp;
   };
 
   return (
@@ -97,6 +124,7 @@ function Login() {
         </div>
         <span className="link-login1"> Don't have an Account? </span>
         <Link className="link-login" to="/signup">
+          {/* Maybe get ride of this line */}
           <span onClick={refetch}> Sign Up </span>
         </Link>
         <br />

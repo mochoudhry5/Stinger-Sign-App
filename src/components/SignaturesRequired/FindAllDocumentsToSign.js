@@ -5,13 +5,10 @@ import {
   LIST_ALL_FILES,
 } from "../../Graphql/Query";
 import ShowAllDocumentsToSign from "./ShowAllDocumentsToSign";
-import { useLocation } from "react-router-dom";
 
 export default function FindAllDocumentsToSign() {
   const [noSignDocs, setNoSignDocs] = useState(false);
   const loggedIn = window.localStorage.getItem("state");
-  const location = useLocation();
-  const fileData = location.state.fileData;
   const { loading: loading1, data: data1 } = useQuery(LIST_ALL_FILES);
   const { data, error, loading } = useQuery(GET_SENT_INFO_DOCS_TO_SIGN, {
     variables: {
@@ -62,7 +59,7 @@ export default function FindAllDocumentsToSign() {
                   pdfName={document.pdfName}
                   reason={document.reasonForSigning}
                   time={document.timeOfSend.substring(3, 16)}
-                  dataFile={fileData}
+                  // May need tp check this line 
                   fileId={findFileId(document.pdfName)}
                 />
               );

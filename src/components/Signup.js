@@ -3,7 +3,9 @@ import { Link, Redirect } from "react-router-dom";
 import { ALL_USERS } from "../Graphql/Query";
 import { ADD_USER } from "../Graphql/Mutations";
 import { useQuery, useMutation } from "@apollo/client";
+import axios from 'axios'
 import "../styles/signupform.css";
+
 
 function Signup() {
   const initialValues = {
@@ -95,18 +97,36 @@ function Signup() {
     }
   };
 
-  const addUser = () => {
+  const addUser = async () => {
+    const hashedPW = await getHashedPassword();
     add_UserInfo_async({
       variables: {
         userEmail: formValues.email.toLowerCase(),
         userFirstName: formValues.fname,
         userLastName: formValues.lname,
-        userPassword: formValues.password,
+        userPassword: hashedPW, 
         userCompany: formValues.company,
         userJobTitle: formValues.jobtitle,
       },
     });
   };
+
+  const getHashedPassword = async () => {
+    let tempPW = "";
+    const options = {
+        method: 'GET',
+        url: 'http://localhost:8000/hashedPassword',
+        params: {plainPassword: formValues.password},
+    }
+
+     await axios.request(options).then((response) => {
+      tempPW = response.data; 
+
+    }).catch((error) => {
+        console.error(error)
+    })
+    return tempPW
+}
 
   return (
     <div className="signup-form">

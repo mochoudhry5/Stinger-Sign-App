@@ -59,8 +59,6 @@ export default function TimeToSign(props) {
     }
   }, [data1, pdfName]);
 
-  console.log(fromWho)
-
   useEffect(() => {
     WebViewer(
       {
