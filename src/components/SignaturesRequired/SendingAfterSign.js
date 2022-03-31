@@ -27,10 +27,12 @@ const myBucket = new AWS.S3({
 export default function SendingAfterSign(props) {
   const [progress, setProgress] = useState(0);
   const loggedIn = window.localStorage.getItem("state");
-  const [update] = useMutation(UPDATE_SENDER_INFO_);
-  const [addVendia_File_async] = useMutation(ADD_FILE_TO_VENDIA);
-  const [updateToSign] = useMutation(UPDATE_SENDER_INFO_TOSIGN);
-  const [getNextUserInfo, { data: data1 }] = useLazyQuery(GET_SENT_INFO_DOCS_TO_SIGN);
+  const [update, { loading: loading1 }] = useMutation(UPDATE_SENDER_INFO_);
+  const [addVendia_File_async, {loading: loading3 }] = useMutation(ADD_FILE_TO_VENDIA);
+  const [updateToSign, {loading: loading4}] = useMutation(UPDATE_SENDER_INFO_TOSIGN);
+  const [getNextUserInfo, { data: data1, loading: loading5 }] = useLazyQuery(
+    GET_SENT_INFO_DOCS_TO_SIGN
+  );
 
   const { data, loading } = useQuery(DOCS_SENT_OR_SIGNED, {
     variables: {
@@ -38,7 +40,13 @@ export default function SendingAfterSign(props) {
     },
   });
 
-  if (loading) (<div>Loading...</div>);
+  if (loading || loading1) {
+    return (
+      <button disabled className="button-senduser-sign">
+        Loading...
+      </button>
+    );
+  }
 
   const uploadFile = (file) => {
     console.log("Ran uploadFile in SendToBucketAndUser.js");
@@ -52,11 +60,11 @@ export default function SendingAfterSign(props) {
     myBucket
       .putObject(params)
       .on("httpUploadProgress", (evt) => {
+        sendToVendia(file);
         setProgress(Math.round((evt.loaded / evt.total) * 100));
       })
       .send((err) => {
         if (err) console.log(err);
-        else sendToVendia(file);
       });
   };
 
@@ -71,7 +79,7 @@ export default function SendingAfterSign(props) {
     });
     putInUserDocToSign(file);
     if (props.nextUsers.length > 0) {
-      getDataForNextUser(file)
+      getDataForNextUser(file);
     } else {
       changeOrginalInfo(file);
     }
@@ -86,16 +94,15 @@ export default function SendingAfterSign(props) {
     });
   };
 
-
   const getDataForNextUser = (file) => {
     getNextUserInfo({
       variables: {
-        id: props.nextUsers[0]
-      }
-    })
+        id: props.nextUsers[0],
+      },
+    });
     getReasonForDocument(file);
-    putInNextUserToSign(file)
-  }
+    putInNextUserToSign(file);
+  };
 
   const setNextUserDocToSign = (file) => {
     let tempArray = [];
@@ -120,8 +127,8 @@ export default function SendingAfterSign(props) {
   };
 
   const putInNextUserToSign = (file) => {
-    const tempArray = setNextUserDocToSign(file)
-    const reason = getReasonForDocument(file)
+    const tempArray = setNextUserDocToSign(file);
+    const reason = getReasonForDocument(file);
     const d = new Date();
     const date = d.toString();
     const newFile = {
@@ -165,7 +172,7 @@ export default function SendingAfterSign(props) {
   };
 
   const changeOrginalInfo = (file) => {
-    let tempArray = noMoreSignatures(file)
+    let tempArray = noMoreSignatures(file);
     update({
       variables: {
         id: props.fromWho,
@@ -175,23 +182,19 @@ export default function SendingAfterSign(props) {
   };
 
   const getReasonForDocument = (file) => {
-    console.log(data)
-    let temp = "N"
+    console.log(data);
+    let temp = "N";
     if (data) {
       if (data.get_UserInfo.documentsSent) {
-        data.get_UserInfo.documentsSent.documentsSentInfo.map(
-          (document) => {
-            if(document.pdfName === props.pdfName) {
-              temp = document.reasonForSigning; 
-            }
+        data.get_UserInfo.documentsSent.documentsSentInfo.map((document) => {
+          if (document.pdfName === props.pdfName) {
+            temp = document.reasonForSigning;
           }
-        );
-      } 
+        });
+      }
     }
     return temp;
   };
-
-
 
   return (
     <div>
@@ -203,10 +206,17 @@ export default function SendingAfterSign(props) {
               uploadFile(props.file);
             }}
           >
-            Send to User(s)
+            Send Document
           </button>
         </>
-      ) : <p> Sent! </p>}
+      ) :  loading || loading3 || loading4 || loading5 ? (
+        <button
+        disabled
+            className="button-senduser-sign"
+          >
+           Loading...
+          </button>
+      ) : <p className="signedandsent">Signed and Sent!</p> }
     </div>
   );
 }

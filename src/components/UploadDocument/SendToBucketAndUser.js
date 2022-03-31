@@ -27,15 +27,17 @@ export default function SendToBucketAndUser(props) {
   const loggedIn = window.localStorage.getItem("state");
   const [addVendia_File_async, { loading: loading1 }] =
     useMutation(ADD_FILE_TO_VENDIA);
-  const [updateToSign, { loading }] = useMutation(
-    UPDATE_SENDER_INFO_TOSIGN
-  );
-  const [update, { loading: loading2 }] =
+  const [updateToSign, { loading, data: data1 }] = useMutation(UPDATE_SENDER_INFO_TOSIGN);
+  const [update, { loading: loading2, data }] =
     useMutation(UPDATE_SENDER_INFO_);
 
-  if (loading) <div> Loading...</div>;
-  if (loading1) <div> Loading...</div>;
-  if (loading2) <div> Loading...</div>;
+  if (loading || loading1 || loading2) {
+    return (
+      <button disabled className="button-senduser">
+        Loading...
+      </button>
+    );
+  }
 
   const uploadFile = (file) => {
     console.log("Ran uploadFile in SendToBucketAndUser.js");
@@ -124,12 +126,13 @@ export default function SendToBucketAndUser(props) {
             Send to User(s)
           </button>
         </>
-      ) : null}
-      {progress === 100 ? (
-        <div>
-            <Redirect to="/" />
-        </div>
-      ) : null}
+      ) : (!data && !data1) || loading || loading1 || loading2 ? (
+        <button disabled className="button-senduser">
+          Loading...
+        </button>
+      ) : (
+        <Redirect to="/nav/signdocuments/sentsuccess" />
+      )}
     </div>
   );
 }

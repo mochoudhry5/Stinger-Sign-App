@@ -17,6 +17,7 @@ import ViewDocument from "./components//SignaturesRequired/ViewDocument";
 import SendToBucketAndUser from "./components/UploadDocument/SendToBucketAndUser";
 import TimeToSign from "./components//SignaturesRequired/TimeToSign";
 import AllDocumentsSentOrSigned from "./components/DocumentHistory/AllDocumentsSentOrSigned"
+import SentSuccessfully from "./components/UploadDocument/SentSuccessfully"
 import React, { useState, useContext, useEffect } from "react";
 import AuthApi from "./AuthApi";
 import Cookies from "js-cookie";
@@ -81,6 +82,7 @@ const Routes = () => {
       <ProtectedRoute path="/nav/signdocuments/viewdocument" auth={Auth.auth} component={ViewDocument} />
       <ProtectedRoute path="/nav/managedocs" auth={Auth.auth} component={AllDocumentsSentOrSigned} />
       <ProtectedRoute path="/nav/signdocuments/rejectdocument" auth={Auth.auth} component={RejectDocument} />
+      <ProtectedRoute path="/nav/signdocuments/sentsuccess" auth={Auth.auth} component={SentSuccessfully} />
     </div>
   );
 };

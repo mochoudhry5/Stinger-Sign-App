@@ -44,21 +44,18 @@ function Login() {
 
   const validateUser = async () => {
     let errors = "";
-    data.list_UserInfoItems._UserInfoItems.map(async (item) => {
-      if (item.userEmail === formValues.email.toLowerCase()) {
-        const correctPassword = await checkPasswordWithHashedPassword(
-          item.userPassword
-        );
-        if (correctPassword) {
+    setFormError("")
+    await data.list_UserInfoItems._UserInfoItems.map(async (item) => {
+      const correctPassword = await checkPasswordWithHashedPassword(item.userPassword);
+      if (item.userEmail === formValues.email.toLowerCase() && correctPassword) {
           handleOnClick();
           Auth.setLoggedInUser(item._id);
           window.localStorage.setItem("state", item._id);
         }
-       else {
-        errors = "Email or password is incorrect";
-        setFormError(errors);
+      else {
+          errors = "Email or password is incorrect";
+          setFormError(errors);
       }
-    }
     });
   };
 
@@ -76,7 +73,6 @@ function Login() {
     await axios
       .request(options)
       .then((response) => {
-        console.log(response.data);
         temp = response.data;
       })
       .catch((error) => {

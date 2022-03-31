@@ -280,7 +280,7 @@ export default function SettingUpPDF(props) {
       <div className="printemails">
         {userEmail.map((i) => {
           return (
-            <div>
+            <div key={i} >
               <span className="counter"> {counter++}. </span>
               <span> {i} </span>
               <span className="delete-button" email={i} onClick={handleRemove}>

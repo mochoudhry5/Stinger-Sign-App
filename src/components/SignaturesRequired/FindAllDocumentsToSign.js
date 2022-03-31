@@ -7,7 +7,7 @@ import {
 import ShowAllDocumentsToSign from "./ShowAllDocumentsToSign";
 
 export default function FindAllDocumentsToSign() {
-  const [noSignDocs, setNoSignDocs] = useState(false);
+  const [noSignDocs, setNoSignDocs] = useState(true);
   const loggedIn = window.localStorage.getItem("state");
   const { loading: loading1, data: data1 } = useQuery(LIST_ALL_FILES);
   const { data, error, loading } = useQuery(GET_SENT_INFO_DOCS_TO_SIGN, {
@@ -18,6 +18,7 @@ export default function FindAllDocumentsToSign() {
 
   useEffect(() => {
     console.log("USE EFFECT -> AllDocsToSign")
+    setNoSignDocs(false)
     if (data) {
       if (data.get_UserInfo.documentsToSign) {
         data.get_UserInfo.documentsToSign.documentsToSignInfo.map(
@@ -28,7 +29,7 @@ export default function FindAllDocumentsToSign() {
           }
         );
       }
-    }
+  }
   }, [data]);
 
   if (loading) return <div>Loading...</div>;
@@ -50,21 +51,24 @@ export default function FindAllDocumentsToSign() {
     <div className="Sig-Req-Page">
       <h1 className="sig-req">Signatures Required</h1>
       {noSignDocs ? (
+        data.get_UserInfo.documentsToSign ? (
         data.get_UserInfo.documentsToSign.documentsToSignInfo.map(
           (document) => {
             if (!document.isSigned)
               return (
+                <div key={document.pdfName} >
                 <ShowAllDocumentsToSign
                   senderID={document.fromWho}
                   pdfName={document.pdfName}
                   reason={document.reasonForSigning}
                   time={document.timeOfSend.substring(3, 16)}
-                  // May need tp check this line 
                   fileId={findFileId(document.pdfName)}
                 />
+                </div>
               );
           }
         )
+        ): null
       ) : (
         <p className="noDocsToSign"> No Documents To Sign...Sadly </p>
       )}

@@ -124,6 +124,7 @@
   font-family: "DejaVu Sans Mono", monospace;
   margin:10px;
   font-size: 30px;
+  color: rgb(209, 191, 28);
 
 
 }
@@ -246,4 +247,71 @@
 
 .documenthistory {
   height: auto;
+}
+
+.signedandsent {
+  font-weight: bold;
+  justify-content: center;
+  margin-right: 750px;
+  color: rgb(55, 138, 34);
+  font-size: 25px;
+  font-family: "DejaVu Sans Mono", monospace;
+}
+
+.signedandsentupload {
+  font-weight: bold;
+  justify-content: center;
+  margin-top: 300px;
+  margin-right: 720px;
+  color: rgb(51, 211, 11);
+  font-size: 45px;
+  font-family: "DejaVu Sans Mono", monospace;
+}
+
+.signedandsentupload2 {
+  font-weight: bold;
+  justify-content: center;
+  margin-top: 50px;
+  margin-right: 740px;
+  color: rgb(252, 226, 84);
+  font-size: 25px;
+  font-family: "DejaVu Sans Mono", monospace;
+  text-decoration: underline;
+}
+
+
+
+.tablecss {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 60px;
+  margin-top: 20px;
+}
+  
+table {
+  border: 5px solid #e6c946c5;
+  width: 1300px;
+  height: 200px;
+}
+  
+th {
+  border-bottom: 4px solid rgb(0, 0, 0);
+}
+  
+td {
+  text-align: center;
+}
+
+.tableheader {
+  font-size: 33px;
+  background-color: #e6c946c5;
+  color: rgb(0, 0, 0);
+}
+
+
+.tablehead {
+  color: black;
+  background-color:rgb(236, 225, 225);
 }

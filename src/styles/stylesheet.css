@@ -192,3 +192,11 @@ margin-right:55px;
 .webviewer-view {
   height: 720px;
 }
+
+.titles-secondary {
+  font-family: "DejaVu Sans Mono", monospace;
+  margin:10px;
+  font-size: 25px;
+  text-decoration:underline;
+
+}

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { DOCS_SENT_OR_SIGNED } from "../../Graphql/Query";
 import { useQuery } from "@apollo/client";
-import ViewSentDocument from "./ViewSentDocument"
+import ViewSentDocument from "./ViewSentDocument";
+import GetSenderFirstName from "./GetSenderFirstName";
 
 function AllDocumentsSentOrSigned() {
   const [toSign, setToSign] = useState(false);
@@ -11,6 +12,7 @@ function AllDocumentsSentOrSigned() {
       id: loggedIn,
     },
   });
+  
 
   useEffect(() => {
     console.log("USE EFFECT -> ShowAllDocsSent");
@@ -27,7 +29,6 @@ function AllDocumentsSentOrSigned() {
     }
   }, [data]);
 
-
   if (loading) return <div>Loading...</div>;
 
   return (
@@ -38,35 +39,52 @@ function AllDocumentsSentOrSigned() {
       <br />
       {/* DOCUMENTS SENT */}
       <div className="toSignDocs">
-        <h3 className="titles-temp"> Sent Documents</h3>
         {data.get_UserInfo.documentsSent ? (
           data.get_UserInfo.documentsSent.documentsSentInfo ? (
             data.get_UserInfo.documentsSent.documentsSentInfo.length > 0 ? (
-              data.get_UserInfo.documentsSent.documentsSentInfo.map(
-                (document) => (
-                  <>
-                    &nbsp; Subject:
-                    <span className="headdoc">
-                      {" "}
-                      {document.reasonForSigning}{" "}
-                    </span>
-                    Sent:
-                    <span className="headdoc">
-                      {" "}
-                      {document.timeSent.substring(0, 25)}
-                    </span>
-                    {document.isCompleted ? (
-                      <span className="completed"> COMPLETED </span>
-                    ) : null}
-                    {document.isRejected ? (
-                      <span className="rejected"> REJECTED </span>
-                    ) : null}
-                    <ViewSentDocument pdfName={document.pdfName} />
-                    <br />
-                    <br />
-                  </>
-                )
-              )
+              <div className="tablecss">
+                <table>
+                <th className="tableheader" colspan="5">Documents Sent</th>
+                  <tr>
+                    
+                    <th className="tablehead">Document Subject</th>
+                    <th className="tablehead">Sent Date</th>
+                    <th className="tablehead">Completed? </th>
+                    <th className="tablehead">Rejected?</th>
+                    <th className="tablehead">View Current Document</th>
+                  </tr>
+                  {data.get_UserInfo.documentsSent.documentsSentInfo.map(
+                    (document) => (
+                      <>
+                        <tr>
+                          <td>{document.reasonForSigning}</td>
+                          <td>{document.timeSent.substring(3, 16)}</td>
+                          <td>
+                            {" "}
+                            {document.isCompleted ? (
+                              <span className="completed"> YES </span>
+                            ) : (
+                              <span className="rejected"> NO </span>
+                            )}
+                          </td>
+                          <td>
+                            {document.isRejected ? (
+                              <span className="rejected"> YES </span>
+                            ) : (
+                              <span className="completed"> NO </span>
+                            )}
+                          </td>
+                          <td>
+                            {" "}
+                            <ViewSentDocument pdfName={document.pdfName} />{" "}
+                          </td>
+                        </tr>
+                      </>
+                    )
+                  )}
+            
+                </table>
+              </div>
             ) : (
               <p className="nodocssent"> No Sent Documents</p>
             )
@@ -76,32 +94,34 @@ function AllDocumentsSentOrSigned() {
         ) : (
           <p className="nodocssent"> No Sent Documents</p>
         )}
-        <hr className="hr-manage" />
+        {/* <hr className="hr-manage" /> */}
         {/* DOCUMENTS SIGNED */}
-        <h3 className="titles-temp"> Signed Documents</h3>
         {data.get_UserInfo.documentsToSign ? (
           data.get_UserInfo.documentsToSign.documentsToSignInfo ? (
             data.get_UserInfo.documentsToSign.documentsToSignInfo.length > 0 ? (
               toSign ? (
-                data.get_UserInfo.documentsToSign.documentsToSignInfo.map(
-                  (document) =>
-                    document.isSigned ? (
-                      <>
-                        &nbsp; Subject:
-                        <span className="headdoc">
-                          {" "}
-                          {document.reasonForSigning}{" "}
-                        </span>
-                        Sent:
-                        <span className="headdoc">
-                          {" "}
-                          {document.timeOfSend.substring(0, 25)}{" "}
-                        </span>
-                        <br />
-                        <br />
-                      </>
-                    ) : null
-                )
+                <div className="tablecss">
+                  <table>
+                  <th className="tableheader" colSpan="3">Documents Signed</th>
+                    <tr>
+                      <th className="tablehead">Sender</th>
+                      <th className="tablehead">Document Subject</th>
+                      <th className="tablehead">Sent Date</th>
+                    </tr>
+                    {data.get_UserInfo.documentsToSign.documentsToSignInfo.map(
+                      (document) =>
+                        document.isSigned ? (
+                          <>
+                            <tr>
+                            <td><GetSenderFirstName fromWho={document.fromWho} /> </td>
+                              <td>{document.reasonForSigning}</td>
+                              <td>{document.timeOfSend.substring(3, 16)}</td>
+                            </tr>
+                          </>
+                        ) : null
+                    )}
+                  </table>
+                </div>
               ) : (
                 <p className="nodocstosign"> No Signed Documents</p>
               )
@@ -114,7 +134,7 @@ function AllDocumentsSentOrSigned() {
         ) : (
           <p className="nodocstosign"> No Signed Documents</p>
         )}
-        <br/>
+        <br />
       </div>
     </div>
   );
