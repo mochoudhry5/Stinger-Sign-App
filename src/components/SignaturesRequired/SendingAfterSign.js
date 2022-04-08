@@ -6,9 +6,9 @@ import {
   DOCS_SENT_OR_SIGNED,
 } from "../../Graphql/Query";
 import {
-  ADD_FILE_TO_VENDIA,
   UPDATE_SENDER_INFO_TOSIGN,
   UPDATE_SENDER_INFO_,
+  UPDATE_FILE
 } from "../../Graphql/Mutations";
 
 const S3_BUCKET = process.env.REACT_APP_S3_BUCKET_NAME;
@@ -28,8 +28,8 @@ export default function SendingAfterSign(props) {
   const [progress, setProgress] = useState(0);
   const loggedIn = window.localStorage.getItem("state");
   const [update, { loading: loading1 }] = useMutation(UPDATE_SENDER_INFO_);
-  const [addVendia_File_async, {loading: loading3 }] = useMutation(ADD_FILE_TO_VENDIA);
   const [updateToSign, {loading: loading4}] = useMutation(UPDATE_SENDER_INFO_TOSIGN);
+  const [updateFile, {loading: loading6}] = useMutation(UPDATE_FILE);
   const [getNextUserInfo, { data: data1, loading: loading5 }] = useLazyQuery(
     GET_SENT_INFO_DOCS_TO_SIGN
   );
@@ -69,12 +69,11 @@ export default function SendingAfterSign(props) {
   };
 
   const sendToVendia = (file) => {
-    addVendia_File_async({
+    console.log(props.fileID)
+    updateFile({
       variables: {
-        sourceBucket: S3_BUCKET,
-        sourceKey: file.name,
-        sourceRegion: REGION,
-        destinationKey: file.name,
+        id: props.fileID,
+        syncMode: "NODE_LEDGERED"
       },
     });
     putInUserDocToSign(file);
@@ -209,7 +208,7 @@ export default function SendingAfterSign(props) {
             Send Document
           </button>
         </>
-      ) :  loading || loading3 || loading4 || loading5 ? (
+      ) :  loading || loading6 || loading4 || loading5 ? (
         <button
         disabled
             className="button-senduser-sign"

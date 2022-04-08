@@ -72,6 +72,7 @@ export default function RejectDocument() {
       tempObject.timeSent = document.timeSent;
       tempObject.usersSentTo = document.usersSentTo;
       tempObject.reasonForSigning = document.reasonForSigning;
+      tempObject.isCompleted = document.isCompleted;
       if (document.pdfName === pdfName) {
         tempObject.isRejected = true;
       } else {
@@ -93,7 +94,6 @@ export default function RejectDocument() {
   };
 
   const deleteFileVendia = () => {
-    console.log(fileId)
     deleteFile({
       variables: {
         id: fileId,

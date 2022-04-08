@@ -99,3 +99,13 @@ export const DELETE_FILE_VENDIA = gql`
     }
   }
 `;
+
+export const UPDATE_FILE = gql`
+  mutation updateVendia_File($id: ID!, $syncMode: Vendia_SyncMode!) {
+    updateVendia_File(id: $id, input: {}, syncMode: $syncMode) {
+      transaction {
+      _id
+    }
+    }
+  }
+`;

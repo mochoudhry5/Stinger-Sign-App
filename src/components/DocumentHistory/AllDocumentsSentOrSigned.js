@@ -33,7 +33,6 @@ function AllDocumentsSentOrSigned() {
 
   return (
     <div className="Sig-Req-Page">
-      {console.log(data)}
       <h2 className="titles-manage">Document History</h2>
       <br />
       <br />
@@ -44,7 +43,7 @@ function AllDocumentsSentOrSigned() {
             data.get_UserInfo.documentsSent.documentsSentInfo.length > 0 ? (
               <div className="tablecss">
                 <table>
-                <th className="tableheader" colspan="5">Documents Sent</th>
+                <th className="tableheader" colSpan="5">Documents Sent</th>
                   <tr>
                     
                     <th className="tablehead">Document Subject</th>
@@ -56,7 +55,7 @@ function AllDocumentsSentOrSigned() {
                   {data.get_UserInfo.documentsSent.documentsSentInfo.map(
                     (document) => (
                       <>
-                        <tr>
+                        <tr key={document.pdfName}>
                           <td>{document.reasonForSigning}</td>
                           <td>{document.timeSent.substring(3, 16)}</td>
                           <td>

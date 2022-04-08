@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
-import {
-  GET_SENT_INFO_DOCS_TO_SIGN,
-  LIST_ALL_FILES,
-} from "../../Graphql/Query";
+import { GET_SENT_INFO_DOCS_TO_SIGN } from "../../Graphql/Query";
 import ShowAllDocumentsToSign from "./ShowAllDocumentsToSign";
 
 export default function FindAllDocumentsToSign() {
   const [noSignDocs, setNoSignDocs] = useState(true);
   const loggedIn = window.localStorage.getItem("state");
-  const { loading: loading1, data: data1 } = useQuery(LIST_ALL_FILES);
   const { data, error, loading } = useQuery(GET_SENT_INFO_DOCS_TO_SIGN, {
     variables: {
       id: loggedIn,
@@ -33,19 +29,7 @@ export default function FindAllDocumentsToSign() {
   }, [data]);
 
   if (loading) return <div>Loading...</div>;
-  if (loading1) return <div>Loading...</div>;
   if (error) return <div>Error</div>;
-
-  const findFileId = (pdfName) => {
-    console.log("ALL DOCS TO SIGN")
-    let fileId = "";
-    data1.listVendia_FileItems.Vendia_FileItems.map((file) => {
-      if (file.destinationKey === pdfName) {
-        fileId = file._id;
-      }
-    });
-    return fileId;
-  };
 
   return (
     <div className="Sig-Req-Page">
@@ -62,7 +46,6 @@ export default function FindAllDocumentsToSign() {
                   pdfName={document.pdfName}
                   reason={document.reasonForSigning}
                   time={document.timeOfSend.substring(3, 16)}
-                  fileId={findFileId(document.pdfName)}
                 />
                 </div>
               );

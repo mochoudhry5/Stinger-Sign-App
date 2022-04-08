@@ -12,6 +12,7 @@ export default function TimeToSign(props) {
   const [nextUsers, setNextUsers] = useState();
   const location = useLocation();
   const blobData = location.state.blobData;
+  const fileId = location.state.fileID;
   const pdfName = location.state.pdfName;
   const viewer = useRef(null);
   const [prevToSign, setPrevToSign] = useState([]);
@@ -57,7 +58,7 @@ export default function TimeToSign(props) {
       }
       setPrevToSign(tempArray);
     }
-  }, [data1, pdfName]);
+  }, [data1, pdfName, fileId]);
 
   useEffect(() => {
     WebViewer(
@@ -116,7 +117,7 @@ export default function TimeToSign(props) {
         <p className="stepsnum">Step 5:</p> Hit Save And Send The Document{" "}
         <br /> <br />
       </div>
-      <SendingAfterSign file={file} pdfName={pdfName} prevToSign={prevToSign} fromWho={fromWho} nextUsers={nextUsers} />
+      <SendingAfterSign fileID={fileId} file={file} pdfName={pdfName} prevToSign={prevToSign} fromWho={fromWho} nextUsers={nextUsers} />
       <div className="webviewer" ref={viewer}></div>
     </div>
   );

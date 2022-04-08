@@ -44,19 +44,27 @@ function Login() {
 
   const validateUser = async () => {
     let errors = "";
-    setFormError("")
-    await data.list_UserInfoItems._UserInfoItems.map(async (item) => {
-      const correctPassword = await checkPasswordWithHashedPassword(item.userPassword);
-      if (item.userEmail === formValues.email.toLowerCase() && correctPassword) {
-          handleOnClick();
-          Auth.setLoggedInUser(item._id);
-          window.localStorage.setItem("state", item._id);
-        }
-      else {
-          errors = "Email or password is incorrect";
-          setFormError(errors);
+    let hashedPasswordForUser = "";
+    let validEmail = false;
+    let userId = "";
+
+    data.list_UserInfoItems._UserInfoItems.map((item) => {
+      if (item.userEmail === formValues.email.toLowerCase()) {
+        validEmail = true;
+        hashedPasswordForUser = item.userPassword;
+        userId = item._id;
       }
     });
+    const isCorrectPassword = await checkPasswordWithHashedPassword(hashedPasswordForUser);
+    if (validEmail && isCorrectPassword === true) {
+      setFormError("");
+      handleOnClick();
+      Auth.setLoggedInUser(userId);
+      window.localStorage.setItem("state", userId);
+    } else {
+      errors = "Email or password is incorrect";
+      setFormError(errors);
+    }
   };
 
   const checkPasswordWithHashedPassword = async (vendiaStoredPassword) => {

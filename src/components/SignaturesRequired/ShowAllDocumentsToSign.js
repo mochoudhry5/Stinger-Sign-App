@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
-import { USER_INFO_BASIC } from "../../Graphql/Query";
+import { USER_INFO_BASIC, LIST_ALL_FILES } from "../../Graphql/Query";
 import { Link } from "react-router-dom";
 import AWS from "aws-sdk";
 
@@ -14,11 +14,13 @@ AWS.config.update({
 
 export default function ShowAllDocsToSign(props) {
   const [blobData, setBlobData] = useState()
+  const [fileID, setFileID] = useState("")
   const { data, loading, error } = useQuery(USER_INFO_BASIC, {
     variables: {
       id: props.senderID
     }
   });
+  const { loading: loading1, data: data1, refetch } = useQuery(LIST_ALL_FILES);
 
   useEffect(() => {
     console.log("USE EFFECT -> ShowAllDocsToSign")
@@ -36,11 +38,23 @@ export default function ShowAllDocsToSign(props) {
         setBlobData(blob)
       }
     });
-  }, [props.pdfName])
+
+    let fileId = "";
+    refetch()
+    data1.listVendia_FileItems.Vendia_FileItems.map((file) => {
+      if (file.destinationKey === props.pdfName) {
+        fileId = file._id;
+      }
+    });
+    setFileID(fileId)
+
+
+  }, [props.pdfName, data1])
 
 
   if (loading) return <div></div>;
   if (error) return <div>{error}</div>;
+  if (loading1) return <div>Loading...</div>;
 
   return (
     <div>
@@ -65,7 +79,7 @@ export default function ShowAllDocsToSign(props) {
 
           <Link className="upload-docs" to={{
               pathname: "/nav/signdocuments/signaturetime",
-              state: { pdfName: props.pdfName,  blobData:blobData },
+              state: { pdfName: props.pdfName,  blobData:blobData, fileID: fileID},
             }}>
             <button className="buttontosign"> Sign </button>
           </Link>
@@ -74,7 +88,7 @@ export default function ShowAllDocsToSign(props) {
             className="upload-docs"
             to={{
               pathname: "/nav/signdocuments/rejectdocument",
-              state: { pdfName: props.pdfName, senderID: props.senderID, fileID: props.fileId},
+              state: { pdfName: props.pdfName, senderID: props.senderID, fileID: fileID},
             }}
           >
           <button className="buttontoreject"> Reject </button>
