@@ -52,8 +52,6 @@
 .login-logintext {
     font-size:100px;
     font-family: "Chalkduster", fantasy;
-    margin-bottom: 75px;
-    margin-top:0px;
     color: rgb(209, 208, 173);
 }
 
@@ -70,11 +68,11 @@
   }
 
 .label-fname {
-    margin-right: 56px;
+    margin-right: 59px;
 }
 
 .label-lname {
-    margin-right: 65px;
+    margin-right: 68px;
 }
 .label-company {
     margin-right: 97px;
@@ -93,6 +91,37 @@
     margin-right: 76px;
 }
 
-.label-passcon {
+.label-profile {
+    margin-bottom: 10px;
+}
 
+.signup-text {
+    font-size:100px;
+    font-family: "Chalkduster", fantasy;
+    margin-bottom: 50px;
+    margin-top:0px;
+}
+  .avatar-zone{
+    width:150px;
+    height:150px;
+    border-radius:50%; 
+    border: 4px solid rgb(209, 208, 173);
+    background-color:#CCCCCC;
+    margin-bottom: 30px;
+}
+.overlay-layer{
+    width:100px;
+    height:100px;
+    position:absolute;
+    text-align:center;
+    line-height:40px;
+    opacity:0.3;
+}
+.upload_btn{
+    position:absolute;
+    width:150px;
+    height:150px;
+    border-radius:50%; 
+    z-index:10;
+    opacity:0;
 }

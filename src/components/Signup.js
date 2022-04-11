@@ -1,11 +1,25 @@
 import React, { useState } from "react";
+import AWS from "aws-sdk";
 import { Link, Redirect } from "react-router-dom";
 import { ALL_USERS } from "../Graphql/Query";
 import { ADD_USER } from "../Graphql/Mutations";
 import { useQuery, useMutation } from "@apollo/client";
-import axios from 'axios'
+import axios from "axios";
 import "../styles/signupform.css";
+import { ADD_FILE_TO_VENDIA } from "../Graphql/Mutations";
 
+const S3_BUCKET = process.env.REACT_APP_S3_BUCKET_NAME;
+const REGION = process.env.REACT_APP_S3_BUCKET_REGION_NAME;
+
+AWS.config.update({
+  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY,
+  secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+});
+
+const myBucket = new AWS.S3({
+  params: { Bucket: S3_BUCKET },
+  region: REGION,
+});
 
 function Signup() {
   const initialValues = {
@@ -21,15 +35,49 @@ function Signup() {
   };
 
   const [formValues, setFormValues] = useState(initialValues);
+  const [progress, setProgress] = useState(0);
+  const [addVendia_File_async, { loading: loading1 }] =
+    useMutation(ADD_FILE_TO_VENDIA);
+  const [selectedImage, setSelectedImage] = useState();
   const [formErrors, setFormErrors] = useState({});
   const { error, loading, data, refetch } = useQuery(ALL_USERS);
   const [isSubmit, setIsSubmit] = useState(false);
   const [err, setErr] = useState(false);
-  const [add_UserInfo_async, {loading: l}] = useMutation(ADD_USER);
-
+  const [add_UserInfo_async, { loading: l }] = useMutation(ADD_USER);
 
   if (l) return <div>Loading...</div>;
   if (error) return <div> ERROR </div>;
+
+  const uploadFile = (file) => {
+    console.log("Ran uploadFile in SendToBucketAndUser.js");
+    const params = {
+      ACL: "public-read",
+      Body: file,
+      Bucket: S3_BUCKET,
+      Key: file.name,
+    };
+
+    myBucket
+      .putObject(params)
+      .on("httpUploadProgress", (evt) => {
+        setProgress(Math.round((evt.loaded / evt.total) * 100));
+      })
+      .send((err) => {
+        if (err) console.log(err);
+        else sendToVendia(file);
+      });
+  };
+
+  const sendToVendia = (file) => {
+    addVendia_File_async({
+      variables: {
+        sourceBucket: S3_BUCKET,
+        sourceKey: file.name,
+        sourceRegion: REGION,
+        destinationKey: file.name,
+      },
+    });
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,10 +112,13 @@ function Signup() {
         }
       }
 
-      if (formValues.password !== formValues.conPassword && errors.password !== "Password must be at least 6 characters long" ) {
+      if (
+        formValues.password !== formValues.conPassword &&
+        errors.password !== "Password must be at least 6 characters long"
+      ) {
         if (errors.req !== "Can not have required (*) fields blank") {
-        errors.conPassword = "Passwords do not match";
-        errors.gen = "Error";
+          errors.conPassword = "Passwords do not match";
+          errors.gen = "Error";
         }
       }
     });
@@ -84,8 +135,9 @@ function Signup() {
       !formValues.email ||
       !formValues.password ||
       !formValues.conPassword ||
-      (formValues.password !== formValues.conPassword && 
-      formValues.password !== "Password must be at least 6 characters long") ||
+      (formValues.password !== formValues.conPassword &&
+        formValues.password !==
+          "Password must be at least 6 characters long") ||
       formValues.password.length <= 5
     ) {
       setErr(true);
@@ -99,42 +151,86 @@ function Signup() {
 
   const addUser = async () => {
     const hashedPW = await getHashedPassword();
+    const myRenamedFile = new File([selectedImage], `${formValues.fname}${formValues.lname}ProfilePic.png`)
+    console.log(myRenamedFile)
     add_UserInfo_async({
       variables: {
         userEmail: formValues.email.toLowerCase(),
         userFirstName: formValues.fname,
         userLastName: formValues.lname,
-        userPassword: hashedPW, 
+        userPassword: hashedPW,
         userCompany: formValues.company,
         userJobTitle: formValues.jobtitle,
+        userProfilePicture: myRenamedFile.name
       },
     });
+    uploadFile(myRenamedFile)
   };
 
   const getHashedPassword = async () => {
     let tempPW = "";
     const options = {
-        method: 'GET',
-        url: 'http://localhost:8000/hashedPassword',
-        params: {plainPassword: formValues.password},
+      method: "GET",
+      url: "http://localhost:8000/hashedPassword",
+      params: { plainPassword: formValues.password },
+    };
+
+    await axios
+      .request(options)
+      .then((response) => {
+        tempPW = response.data;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    return tempPW;
+  };
+
+  const imageChange = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      let image = e.target.files[0];
+      setSelectedImage(image);
     }
+  };
 
-     await axios.request(options).then((response) => {
-      tempPW = response.data; 
-
-    }).catch((error) => {
-        console.error(error)
-    })
-    return tempPW
-}
 
   return (
     <div className="signup-form">
       <form onSubmit={handleSubmit}>
-        {isSubmit ? (<Redirect to="/" />)  : null}
-        <h2 className="login-logintext">Stinger Sign Up</h2>
-        <div className="ui divider"></div>
+        {isSubmit ? <Redirect to="/" /> : null}
+        <h2 className="signup-text">Stinger Sign Up</h2>
         <div className="all-inputs">
+        <>
+            <div style={styles.container}>
+            <label className="label-profile">Choose A Profile Picture* </label>
+              {selectedImage ? (
+                <div style={styles.preview}>
+                  <img
+                    style={{
+                      borderRadius: "50%",
+                      width: 150,
+                      height: 150,
+                      marginBottom: 30,
+                      border: "4px solid",
+                      display: "block",
+                    }}
+                    src={URL.createObjectURL(selectedImage)}
+                    alt="Thumb"
+                  />
+                </div>
+              ) : <div className="avatar-zone">
+              </div> }
+                
+              <input
+              className="upload_btn"
+                accept="image/*"
+                type="file"
+                onChange={imageChange}
+              />
+              <img className="overlay-layer" src="https://cdn1.iconfinder.com/data/icons/hawcons/32/698394-icon-130-cloud-upload-512.png" alt="Cloud Upload" />
+            </div>
+            
+          </>
           <div className="field">
             <label className="label-fname">First Name* </label>
             <input
@@ -213,7 +309,6 @@ function Signup() {
               onChange={handleChange}
             />
           </div>
-
           {err ? (
             formErrors.gen === "Error" ? (
               <div>
@@ -226,9 +321,13 @@ function Signup() {
               </div>
             ) : null
           ) : null}
-        {!loading ? (
-          <button className="log-in-button">Create</button>
-          ) : ( <button disabled className="log-in-button">Loading...</button>)}
+          {!loading ? (
+            <button className="log-in-button">Create</button>
+          ) : (
+            <button disabled className="log-in-button">
+              Loading...
+            </button>
+          )}
         </div>
         <span className="label"> Already have an account? </span>
         <Link className="link-login" to="/">
@@ -240,3 +339,34 @@ function Signup() {
 }
 
 export default Signup;
+
+// Just some styles
+const styles = {
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  preview: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  delete: {
+    cursor: "pointer",
+    marginBottom: 10,
+    padding: 10,
+    width: 180,
+    // background: "gray",
+    color: "white",
+    border: "none",
+  },
+  upload: {
+    cursor: "pointer",
+    marginTop: 20,
+    padding: 10,
+    background: "green",
+    color: "white",
+    border: "none",
+  },
+};

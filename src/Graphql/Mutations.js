@@ -8,6 +8,7 @@ export const ADD_USER = gql`
     $userPassword: String!
     $userCompany: String!
     $userJobTitle: String!
+    $userProfilePicture: String!
   ) {
     add_UserInfo_async(
       input: {
@@ -17,6 +18,7 @@ export const ADD_USER = gql`
         userPassword: $userPassword
         userCompany: $userCompany
         userJobTitle: $userJobTitle
+        userProfilePicture: $userProfilePicture
       }
     ) {
       result {

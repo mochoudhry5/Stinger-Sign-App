@@ -14,7 +14,19 @@
 .nav--logo {
     height: 90%;
     width: 90px;
-    margin-right: 0;
+}
+
+.nav--logo2 {
+  height: 50px;
+  width: 50px;
+  margin-left: 470px;
+  border-radius: 50%;
+}
+
+.nav--logo3 {
+  height: 250px;
+  width: 250px;
+  border-radius: 50%;
 }
 
 .nav--logo-text{
@@ -101,17 +113,14 @@ form{
     background-color:#42f03c
 }
 
-.container-user {
-  margin: 70px;
 
+.profileimg {
+  margin-bottom: 60px;
+  margin-left: 700px;
 }
 
 .profile {
   margin-top: 60px;
-}
-
-.userinfo {
-  margin: 20px;
 }
 
 strong {
@@ -125,12 +134,14 @@ strong {
   color: rgb(248, 247, 237)
 }
 
-.hrline {
-  width:40%;
-  margin-left: 380px;
-  border: 5px solid #025e07;
-  
+.userinfo {
+  font-size: 25px;
+  margin-bottom: 30px;
+  font-family: Times, Times New Roman, serif;
+  color: rgb(248, 247, 237)
 }
+
+
 
 .profile-det {
   background-color: rgb(182, 182, 182);
@@ -145,6 +156,7 @@ strong {
   font-family:  "DejaVu Sans Mono", monospace;
   font-weight: bold;
   font-size: 50px;
+  margin-bottom: 50px;
 }
 
 
@@ -154,12 +166,12 @@ margin-right: 50px;
 }
 
 .last-prof {
-margin-right:55px;
+margin-right:54px;
 
 }
 
 .email-prof {
-  margin-right: 104px;
+  margin-right: 106px;
 }
 
 .company-prof {
@@ -200,3 +212,17 @@ margin-right:55px;
   text-decoration:underline;
 
 }
+
+.flex-container {
+  display: flex;
+  margin-bottom: 110px;
+}
+
+.flex-child {
+  flex: 1;
+  margin-top:90px;
+}  
+.flex-child2 {
+  flex: 1;
+  margin-top:105px;
+} 

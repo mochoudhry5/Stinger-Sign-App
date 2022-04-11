@@ -5,7 +5,6 @@ import DocumentHistoryHeader from "./DocumentHistory/DocumentHistoryHeader";
 import { USER_INFO } from "../Graphql/Query";
 import { useQuery } from "@apollo/client";
 
-
 export default function Dashboard() {
   const loggedIn = window.localStorage.getItem("state");
   const { error, loading, data } = useQuery(USER_INFO, {
@@ -18,7 +17,6 @@ export default function Dashboard() {
   useEffect(() => {
     localStorage.removeItem("emails");
     localStorage.removeItem("ids")
-
   }, [])
 
   if (loading) return <div> Loading... </div>;

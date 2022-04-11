@@ -38,6 +38,7 @@ export const USER_INFO = gql`
       userFirstName
       userJobTitle
       userLastName
+      userProfilePicture
     }
   }
 `;
@@ -85,6 +86,7 @@ export const USER_INFO_BASIC = gql`
       userFirstName
       userJobTitle
       userLastName
+      userProfilePicture
     }
   }
 `;
