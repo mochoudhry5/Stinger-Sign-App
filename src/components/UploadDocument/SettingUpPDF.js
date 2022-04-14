@@ -1,11 +1,12 @@
 import React, { useRef, useEffect, useState } from "react";
 import WebViewer from "@pdftron/webviewer";
-import "../../styles/pdfstyle.css";
-import "../../styles/sendingpdf.css";
 import SendToBucketAndUser from "./SendToBucketAndUser";
 import { ALL_USERS } from "../../Graphql/Query";
 import { useQuery } from "@apollo/client";
-import { GET_SENT_INFO, GET_SENT_INFO_DOCS_TO_SIGN } from "../../Graphql/Query";
+import { GET_SENT_INFO } from "../../Graphql/Query";
+import { Link } from "react-router-dom";
+import "../../styles/pdfstyle.css";
+import "../../styles/sendingpdf.css";
 
 const initialValues = {
   email: "",
@@ -22,28 +23,17 @@ export default function SettingUpPDF(props) {
   const [isFilenameSubmit, setIsFilenameSubmit] = useState(false);
   const loggedIn = window.localStorage.getItem("state");
   const [prev, setPrev] = useState([]);
-  const [prevToSign, setPrevToSign] = useState([]);
   const [error, setError] = useState();
   const { data } = useQuery(ALL_USERS);
   const [id, setId] = useState([]);
   const viewer = useRef(null);
   const [f, setFile] = useState({});
   let counter = 1;
-  const { loading: l, data: d } = useQuery(GET_SENT_INFO, {
+  const { loading: loading1, data: data1 } = useQuery(GET_SENT_INFO, {
     variables: {
       id: loggedIn,
     },
   });
-  const { loading: loading1, data: data1 } = useQuery(
-    GET_SENT_INFO_DOCS_TO_SIGN,
-    {
-      variables: {
-        id: loggedIn,
-      },
-    }
-  );
-
-  if (l) (<div>Loading...</div>);
 
   if (loading1) (<div>Loading...</div>);
 
@@ -98,8 +88,8 @@ export default function SettingUpPDF(props) {
 
   const setPrevFiles = () => {
     let tempArray = [];
-    if (d.get_UserInfo.documentsSent) {
-      d.get_UserInfo.documentsSent.documentsSentInfo.map((document) => {
+    if (data1.get_UserInfo.documentsSent) {
+      data1.get_UserInfo.documentsSent.documentsSentInfo.map((document) => {
         let tempObject = {};
         tempObject.pdfName = document.pdfName;
         tempObject.usersSentTo = document.usersSentTo;
@@ -111,23 +101,6 @@ export default function SettingUpPDF(props) {
       });
     }
     setPrev(tempArray);
-  };
-
-  const setPrevToSignFiles = () => {
-    let tempArray = [];
-    if (data1.get_UserInfo.documentsToSign) {
-      data1.get_UserInfo.documentsToSign.documentsToSignInfo.map((document) => {
-        let tempObject = {};
-        tempObject.pdfName = document.pdfName;
-        tempObject.nextToSend = document.nextToSend;
-        tempObject.timeOfSend = document.timeOfSend;
-        tempObject.isSigned = document.isSigned;
-        tempObject.fromWho = document.fromWho;
-        tempObject.reasonForSigning = document.reasonForSigning;
-        tempArray.push(tempObject);
-      });
-    }
-    setPrevToSign(tempArray);
   };
 
   const checker = (value) => {
@@ -159,7 +132,6 @@ export default function SettingUpPDF(props) {
     e.preventDefault();
     setIsFilenameSubmit(true);
     setPrevFiles();
-    setPrevToSignFiles();
   };
 
   const handleSubmit = (e) => {
@@ -214,6 +186,14 @@ export default function SettingUpPDF(props) {
 
   return (
     <div>
+      <Link
+        className="upload-docs"
+        to={{
+          pathname: "/nav/dashboard",
+        }}
+      >
+        <button className="backclick5"> &lt;&nbsp;Dashboard</button>
+      </Link>
       <div className="title-send">Upload and Send</div>
 
       <form onSubmit={handleSubmitForFileName}>
@@ -239,7 +219,6 @@ export default function SettingUpPDF(props) {
               placeholder={fileName.nameOfFile}
             />
             <button disabled className="button-setfilename">
-              {" "}
               Submit
             </button>
           </>
@@ -280,7 +259,7 @@ export default function SettingUpPDF(props) {
       <div className="printemails">
         {userEmail.map((i) => {
           return (
-            <div key={i} >
+            <div key={i}>
               <span className="counter"> {counter++}. </span>
               <span> {i} </span>
               <span className="delete-button" email={i} onClick={handleRemove}>
@@ -298,7 +277,6 @@ export default function SettingUpPDF(props) {
           file={f}
           ids={id}
           prevFiles={prev}
-          prevToSign={prevToSign}
           reason={fileName.nameOfFile}
         />
       ) : (

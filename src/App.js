@@ -107,4 +107,5 @@ const ProtectedLogin = ({ auth, component: Component, ...rest }) => {
   );
 };
 
+
 export default App;

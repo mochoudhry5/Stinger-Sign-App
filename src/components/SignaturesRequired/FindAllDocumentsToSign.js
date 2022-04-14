@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
-import { GET_SENT_INFO_DOCS_TO_SIGN } from "../../Graphql/Query";
+import { GET_DOCS_TO_SIGN_INFO } from "../../Graphql/Query";
 import ShowAllDocumentsToSign from "./ShowAllDocumentsToSign";
+import { Link } from "react-router-dom";
 
 export default function FindAllDocumentsToSign() {
   const [noSignDocs, setNoSignDocs] = useState(true);
   const loggedIn = window.localStorage.getItem("state");
-  const { data, error, loading } = useQuery(GET_SENT_INFO_DOCS_TO_SIGN, {
+  const { data, error, loading } = useQuery(GET_DOCS_TO_SIGN_INFO, {
     variables: {
       id: loggedIn,
     },
@@ -28,11 +29,19 @@ export default function FindAllDocumentsToSign() {
   }
   }, [data]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error</div>;
+  if (loading) return <div></div>;
+  if (error) return <div>Error. Please Try Again</div>;
 
   return (
     <div className="Sig-Req-Page">
+      <Link
+        className="upload-docs"
+        to={{
+          pathname: "/nav/dashboard",
+        }}
+      >
+        <button className="backclick5"> &lt;&nbsp;Dashboard</button>
+      </Link>
       <h1 className="sig-req">Signatures Required</h1>
       {noSignDocs ? (
         data.get_UserInfo.documentsToSign ? (

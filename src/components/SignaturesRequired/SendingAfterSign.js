@@ -1,37 +1,24 @@
 import React, { useState } from "react";
-import AWS from "aws-sdk";
+import { S3Bucket, MyBucket } from "../../AWS/SecurityInfo";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import {
-  GET_SENT_INFO_DOCS_TO_SIGN,
+  GET_DOCS_TO_SIGN_INFO,
   DOCS_SENT_OR_SIGNED,
 } from "../../Graphql/Query";
 import {
-  UPDATE_SENDER_INFO_TOSIGN,
-  UPDATE_SENDER_INFO_,
+  UPDATE_DOCS_TO_SIGN_FOR_USER,
+  UPDATE_DOCS_SENT_FOR_USER,
   UPDATE_FILE
 } from "../../Graphql/Mutations";
-
-const S3_BUCKET = process.env.REACT_APP_S3_BUCKET_NAME;
-const REGION = process.env.REACT_APP_S3_BUCKET_REGION_NAME;
-
-AWS.config.update({
-  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY,
-  secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
-});
-
-const myBucket = new AWS.S3({
-  params: { Bucket: S3_BUCKET },
-  region: REGION,
-});
 
 export default function SendingAfterSign(props) {
   const [progress, setProgress] = useState(0);
   const loggedIn = window.localStorage.getItem("state");
-  const [update, { loading: loading1 }] = useMutation(UPDATE_SENDER_INFO_);
-  const [updateToSign, {loading: loading4}] = useMutation(UPDATE_SENDER_INFO_TOSIGN);
+  const [update, { loading: loading1 }] = useMutation(UPDATE_DOCS_SENT_FOR_USER);
+  const [updateToSign, {loading: loading4}] = useMutation(UPDATE_DOCS_TO_SIGN_FOR_USER);
   const [updateFile, {loading: loading6}] = useMutation(UPDATE_FILE);
   const [getNextUserInfo, { data: data1, loading: loading5 }] = useLazyQuery(
-    GET_SENT_INFO_DOCS_TO_SIGN
+    GET_DOCS_TO_SIGN_INFO
   );
 
   const { data, loading } = useQuery(DOCS_SENT_OR_SIGNED, {
@@ -53,11 +40,11 @@ export default function SendingAfterSign(props) {
     const params = {
       ACL: "public-read",
       Body: file,
-      Bucket: S3_BUCKET,
+      Bucket: S3Bucket,
       Key: file.name,
     };
 
-    myBucket
+    MyBucket
       .putObject(params)
       .on("httpUploadProgress", (evt) => {
         sendToVendia(file);

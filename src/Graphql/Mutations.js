@@ -28,7 +28,7 @@ export const ADD_USER = gql`
   }
 `;
 
-export const DELETE = gql`
+export const DELETE_USER = gql`
   mutation remove_UserInfo_async($id: ID!) {
     remove_UserInfo_async(id: $id) {
       result {
@@ -60,7 +60,7 @@ export const ADD_FILE_TO_VENDIA = gql`
   }
 `;
 
-export const UPDATE_SENDER_INFO_ = gql`
+export const UPDATE_DOCS_SENT_FOR_USER = gql`
   mutation update_UserInfo_async(
     $id: ID!
     $documentsSentInfo: [Self_UserInfo_documentsSent_documentsSentInfo_documentsSentInfoItem_UpdateInput_]
@@ -76,7 +76,7 @@ export const UPDATE_SENDER_INFO_ = gql`
   }
 `;
 
-export const UPDATE_SENDER_INFO_TOSIGN = gql`
+export const UPDATE_DOCS_TO_SIGN_FOR_USER = gql`
   mutation update_UserInfo_async(
     $id: ID!
     $documentsToSignInfo: [Self_UserInfo_documentsToSign_documentsToSignInfo_documentsToSignInfoItem_UpdateInput_]

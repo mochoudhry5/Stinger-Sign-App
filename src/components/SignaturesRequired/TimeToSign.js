@@ -3,7 +3,7 @@ import WebViewer from "@pdftron/webviewer";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import SendingAfterSign from "./SendingAfterSign";
-import { GET_SENT_INFO_DOCS_TO_SIGN } from "../../Graphql/Query";
+import { GET_DOCS_TO_SIGN_INFO } from "../../Graphql/Query";
 import { useQuery } from "@apollo/client";
 
 export default function TimeToSign(props) {
@@ -18,7 +18,7 @@ export default function TimeToSign(props) {
   const [prevToSign, setPrevToSign] = useState([]);
   const loggedIn = window.localStorage.getItem("state");
   const { loading: loading1, data: data1 } = useQuery(
-    GET_SENT_INFO_DOCS_TO_SIGN,
+    GET_DOCS_TO_SIGN_INFO,
     {
       variables: {
         id: loggedIn,

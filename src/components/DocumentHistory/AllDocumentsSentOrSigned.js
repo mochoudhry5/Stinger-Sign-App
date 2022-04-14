@@ -3,6 +3,7 @@ import { DOCS_SENT_OR_SIGNED } from "../../Graphql/Query";
 import { useQuery } from "@apollo/client";
 import ViewSentDocument from "./ViewSentDocument";
 import GetSenderFirstName from "./GetSenderFirstName";
+import { Link } from "react-router-dom";
 
 function AllDocumentsSentOrSigned() {
   const [toSign, setToSign] = useState(false);
@@ -33,6 +34,14 @@ function AllDocumentsSentOrSigned() {
 
   return (
     <div className="Sig-Req-Page">
+      <Link
+        className="upload-docs"
+        to={{
+          pathname: "/nav/dashboard",
+        }}
+      >
+        <button className="backclick5"> &lt;&nbsp;Dashboard</button>
+      </Link>
       <h2 className="titles-manage">Document History</h2>
       <br />
       <br />

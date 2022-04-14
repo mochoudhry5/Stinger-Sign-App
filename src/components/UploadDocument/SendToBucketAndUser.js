@@ -1,37 +1,35 @@
 import React, { useState } from "react";
-import AWS from "aws-sdk";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { Redirect } from "react-router-dom";
-import "../../styles/sendingpdf.css";
+import { S3Bucket, MyBucket, Region } from "../../AWS/SecurityInfo";
+import { GET_DOCS_TO_SIGN_INFO } from "../../Graphql/Query";
 import {
   ADD_FILE_TO_VENDIA,
-  UPDATE_SENDER_INFO_TOSIGN,
-  UPDATE_SENDER_INFO_,
+  UPDATE_DOCS_TO_SIGN_FOR_USER,
+  UPDATE_DOCS_SENT_FOR_USER,
 } from "../../Graphql/Mutations";
-
-const S3_BUCKET = process.env.REACT_APP_S3_BUCKET_NAME;
-const REGION = process.env.REACT_APP_S3_BUCKET_REGION_NAME;
-
-AWS.config.update({
-  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY,
-  secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
-});
-
-const myBucket = new AWS.S3({
-  params: { Bucket: S3_BUCKET },
-  region: REGION,
-});
+import "../../styles/sendingpdf.css";
 
 export default function SendToBucketAndUser(props) {
   const [progress, setProgress] = useState(0);
   const loggedIn = window.localStorage.getItem("state");
+  let { loading: loading3, data: data3 } = useQuery(GET_DOCS_TO_SIGN_INFO, {
+    variables: {
+      id: props.ids[0],
+    },
+  });
   const [addVendia_File_async, { loading: loading1 }] =
     useMutation(ADD_FILE_TO_VENDIA);
-  const [updateToSign, { loading, data: data1 }] = useMutation(UPDATE_SENDER_INFO_TOSIGN);
-  const [update, { loading: loading2, data }] =
-    useMutation(UPDATE_SENDER_INFO_);
+  const [updateToSign, { loading, data: data1 }] = useMutation(
+    UPDATE_DOCS_TO_SIGN_FOR_USER
+  );
+  const [update, { loading: loading2, data }] = useMutation(
+    UPDATE_DOCS_SENT_FOR_USER
+  );
 
-  if (loading || loading1 || loading2) {
+  if(loading3) return <div></div>
+
+  if (loading || loading1 || loading2 ) {
     return (
       <button disabled className="button-senduser">
         Loading...
@@ -44,12 +42,11 @@ export default function SendToBucketAndUser(props) {
     const params = {
       ACL: "public-read",
       Body: file,
-      Bucket: S3_BUCKET,
+      Bucket: S3Bucket,
       Key: file.name,
     };
 
-    myBucket
-      .putObject(params)
+    MyBucket.putObject(params)
       .on("httpUploadProgress", (evt) => {
         setProgress(Math.round((evt.loaded / evt.total) * 100));
       })
@@ -62,9 +59,9 @@ export default function SendToBucketAndUser(props) {
   const sendToVendia = (file) => {
     addVendia_File_async({
       variables: {
-        sourceBucket: S3_BUCKET,
+        sourceBucket: S3Bucket,
         sourceKey: file.name,
-        sourceRegion: REGION,
+        sourceRegion: Region,
         destinationKey: file.name,
       },
     });
@@ -93,7 +90,25 @@ export default function SendToBucketAndUser(props) {
     });
   };
 
+  const setPrevToSignFiles = () => {
+    let tempArray = [];
+    if (data3.get_UserInfo.documentsToSign) {
+      data3.get_UserInfo.documentsToSign.documentsToSignInfo.map((document) => {
+        let tempObject = {};
+        tempObject.pdfName = document.pdfName;
+        tempObject.nextToSend = document.nextToSend;
+        tempObject.timeOfSend = document.timeOfSend;
+        tempObject.isSigned = document.isSigned;
+        tempObject.fromWho = document.fromWho;
+        tempObject.reasonForSigning = document.reasonForSigning;
+        tempArray.push(tempObject);
+      });
+    }
+    return tempArray;
+  };
+
   const putInUserDocToSign = (file) => {
+    let docsToSign = setPrevToSignFiles();
     const d = new Date();
     const date = d.toString();
     const newFile = {
@@ -104,11 +119,11 @@ export default function SendToBucketAndUser(props) {
       timeOfSend: date,
       reasonForSigning: props.reason,
     };
-    props.prevToSign.push(newFile);
+    docsToSign.push(newFile);
     updateToSign({
       variables: {
         id: props.ids[0],
-        documentsToSignInfo: props.prevToSign,
+        documentsToSignInfo: docsToSign,
       },
     });
   };

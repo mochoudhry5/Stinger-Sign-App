@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
-import { GET_SENT_INFO_DOCS_TO_SIGN, GET_SENT_INFO } from "../../Graphql/Query";
+import { GET_DOCS_TO_SIGN_INFO, GET_SENT_INFO } from "../../Graphql/Query";
 import { useLocation } from "react-router-dom";
 import {
-  UPDATE_SENDER_INFO_TOSIGN,
-  UPDATE_SENDER_INFO_,
+  UPDATE_DOCS_TO_SIGN_FOR_USER,
+  UPDATE_DOCS_SENT_FOR_USER,
   DELETE_FILE_VENDIA
 } from "../../Graphql/Mutations";
 
@@ -16,10 +16,10 @@ export default function RejectDocument() {
   const fileId = location.state.fileID;
   const loggedIn = window.localStorage.getItem("state");
   const [rejectDocument, setRejectDocument] = useState(false);
-  const [updateToSign, { loading }] = useMutation(UPDATE_SENDER_INFO_TOSIGN);
+  const [updateToSign, { loading }] = useMutation(UPDATE_DOCS_TO_SIGN_FOR_USER);
   const [deleteFile, { loading: loading4 }] = useMutation(DELETE_FILE_VENDIA);
-  const [updateSent, { loading: loading1 }] = useMutation(UPDATE_SENDER_INFO_);
-  const { loading: loading2, data } = useQuery(GET_SENT_INFO_DOCS_TO_SIGN, {
+  const [updateSent, { loading: loading1 }] = useMutation(UPDATE_DOCS_SENT_FOR_USER);
+  const { loading: loading2, data } = useQuery(GET_DOCS_TO_SIGN_INFO, {
     variables: {
       id: loggedIn,
     },

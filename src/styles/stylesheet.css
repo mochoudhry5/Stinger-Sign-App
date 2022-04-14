@@ -16,6 +16,9 @@
     width: 90px;
 }
 
+.nav--logo:hover {
+  cursor: pointer;
+}
 .nav--logo2 {
   height: 50px;
   width: 50px;
@@ -23,10 +26,16 @@
   border-radius: 50%;
 }
 
+.nav--logo-text:hover {
+  cursor: pointer;
+}
+
 .nav--logo3 {
   height: 250px;
   width: 250px;
+  margin-bottom: 20px;
   border-radius: 50%;
+  border: 4px solid rgb(209, 208, 173);
 }
 
 .nav--logo-text{
@@ -35,6 +44,16 @@
     font-size: 25px;
     margin-right: 700px;
 
+}
+
+.nav--logo4 {
+  position: absolute;
+  height: 50px;
+  width: 50px;
+  top: 8.3px;
+  left: 1364.7px;
+  
+  border-radius: 50%;
 }
 
 
@@ -215,7 +234,7 @@ margin-right:54px;
 
 .flex-container {
   display: flex;
-  margin-bottom: 110px;
+  margin-bottom: 80px;
 }
 
 .flex-child {

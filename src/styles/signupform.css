@@ -95,6 +95,10 @@
     margin-bottom: 10px;
 }
 
+.label-profile2 {
+    font-family: Courier New, monospace;
+}
+
 .signup-text {
     font-size:100px;
     font-family: "Chalkduster", fantasy;
@@ -117,6 +121,19 @@
     line-height:40px;
     opacity:0.3;
 }
+
+.overlay-layer2{
+    width:250px;
+    height:250px;
+    position: absolute;
+    top: 285px;
+    border-radius:50%; 
+    border: 4px solid rgb(209, 208, 173);
+    line-height:40px;
+    background-color:#7f2121;
+    opacity:0.0;
+}  
+
 .upload_btn{
     position:absolute;
     width:150px;
@@ -125,3 +142,35 @@
     z-index:10;
     opacity:0;
 }
+
+.upload_btn2{
+    position:absolute;
+    top: 285px;
+    width:250px;
+    height:250px;
+    border-radius:50%; 
+    z-index:10;
+    opacity:0.0;
+}
+
+
+.savechanges {
+    background-color: rgb(104, 206, 73);
+    border-radius:0px;
+    width: 200px;
+    color:rgb(0, 0, 0);
+    font-size: 15px;
+    margin-bottom: 5px;
+    margin-left: 10px;
+  
+  }
+
+  .progress-profile {
+    width: 200px;
+    color:rgb(209, 208, 173);
+    font-size: 15px;
+    margin-bottom: 5px;
+    margin-left: 10px;
+  
+  }
+

@@ -36,13 +36,12 @@ function Signup() {
 
   const [formValues, setFormValues] = useState(initialValues);
   const [progress, setProgress] = useState(0);
-  const [addVendia_File_async, { loading: loading1 }] =
-    useMutation(ADD_FILE_TO_VENDIA);
   const [selectedImage, setSelectedImage] = useState();
   const [formErrors, setFormErrors] = useState({});
-  const { error, loading, data, refetch } = useQuery(ALL_USERS);
   const [isSubmit, setIsSubmit] = useState(false);
   const [err, setErr] = useState(false);
+  const { error, loading, data, refetch } = useQuery(ALL_USERS);
+  const [addVendia_File_async] = useMutation(ADD_FILE_TO_VENDIA);
   const [add_UserInfo_async, { loading: l }] = useMutation(ADD_USER);
 
   if (l) return <div>Loading...</div>;

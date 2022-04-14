@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { useMutation } from "@apollo/client";
-import { DELETE } from "../../Graphql/Mutations";
+import { DELETE_USER } from "../../Graphql/Mutations";
 import AuthApi from "../../AuthApi";
 import Cookies from "js-cookie";
 
 export default function DeleteAccount() {
-  const [remove_UserInfo_async] = useMutation(DELETE);
+  const [remove_UserInfo_async] = useMutation(DELETE_USER);
   const loggedIn = window.localStorage.getItem("state");
   const Auth = useContext(AuthApi);
 

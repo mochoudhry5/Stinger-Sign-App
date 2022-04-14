@@ -61,7 +61,7 @@ export const GET_SENT_INFO = gql`
 `;
 
 
-export const GET_SENT_INFO_DOCS_TO_SIGN = gql`
+export const GET_DOCS_TO_SIGN_INFO = gql`
   query get_UserInfo($id: ID!) {
     get_UserInfo(id: $id) {
       documentsToSign {
@@ -97,6 +97,7 @@ query blocksQuery {
     Vendia_FileItems {
       _id
       destinationKey
+      temporaryUrl
     }
   }
 }

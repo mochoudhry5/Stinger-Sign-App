@@ -128,7 +128,6 @@ function Login() {
         </div>
         <span className="link-login1"> Don't have an Account? </span>
         <Link className="link-login" to="/signup">
-          {/* Maybe get ride of this line */}
           <span onClick={refetch}> Sign Up </span>
         </Link>
         <br />

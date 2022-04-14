@@ -3,13 +3,7 @@ import { useQuery } from "@apollo/client";
 import { USER_INFO_BASIC, LIST_ALL_FILES } from "../../Graphql/Query";
 import { Link } from "react-router-dom";
 import AWS from "aws-sdk";
-
-const S3_BUCKET = process.env.REACT_APP_S3_BUCKET_NAME;
-
-AWS.config.update({
-  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY,
-  secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
-});
+import { S3Bucket } from "../../AWS/SecurityInfo";
 
 
 export default function ShowAllDocsToSign(props) {
@@ -26,7 +20,7 @@ export default function ShowAllDocsToSign(props) {
     console.log("USE EFFECT -> ShowAllDocsToSign")
     const s3 = new AWS.S3();
     const params = {
-      Bucket: S3_BUCKET,
+      Bucket: S3Bucket,
       Key: props.pdfName,
     };
 
@@ -54,7 +48,7 @@ export default function ShowAllDocsToSign(props) {
 
   if (loading) return <div></div>;
   if (error) return <div>{error}</div>;
-  if (loading1) return <div>Loading...</div>;
+  if (loading1) return <div></div>;
 
   return (
     <div>

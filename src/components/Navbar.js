@@ -3,71 +3,75 @@ import Hornet from "../images/logo.png";
 import { Link } from "react-router-dom";
 import "../styles/stylesheet.css";
 import AWS from "aws-sdk";
-import { USER_INFO_BASIC } from "../Graphql/Query";
 import { useQuery } from "@apollo/client";
+import { USER_INFO_BASIC } from "../Graphql/Query";
+import { S3Bucket } from "./../AWS/SecurityInfo";
 
-const S3_BUCKET = process.env.REACT_APP_S3_BUCKET_NAME;
-
-AWS.config.update({
-  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY,
-  secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
-});
+const navStyle = {
+  color: "white",
+  textDecoration: "none",
+};
 
 const Navbar = () => {
-  const [link, setLink] = useState();
   const loggedIn = window.localStorage.getItem("state");
-  const { error, loading, data } = useQuery(USER_INFO_BASIC, {
+  const [link, setLink] = useState();
+  const { data } = useQuery(USER_INFO_BASIC, {
     variables: {
       id: loggedIn,
     },
   });
-  const navStyle = {
-    color: "white",
-    textDecoration: "none",
-  };
 
   useEffect(() => {
-    if (data) {
-      console.log(data.get_UserInfo.userProfilePicture);
-      const s3 = new AWS.S3();
-      const params = {
-        Bucket: S3_BUCKET,
-        Key: data.get_UserInfo.userProfilePicture,
-      };
-
-      s3.getObject(params, (err, data) => {
-        if (err) {
-          console.log(err, err.stack);
-        } else {
-          const blob = new Blob([data.Body], { type: "application/image/*" });
-          let tempLink = URL.createObjectURL(blob);
-          setLink(tempLink);
-        }
-      });
-    }
+    const getUserProfilePicture = () => {
+      if (data) {
+        const params = {
+          Bucket: S3Bucket,
+          Key: data.get_UserInfo.userProfilePicture,
+        };
+        new AWS.S3().getObject(params, (err, data) => {
+          if (err) {
+            console.log(err, err.stack);
+          } else {
+            let blob = new Blob([data.Body], { type: "image/*" });
+            let tempLink = URL.createObjectURL(blob);
+            setLink((link) => tempLink);
+          }
+        });
+      }
+    };
+    getUserProfilePicture();
   }, [data]);
 
-  if (loading) <div> </div>;
+  const reloadPage = () => {
+    window.location.reload();
+  };
 
   return (
     <div className="navbar">
-      <Link style={navStyle} to="/nav/dashboard">
-        <img className="nav--logo" src={Hornet} alt="StingerSign Logo" />
-      </Link>
+      <img
+        className="nav--logo"
+        src={Hornet}
+        onClick={reloadPage}
+        alt="StingerSign Logo"
+      />
 
-      <Link style={navStyle} to="/nav/dashboard">
-        <h3 className="nav--logo-text">Stinger Sign</h3>
-      </Link>
+      <h3 className="nav--logo-text" onClick={reloadPage}>
+        Stinger Sign
+      </h3>
 
-      <Link
-        style={navStyle}
-        to={{
-          pathname: "/nav/profile",
-          state: { image: link },
-        }}
-      >
-        <img className="nav--logo2" src={link} alt="" />
-      </Link>
+      {data ? (
+        <Link
+          style={navStyle}
+          to={{
+            pathname: "/nav/profile",
+            state: {
+              image: link,
+            },
+          }}
+        >
+          <img className="nav--logo2" src={link} alt="" />
+        </Link>
+      ) : null}
     </div>
   );
 };
