@@ -23,6 +23,13 @@
   height: 50px;
   width: 50px;
   margin-left: 470px;
+  margin-top: 6px;
+  border-radius: 50%;
+}
+
+.sig-reg-pic {
+  height: 70px;
+  width: 70px;
   border-radius: 50%;
 }
 

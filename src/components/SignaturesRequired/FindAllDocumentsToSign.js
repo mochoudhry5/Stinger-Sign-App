@@ -40,9 +40,9 @@ export default function FindAllDocumentsToSign() {
           pathname: "/nav/dashboard",
         }}
       >
-        <button className="backclick5"> &lt;&nbsp;Dashboard</button>
+        <span className="backclick5"> &lt;&nbsp;Dashboard&nbsp;</span>
       </Link>
-      <h1 className="sig-req">Signatures Required</h1>
+      <span className="sig-req2">Signatures Required</span>
       {noSignDocs ? (
         data.get_UserInfo.documentsToSign ? (
         data.get_UserInfo.documentsToSign.documentsToSignInfo.map(

@@ -1,12 +1,12 @@
-import AuthApi from "../AuthApi";
 import React, { useContext, useState } from "react";
 import Cookies from "js-cookie";
 import { ALL_USERS } from "../Graphql/Query";
 import { useQuery } from "@apollo/client";
 import { Link } from "react-router-dom";
-import "../styles/loginstyle.css";
 import Hornet from "../images/logo.png";
 import axios from "axios";
+import "../styles/loginstyle.css";
+import AuthApi from "../AuthApi";
 
 function Login() {
   const initialValues = {

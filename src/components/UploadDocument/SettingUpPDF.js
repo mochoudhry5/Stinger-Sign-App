@@ -192,9 +192,9 @@ export default function SettingUpPDF(props) {
           pathname: "/nav/dashboard",
         }}
       >
-        <button className="backclick5"> &lt;&nbsp;Dashboard</button>
+        <span className="backclick5"> &lt;&nbsp;Dashboard&nbsp;</span>
       </Link>
-      <div className="title-send">Upload and Send</div>
+      <span className="sig-req3">Upload and Send</span>
 
       <form onSubmit={handleSubmitForFileName}>
         <label className="filename-header-send">Subject:</label>

@@ -40,9 +40,9 @@ function AllDocumentsSentOrSigned() {
           pathname: "/nav/dashboard",
         }}
       >
-        <button className="backclick5"> &lt;&nbsp;Dashboard</button>
+        <span className="backclick5"> &lt;&nbsp;Dashboard&nbsp;</span>
       </Link>
-      <h2 className="titles-manage">Document History</h2>
+      <span className="sig-req2">Document History</span>
       <br />
       <br />
       {/* DOCUMENTS SENT */}

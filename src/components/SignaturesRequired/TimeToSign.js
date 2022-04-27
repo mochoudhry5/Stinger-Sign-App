@@ -103,7 +103,7 @@ export default function TimeToSign(props) {
           state: { pdfName: props.pdfName, fileData: "HELO" },
         }}
       >
-        <button className="backclick"> &lt;Back</button>
+        <span className="backclick5"> &lt;Back&nbsp;</span>
       </Link>
       <span className="title-sends">Sign Document</span>
       <div className="steps">

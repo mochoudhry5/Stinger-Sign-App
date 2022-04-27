@@ -40,7 +40,7 @@ export default function ViewDocument() {
           state: { pdfName: "placeholder", fileData: "placeholder" },
         }}
       >
-        <button className="backclick2"> &lt;Back</button>
+        <span className="backclick5"> &lt;Back&nbsp;</span>
       </Link>
       <span className="title-view">Document Viewer</span>
       <div className="webviewer-view" ref={viewer}></div>

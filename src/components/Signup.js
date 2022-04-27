@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AWS from "aws-sdk";
 import { Link, Redirect } from "react-router-dom";
 import { ALL_USERS } from "../Graphql/Query";
 import { ADD_USER } from "../Graphql/Mutations";
 import { useQuery, useMutation } from "@apollo/client";
 import axios from "axios";
-import "../styles/signupform.css";
 import { ADD_FILE_TO_VENDIA } from "../Graphql/Mutations";
+import "../styles/signupform.css";
 
 const S3_BUCKET = process.env.REACT_APP_S3_BUCKET_NAME;
 const REGION = process.env.REACT_APP_S3_BUCKET_REGION_NAME;
@@ -35,6 +35,7 @@ function Signup() {
   };
 
   const [formValues, setFormValues] = useState(initialValues);
+  const [blobData, setBlobData] = useState()
   const [progress, setProgress] = useState(0);
   const [selectedImage, setSelectedImage] = useState();
   const [formErrors, setFormErrors] = useState({});
@@ -44,11 +45,34 @@ function Signup() {
   const [addVendia_File_async] = useMutation(ADD_FILE_TO_VENDIA);
   const [add_UserInfo_async, { loading: l }] = useMutation(ADD_USER);
 
+  useEffect(() => {
+    const getDefaultProfilePicture = () => {
+      const s3 = new AWS.S3();
+      const params = {
+        Bucket: S3_BUCKET,
+        Key: "DefaultPicProfilePic.png",
+      };
+  
+      s3.getObject(params, (err, data) => {
+        if (err) {
+          console.log(err, err.stack);
+        } else {
+          let defaultProfileBlob = new Blob([data.Body], { type:  "image/*" });
+          setBlobData(defaultProfileBlob); 
+        }
+      });
+    }
+
+    getDefaultProfilePicture(); 
+
+  }, [])
+
+
   if (l) return <div>Loading...</div>;
   if (error) return <div> ERROR </div>;
 
+
   const uploadFile = (file) => {
-    console.log("Ran uploadFile in SendToBucketAndUser.js");
     const params = {
       ACL: "public-read",
       Body: file,
@@ -150,8 +174,23 @@ function Signup() {
 
   const addUser = async () => {
     const hashedPW = await getHashedPassword();
-    const myRenamedFile = new File([selectedImage], `${formValues.fname}${formValues.lname}ProfilePic.png`)
+    let myRenamedFile = null; 
+    if(selectedImage){
+     myRenamedFile = new File([selectedImage], `${formValues.fname}${formValues.lname}ProfilePic.png`)
+     console.log("if")
+    }
+    else {
+      myRenamedFile = new File([blobData], `${formValues.fname}${formValues.lname}ProfilePic.png`)
+      console.log(myRenamedFile)
+      console.log("else")
+    }
     console.log(myRenamedFile)
+    if(!formValues.company){
+      formValues.company = "N/A"
+    }
+    if(!formValues.jobtitle){
+      formValues.jobtitle = "N/A"
+    }
     add_UserInfo_async({
       variables: {
         userEmail: formValues.email.toLowerCase(),
@@ -201,7 +240,7 @@ function Signup() {
         <div className="all-inputs">
         <>
             <div style={styles.container}>
-            <label className="label-profile">Choose A Profile Picture* </label>
+            <label className="label-profile">Choose A Profile Picture </label>
               {selectedImage ? (
                 <div style={styles.preview}>
                   <img
