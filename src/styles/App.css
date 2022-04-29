@@ -44,6 +44,51 @@
 
 }
 
+.savechange {
+  background-color: rgb(65, 168, 40);
+  position: absolute;
+  left: 300px;
+  border-radius: 5px;
+  color:rgb(0, 0, 0);
+  padding: 5px;
+  font-size: 15px;
+
+}
+
+.onsaveredirect {
+  color:rgb(197, 191, 68);
+  position: absolute;
+  font-family: "DejaVu Sans Mono", monospace;
+  left: 90px;
+  bottom: 150px;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.profilebottomhr {
+  margin-top: 100px;
+}
+
+.saving {
+  position: absolute;
+  left: 300px;
+  border-radius: 5px;
+  margin-top: 30px;
+  color:rgb(222, 222, 222);
+  padding: 5px;
+  font-size: 15px;
+}
+
+.savechangeholder {
+  border-radius: 5px;
+  margin-top: 30px;
+  color:rgb(0, 0, 0);
+  padding: 5px;
+  font-size: 15px;
+  opacity: 0;
+
+}
+
 .delete {
   margin-top: 10px;
   background-color: #975c5c;

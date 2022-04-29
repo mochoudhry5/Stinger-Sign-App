@@ -178,6 +178,16 @@ strong {
  
 }
 
+.changeableinfo {
+  background-color: rgb(255, 255, 255);
+  font-weight: normal;
+  color: black;
+  font-size: 20px;
+  width: 300px;
+ 
+}
+
+
 .header-prof {
   font-family:  "DejaVu Sans Mono", monospace;
   font-weight: bold;
@@ -241,7 +251,7 @@ margin-right:54px;
 
 .flex-container {
   display: flex;
-  margin-bottom: 80px;
+  margin-bottom: 60px;
 }
 
 .flex-child {

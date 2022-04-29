@@ -106,8 +106,30 @@ export const UPDATE_FILE = gql`
   mutation updateVendia_File($id: ID!, $syncMode: Vendia_SyncMode!) {
     updateVendia_File(id: $id, input: {}, syncMode: $syncMode) {
       transaction {
-      _id
+        _id
+      }
     }
+  }
+`;
+
+export const UPDATED_USER_INFO = gql`
+  mutation update_UserInfo_async(
+    $id: ID!
+    $userEmail: String!
+    $userCompany: String!
+    $userJobTitle: String!
+  ) {
+    update_UserInfo_async(
+      id: $id
+      input: {
+        userEmail: $userEmail
+        userCompany: $userCompany
+        userJobTitle: $userJobTitle
+      }
+    ) {
+      result {
+        _id
+      }
     }
   }
 `;
