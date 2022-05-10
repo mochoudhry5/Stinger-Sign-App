@@ -63,6 +63,9 @@ export default function SettingUpPDF(props) {
       instance.UI.disableElements(["toolbarGroup-Edit"]);
       instance.UI.disableElements(["toolbarGroup-Insert"]);
       instance.UI.disableElements(["toolbarGroup-Annotate"]);
+      instance.UI.disableElements(["toolbarGroup-FillAndSign"]);
+      instance.UI.disableElements(["toolbarGroup-View"]);
+      instance.UI.disableElements(["toolbarGroup-Search"]);
       instance.UI.setToolbarGroup(instance.UI.ToolbarGroup.VIEW);
       instance.UI.enableFeatures([Feature.FilePicker]);
       instance.UI.setHeaderItems((header) => {

@@ -73,6 +73,8 @@ export default function TimeToSign(props) {
       instance.UI.disableElements(["toolbarGroup-Shapes"]);
       instance.UI.disableElements(["toolbarGroup-Edit"]);
       instance.UI.disableElements(["toolbarGroup-Annotate"]);
+      instance.UI.disableElements(["toolbarGroup-View"]);
+      instance.UI.disableElements(["toolbarGroup-Insert"]);
       instance.UI.setToolbarGroup(instance.UI.ToolbarGroup.FORMS);
       instance.UI.setHeaderItems((header) => {
         header.push({
@@ -93,6 +95,7 @@ export default function TimeToSign(props) {
       });
     });
   }, [blobData, pdfName]);
+
 
   return (
     <div>
