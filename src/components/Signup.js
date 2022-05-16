@@ -68,7 +68,7 @@ function Signup() {
   }, [])
 
 
-  if (l) return <div>Loading...</div>;
+  if (l) (<div>Loading...</div>);
   if (error) return <div> ERROR </div>;
 
 
@@ -191,7 +191,7 @@ function Signup() {
     if(!formValues.jobtitle){
       formValues.jobtitle = "N/A"
     }
-    add_UserInfo_async({
+    const data = add_UserInfo_async({
       variables: {
         userEmail: formValues.email.toLowerCase(),
         userFirstName: formValues.fname,
@@ -202,6 +202,7 @@ function Signup() {
         userProfilePicture: myRenamedFile.name
       },
     });
+    console.log(data)
     uploadFile(myRenamedFile)
   };
 
@@ -235,7 +236,7 @@ function Signup() {
   return (
     <div className="signup-form">
       <form onSubmit={handleSubmit}>
-        {isSubmit ? <Redirect to="/" /> : null}
+        {isSubmit && !l? <Redirect to="/" /> : null}
         <h2 className="signup-text">Stinger Sign Up</h2>
         <div className="all-inputs">
         <>
