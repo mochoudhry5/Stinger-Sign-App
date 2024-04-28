@@ -1,4 +1,4 @@
-# StingerSign  (Team Air Jordan)
+# StingerSign
 
 Docusign imitation using ReactJS (frontend), NodeJS (Backend), and Vendia (Graphql Server/BaaS)
 
